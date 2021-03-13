@@ -112,15 +112,17 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:worldcup2/Resources/Private/Language/locallang_db.xlf:tx_worldcup2_domain_model_bet.feuser',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
+                'type' => 'group',
+                'internal_type' => 'db',
+                'allowed' => 'fe_users',
                 'foreign_table' => 'fe_users',
-                'default' => 0,
+                'size' => 2,
+                'multiple' => 1,
                 'minitems' => 0,
                 'maxitems' => 1,
             ],
 
         ],
-    
+
     ],
 ];

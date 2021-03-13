@@ -16,7 +16,7 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * playtime
-     * 
+     *
      * @var \DateTime
      * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
@@ -24,21 +24,28 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * goalsteam1
-     * 
+     *
      * @var int
      */
     protected $goalsteam1 = 0;
 
     /**
      * goalsteam2
-     * 
+     *
      * @var int
      */
     protected $goalsteam2 = 0;
 
     /**
+     * userbet
+     *
+     * @var \JVE\Worldcup2\Domain\Model\Bet
+     */
+    protected $userbet = null ;
+
+    /**
      * round
-     * 
+     *
      * @var int
      * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
@@ -46,21 +53,30 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * team1
-     * 
+     *
      * @var \JVE\Worldcup2\Domain\Model\Team
      */
     protected $team1 = null;
 
     /**
      * team2
-     * 
+     *
      * @var \JVE\Worldcup2\Domain\Model\Team
      */
     protected $team2 = null;
 
     /**
+     * __construct
+     */
+    public function __construct()
+    {
+        //Do not remove the next line: It would break the functionality
+    }
+
+
+    /**
      * Returns the playtime
-     * 
+     *
      * @return \DateTime $playtime
      */
     public function getPlaytime()
@@ -70,7 +86,7 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Sets the playtime
-     * 
+     *
      * @param \DateTime $playtime
      * @return void
      */
@@ -81,7 +97,7 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Returns the goalsteam1
-     * 
+     *
      * @return int $goalsteam1
      */
     public function getGoalsteam1()
@@ -91,7 +107,7 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Sets the goalsteam1
-     * 
+     *
      * @param int $goalsteam1
      * @return void
      */
@@ -102,7 +118,7 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Returns the goalsteam2
-     * 
+     *
      * @return int $goalsteam2
      */
     public function getGoalsteam2()
@@ -112,7 +128,7 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Sets the goalsteam2
-     * 
+     *
      * @param int $goalsteam2
      * @return void
      */
@@ -123,7 +139,7 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Returns the round
-     * 
+     *
      * @return int $round
      */
     public function getRound()
@@ -133,7 +149,7 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Sets the round
-     * 
+     *
      * @param int $round
      * @return void
      */
@@ -144,7 +160,7 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Returns the team1
-     * 
+     *
      * @return \JVE\Worldcup2\Domain\Model\Team $team1
      */
     public function getTeam1()
@@ -154,7 +170,7 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Sets the team1
-     * 
+     *
      * @param \JVE\Worldcup2\Domain\Model\Team $team1
      * @return void
      */
@@ -165,7 +181,7 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Returns the team2
-     * 
+     *
      * @return \JVE\Worldcup2\Domain\Model\Team $team2
      */
     public function getTeam2()
@@ -175,7 +191,7 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Sets the team2
-     * 
+     *
      * @param \JVE\Worldcup2\Domain\Model\Team $team2
      * @return void
      */
@@ -183,4 +199,33 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->team2 = $team2;
     }
+
+
+    /********* Not stored in DB Table game ... adined in Controller on current or requested user **************** */
+
+    /**
+     * @return Bet
+     */
+    public function getUserbet(): ?Bet
+    {
+        return $this->userbet;
+    }
+
+    /**
+     * @param Bet $userbet
+     */
+    public function setUserbet(?Bet $userbet): void
+    {
+        $this->userbet = $userbet;
+    }
+
+    public function isGameStartingSoon() {
+        $now = new \DateTime("now");
+        if( $now->modify('-1 hour')  < $this->playtime) {
+            return false ;
+        }
+        return true ;
+    }
+
+
 }

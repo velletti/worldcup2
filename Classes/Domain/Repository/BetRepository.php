@@ -11,6 +11,24 @@ namespace JVE\Worldcup2\Domain\Repository;
  * (c) 2021 Jörg Velletti <typo3@velletti.de>, Allplan GmbH
  * The repository for Bets
  */
-class BetRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class BetRepository extends BaseRepository
 {
+    /**
+     * @param $gameUid
+     * @param $userUid
+     * @return mixed
+     */
+    public function findByGameAndUser( $gameUid , $userUid) {
+        $query = $this->createQuery() ;
+        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+
+        $constraints[] = $query->equals( "game" , $gameUid ) ;
+        $constraints[] = $query->equals( "feuser" , $userUid ) ;
+
+        $query->matching($query->logicalAnd($constraints));
+        $query->setLimit(1) ;
+       // $this->debugQuery($query) ;
+
+        return $query->execute()->getFirst()  ;
+    }
 }

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace JVE\Worldcup2\Domain\Repository;
 
-
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
@@ -13,7 +12,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  * (c) 2021 Jörg Velletti <typo3@velletti.de>, Allplan GmbH
  * The repository for Games
  */
-class GameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class GameRepository extends BaseRepository
 {
 
     /**
@@ -23,11 +22,22 @@ class GameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         'playtime' => QueryInterface::ORDER_ASCENDING
     );
 
-    public function findByDate( $limit=0 ) {
+
+
+    public function findByDate( int $limit=0 ) {
         $query = $this->createQuery() ;
+        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+
+        $constraints = [] ;
+
+        if( count($constraints) > 0 ) {
+            $query->matching($query->logicalAnd($constraints));
+        }
         if( $limit > 0 ) {
             $query->setLimit($limit) ;
         }
         return $query->execute() ;
     }
+
+
 }
