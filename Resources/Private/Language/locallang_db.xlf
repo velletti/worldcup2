@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:worldcup2/Resources/Private/Language/locallang_db" date="2021-03-12T16:19:21Z" product-name="worldcup2">
+		<header/>
+		<body>
+			<trans-unit id="tx_worldcup2_domain_model_team" resname="tx_worldcup2_domain_model_team">
+				<source>Team</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_domain_model_team.name" resname="tx_worldcup2_domain_model_team.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_domain_model_team.flag" resname="tx_worldcup2_domain_model_team.flag">
+				<source>Flag</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_domain_model_team.shortcutfifa" resname="tx_worldcup2_domain_model_team.shortcutfifa">
+				<source>Shortcutfifa</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_domain_model_bet" resname="tx_worldcup2_domain_model_bet">
+				<source>Bet</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_domain_model_bet.goalsteam1" resname="tx_worldcup2_domain_model_bet.goalsteam1">
+				<source>Goalsteam1</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_domain_model_bet.goalsteam2" resname="tx_worldcup2_domain_model_bet.goalsteam2">
+				<source>Goalsteam2</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_domain_model_bet.game" resname="tx_worldcup2_domain_model_bet.game">
+				<source>Game</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_domain_model_bet.feuser" resname="tx_worldcup2_domain_model_bet.feuser">
+				<source>Feuser</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_domain_model_game" resname="tx_worldcup2_domain_model_game">
+				<source>Game</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_domain_model_game.playtime" resname="tx_worldcup2_domain_model_game.playtime">
+				<source>Playtime</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_domain_model_game.goalsteam1" resname="tx_worldcup2_domain_model_game.goalsteam1">
+				<source>Goalsteam1</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_domain_model_game.goalsteam2" resname="tx_worldcup2_domain_model_game.goalsteam2">
+				<source>Goalsteam2</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_domain_model_game.round" resname="tx_worldcup2_domain_model_game.round">
+				<source>Round</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_domain_model_game.team1" resname="tx_worldcup2_domain_model_game.team1">
+				<source>Team1</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_domain_model_game.team2" resname="tx_worldcup2_domain_model_game.team2">
+				<source>Team2</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_play.name" resname="tx_worldcup2_play.name">
+				<source>Play Tipp Game</source>
+			</trans-unit>
+
+			<trans-unit id="tx_worldcup2_games.round.I.A" resname="tx_worldcup2_games.round.I.A">
+				<source>Group A</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_games.round.I.B" resname="tx_worldcup2_games.round.I.B">
+				<source>Group B</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_games.round.I.C" resname="tx_worldcup2_games.round.I.C">
+				<source>Group C</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_games.round.I.D" resname="tx_worldcup2_games.round.I.D">
+				<source>Group D</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_games.round.I.E" resname="tx_worldcup2_games.round.I.E">
+				<source>Group E</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_games.round.I.F" resname="tx_worldcup2_games.round.I.F">
+				<source>Group F</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_games.round.I.G" resname="tx_worldcup2_games.round.I.G">
+				<source>Group G</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_games.round.I.H" resname="tx_worldcup2_games.round.I.H">
+				<source>Group H</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_games.round.I.16" resname="tx_worldcup2_games.round.I.16">
+				<source>Round of 16/24</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_games.round.I.8" resname="tx_worldcup2_games.round.I.8">
+				<source>Quarter-round</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_games.round.I.4" resname="tx_worldcup2_games.round.I.4">
+				<source>Semi-finale</source>
+			</trans-unit>
+			<trans-unit id="tx_worldcup2_games.round.I.2" resname="tx_worldcup2_games.round.I.2">
+				<source>Finals</source>
+			</trans-unit>
+
+		</body>
+	</file>
+</xliff>

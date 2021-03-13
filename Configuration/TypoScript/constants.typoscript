@@ -1,0 +1,14 @@
+plugin.tx_worldcup2_play {
+    view {
+        # cat=plugin.tx_worldcup2_play/file; type=string; label=Path to template root (FE)
+        templateRootPath = EXT:worldcup2/Resources/Private/Templates/
+        # cat=plugin.tx_worldcup2_play/file; type=string; label=Path to template partials (FE)
+        partialRootPath = EXT:worldcup2/Resources/Private/Partials/
+        # cat=plugin.tx_worldcup2_play/file; type=string; label=Path to template layouts (FE)
+        layoutRootPath = EXT:worldcup2/Resources/Private/Layouts/
+    }
+    persistence {
+        # cat=plugin.tx_worldcup2_play//a; type=string; label=Default storage PID
+        storagePid =
+    }
+}

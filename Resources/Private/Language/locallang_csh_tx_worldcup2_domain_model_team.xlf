@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:worldcup2/Resources/Private/Language/locallang_csh" date="2021-03-12T16:19:21Z" product-name="worldcup2">
+		<header/>
+		<body>
+			<trans-unit id="name.description" resname="name.description">
+				<source>name</source>
+			</trans-unit>
+			<trans-unit id="flag.description" resname="flag.description">
+				<source>flag</source>
+			</trans-unit>
+			<trans-unit id="shortcutfifa.description" resname="shortcutfifa.description">
+				<source>shortcutfifa</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

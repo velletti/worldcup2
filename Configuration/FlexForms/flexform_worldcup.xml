@@ -1,0 +1,52 @@
+<T3DataStructure>
+	<sheets>
+		<sDEF>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:jv_events/Resources/Private/Language/locallang_be.xlf:flexforms.Function</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<switchableControllerActions>
+						<TCEforms>
+							<label>Select function</label>
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items>
+									<numIndex index="0">
+										<numIndex index="0">Next Games</numIndex>
+										<numIndex index="1">Game->next</numIndex>
+									</numIndex>
+									<numIndex index="1">
+										<numIndex index="0">Show all games</numIndex>
+										<numIndex index="1">Game->listgroups;Game->showagb</numIndex>
+									</numIndex>
+									<numIndex index="2">
+										<numIndex index="0">Show one group</numIndex>
+										<numIndex index="1">Game->showgroup;Game->showagb</numIndex>
+									</numIndex>
+									<numIndex index="3">
+										<numIndex index="0">Show ranking</numIndex>
+										<numIndex index="1">Game->ranking</numIndex>
+									</numIndex>
+
+								</items>
+							</config>
+						</TCEforms>
+					</switchableControllerActions>
+					<settings.filter.maxGames>
+						<TCEforms>
+							<label>Show max Games </label>
+							<config>
+								<type>input</type>
+								<eval>int</eval>
+							</config>
+						</TCEforms>
+					</settings.filter.maxGames>
+
+				</el>
+			</ROOT>
+		</sDEF>
+	</sheets>
+</T3DataStructure>
