@@ -2,7 +2,9 @@
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:worldcup2/Resources/Private/Language/locallang_db.xlf:tx_worldcup2_domain_model_bet',
-        'label' => 'goalsteam1',
+        'label' => 'feuser',
+        'label_alt' => 'game',
+        'label_alt_force' => 1,
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
@@ -10,6 +12,7 @@ return [
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'delete' => 'deleted',
+        "default_sortby" => "ORDER BY tstamp DESC",
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],

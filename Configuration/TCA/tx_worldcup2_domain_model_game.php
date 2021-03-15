@@ -3,6 +3,8 @@ return [
     'ctrl' => [
         'title' => 'LLL:EXT:worldcup2/Resources/Private/Language/locallang_db.xlf:tx_worldcup2_domain_model_game',
         'label' => 'playtime',
+        'label_alt' => 'team1,team2',
+        'label_alt_force' => 1,
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
@@ -10,6 +12,7 @@ return [
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'delete' => 'deleted',
+        "default_sortby" => "ORDER BY playtime",
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
@@ -25,7 +28,7 @@ return [
     'palettes' => [
         'advanced' => ['showitem' => 'sys_language_uid, hidden , --linebreak--, l10n_parent'],
         'infos' => ['showitem' => 'playtime,  round'],
-        'teams' => ['showitem' => 'team1 ,  team2 , --linebreak--, goalsteam1, goalsteam2'],
+        'teams' => ['showitem' => 'team1 ,  team2 , --linebreak--, goalsteam1, goalsteam2, --linebreak--, finished'],
     ] ,
 
     'columns' => [
@@ -76,6 +79,20 @@ return [
                         0 => '',
                         1 => '',
                         'invertStateDisplay' => true
+                    ]
+                ],
+            ],
+        ],
+        'finished' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:worldcup2/Resources/Private/Language/locallang_db.xlf:tx_worldcup2_domain_model_game.finished',
+            'config' => [
+                'type' => 'check',
+                'renderType' => 'checkboxToggle',
+                'items' => [
+                    [
+                        0 => '',
+                        1 => '',
                     ]
                 ],
             ],

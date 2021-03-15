@@ -16,7 +16,7 @@ class Bet extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * goalsteam1
-     * 
+     *
      * @var int
      * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
@@ -24,7 +24,7 @@ class Bet extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * goalsteam2
-     * 
+     *
      * @var int
      * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
@@ -32,21 +32,21 @@ class Bet extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * game
-     * 
+     *
      * @var \JVE\Worldcup2\Domain\Model\Game
      */
     protected $game = null;
 
     /**
      * feuser
-     * 
+     *
      * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
      */
     protected $feuser = null;
 
     /**
      * Returns the goalsteam1
-     * 
+     *
      * @return int $goalsteam1
      */
     public function getGoalsteam1()
@@ -56,7 +56,7 @@ class Bet extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Sets the goalsteam1
-     * 
+     *
      * @param int $goalsteam1
      * @return void
      */
@@ -67,7 +67,7 @@ class Bet extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Returns the goalsteam2
-     * 
+     *
      * @return int $goalsteam2
      */
     public function getGoalsteam2()
@@ -77,7 +77,7 @@ class Bet extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Sets the goalsteam2
-     * 
+     *
      * @param int $goalsteam2
      * @return void
      */
@@ -88,7 +88,7 @@ class Bet extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Returns the game
-     * 
+     *
      * @return \JVE\Worldcup2\Domain\Model\Game $game
      */
     public function getGame()
@@ -98,7 +98,7 @@ class Bet extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Sets the game
-     * 
+     *
      * @param \JVE\Worldcup2\Domain\Model\Game $game
      * @return void
      */
@@ -109,7 +109,7 @@ class Bet extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Returns the feuser
-     * 
+     *
      * @return \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $feuser
      */
     public function getFeuser()
@@ -119,7 +119,7 @@ class Bet extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Sets the feuser
-     * 
+     *
      * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $feuser
      * @return void
      */
@@ -127,4 +127,55 @@ class Bet extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->feuser = $feuser;
     }
+
+    /**
+     * Returns the Points
+     *
+     * @return int
+     */
+    public function getPoints()
+    {
+        // just avoid error if game is deleted ..
+        if( !$this->game ) {
+            return 0 ;
+        }
+        // do not count this game at this moment ...
+        if( !$this->game->isFinished() ) {
+            return 0 ;
+        }
+        // bet of user is matching exactly game result ....
+        if( $this->game->getGoalsteam1() == $this->getGoalsteam1() &&  $this->game->getGoalsteam2() == $this->getGoalsteam2()  ) {
+            return 3;
+        }
+
+        // bet has correct winner and has same goal difference
+        if( ($this->game->getGoalsteam1() - $this->getGoalsteam1()) ==  ( $this->game->getGoalsteam2() - $this->getGoalsteam2())  ) {
+            return 2;
+        }
+
+        // bet has correct winner
+        $winner = $this->theWinnerIs($this->game->getGoalsteam1() ,$this->game->getGoalsteam2() );
+        $tipped = $this->theWinnerIs($this->getGoalsteam1(),$this->getGoalsteam2());
+        if ($winner === $tipped  ) {
+            return 1;
+        }
+        // bet wrong winner
+        return 0 ;
+
+    }
+
+    /**
+     * whichone of the teams is the winner? input: gloals - output winner
+     *
+     * @param integer $team1 : goals of team 1
+     * @param integer $team2 : goals of team 2
+     * @return    integer        0= tied, 1=team1...
+     */
+    function theWinnerIs (int $team1, int $team2) {
+        if ($team1 > $team2) return 1;
+        if ($team1 < $team2) return 2;
+
+        return 0;
+    }
+
 }

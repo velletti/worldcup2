@@ -21,6 +21,7 @@ CREATE TABLE tx_worldcup2_domain_model_game (
 	goalsteam1 int(11) DEFAULT '0' NOT NULL,
 	goalsteam2 int(11) DEFAULT '0' NOT NULL,
 	round varchar(2) DEFAULT '' NOT NULL,
+	finished SMALLINT(1) unsigned DEFAULT '0' NOT NULL,
 	team1 int(11) unsigned DEFAULT '0',
 	team2 int(11) unsigned DEFAULT '0'
 

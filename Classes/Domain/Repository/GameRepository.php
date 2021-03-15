@@ -29,7 +29,8 @@ class GameRepository extends BaseRepository
         $query->getQuerySettings()->setRespectStoragePage(FALSE);
 
         $constraints = [] ;
-
+        $now = new \DateTime("now") ;
+        $constraints[] = $query->greaterThanOrEqual('playtime' , $now ) ;
         if( count($constraints) > 0 ) {
             $query->matching($query->logicalAnd($constraints));
         }

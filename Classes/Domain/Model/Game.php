@@ -66,6 +66,19 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $team2 = null;
 
     /**
+     * @var bool
+     */
+    protected $finished = false;
+
+    /**
+     * next Game
+     */
+
+    protected  $nextGame =false ;
+
+
+
+    /**
      * __construct
      */
     public function __construct()
@@ -200,6 +213,23 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->team2 = $team2;
     }
 
+    /**
+     * @return bool
+     */
+    public function isFinished(): bool
+    {
+        return $this->finished;
+    }
+
+    /**
+     * @param bool $finished
+     */
+    public function setFinished(bool $finished): void
+    {
+        $this->finished = $finished;
+    }
+
+
 
     /********* Not stored in DB Table game ... adined in Controller on current or requested user **************** */
 
@@ -226,6 +256,26 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         }
         return true ;
     }
+
+    /**
+     * @return bool
+     */
+    public function isNextGame(): bool
+    {
+        return $this->nextGame;
+    }
+
+    /**
+     * @param bool $nextGame
+     */
+    public function setNextGame(bool $nextGame): void
+    {
+        $this->nextGame = $nextGame;
+    }
+
+
+
+
 
 
 }

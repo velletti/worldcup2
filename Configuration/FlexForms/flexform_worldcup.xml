@@ -35,7 +35,7 @@
 							</config>
 						</TCEforms>
 					</switchableControllerActions>
-					<settings.filter.maxGames>
+					<settings.flexform.maxGames>
 						<TCEforms>
 							<label>Show max Games </label>
 							<config>
@@ -43,7 +43,7 @@
 								<eval>int</eval>
 							</config>
 						</TCEforms>
-					</settings.filter.maxGames>
+					</settings.flexform.maxGames>
 
 				</el>
 			</ROOT>

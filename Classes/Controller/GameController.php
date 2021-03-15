@@ -78,6 +78,9 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         } else {
             $this->settings["sys_langauge_uid"] = $languageAspect->getId() ;
         }
+        if( (int)$this->settings['flexform']['maxGames'] > 0 ) {
+            $this->settings['maxGames'] = $this->settings['flexform']['maxGames'] ;
+        }
 
     }
 
@@ -88,25 +91,8 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     public function nextAction()
     {
-        $games = $this->gameRepository->findByDate( 2) ;
-        if($this->request->hasArgument("user")) {
-            $user = (int)$this->request->getArgument("user") ;
-            $this->view->assign("requestedUser" , true ) ;
-        } else {
-            $user = $this->currentUser['id'] ;
-            $this->view->assign("requestedUser" , false ) ;
-        }
-
-        if( $games) {
-            /** @var Game $game */
-            foreach ($games as $game) {
-                /** @var Bet $bet */
-                $bet = $this->betRepository->findbyGameAndUser($game->getUid() , $user ) ;
-                $game->setUserbet($bet);
-            }
-        }
-        $this->view->assign("games" , $games ) ;
-        $this->view->assign("currentUser" , $this->currentUser ) ;
+       // var_dump($this->settings);
+        $this->enhanceGames($this->gameRepository->findByDate( (int)$this->settings['maxGames']) ) ;
 
     }
 
@@ -117,6 +103,8 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     public function listgroupsAction()
     {
+        $this->enhanceGames( $this->gameRepository->findAll()) ;
+
     }
 
     /**
@@ -144,5 +132,37 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     public function showgroupAction()
     {
+    }
+
+
+    /**** ** Helper ***************************************
+     * @param $games
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     */
+    private function enhanceGames($games) {
+        if($this->request->hasArgument("user")) {
+            $user = (int)$this->request->getArgument("user") ;
+            $this->view->assign("requestedUser" , true ) ;
+        } else {
+            $user = $this->currentUser['id'] ;
+            $this->view->assign("requestedUser" , false ) ;
+        }
+
+        if( $games) {
+            $isNextGameSet = false ;
+            $now = new \DateTime("now") ;
+            /** @var Game $game */
+            foreach ($games as $game) {
+                /** @var Bet $bet */
+                $bet = $this->betRepository->findbyGameAndUser($game->getUid() , $user ) ;
+                $game->setUserbet($bet);
+                if( $game->getPlaytime() > $now && !$isNextGameSet ) {
+                    $isNextGameSet = true;
+                    $game->setNextGame(true);
+                }
+            }
+        }
+        $this->view->assign("games" , $games ) ;
+        $this->view->assign("currentUser" , $this->currentUser ) ;
     }
 }

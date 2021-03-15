@@ -6,7 +6,13 @@
             <f:for as="game" each="{games}">
                 <div class="game">
                     <span class="worldcup_playtime"><f:format.date format="d.m. | H:i">{game.playtime}</f:format.date></span>
-                    <f:spaceless><span class="mx-2 flag flag-{game.team1.flag}" title="{game.team1.name}"></span> <f:render section="goal1" arguments="{_ALL}" /> : <f:render section="goal2" arguments="{_ALL}" />  <span class="mx-2 flag flag-{game.team2.flag}" title="{game.team2.name}"></span></f:spaceless>
+                    <f:spaceless><span class="hidden-xs">{game.team1.name}</span> <span class="mx-2 flag flag-{game.team1.flag}" title="{game.team1.name}"></span> / <span class="mx-2 flag flag-{game.team2.flag}" title="{game.team2.name}"></span> <span class="hidden-xs">{game.team2.name}</span>
+                        <f:if condition="{game.finished}">
+                            <f:then>{game.goalsteam1}:{game.goalsteam2}
+                        </f:then><f:else>--:--</f:else></f:if>
+                        <f:render section="goal1" arguments="{_ALL}" /> : <f:render section="goal2" arguments="{_ALL}" />
+                        | <f:if condition="{game.userbet}">{game.userbet.points}</f:if>
+                    </f:spaceless>
                 </div>
             </f:for>
         </f:if>

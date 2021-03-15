@@ -36,6 +36,9 @@
 			<trans-unit id="tx_worldcup2_domain_model_game.playtime" resname="tx_worldcup2_domain_model_game.playtime">
 				<source>Playtime</source>
 			</trans-unit>
+			<trans-unit id="tx_worldcup2_domain_model_game.finished" resname="tx_worldcup2_domain_model_game.finished">
+				<source>Finished/count Goals</source>
+			</trans-unit>
 			<trans-unit id="tx_worldcup2_domain_model_game.goalsteam1" resname="tx_worldcup2_domain_model_game.goalsteam1">
 				<source>Goalsteam1</source>
 			</trans-unit>
