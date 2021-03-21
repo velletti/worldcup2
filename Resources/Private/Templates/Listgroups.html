@@ -9,7 +9,7 @@
                     <f:spaceless><span class="hidden-xs">{game.team1.name}</span> <span class="mx-2 flag flag-{game.team1.flag}" title="{game.team1.name}"></span> / <span class="mx-2 flag flag-{game.team2.flag}" title="{game.team2.name}"></span> <span class="hidden-xs">{game.team2.name}</span>
                         <f:if condition="{game.finished}">
                             <f:then>{game.goalsteam1}:{game.goalsteam2}
-                        </f:then><f:else>--:--</f:else></f:if>
+                        </f:then><f:else>-- : --</f:else></f:if>
                         <f:render section="goal1" arguments="{_ALL}" /> : <f:render section="goal2" arguments="{_ALL}" />
                         | <f:if condition="{game.userbet}">{game.userbet.points}</f:if>
                     </f:spaceless>
@@ -24,22 +24,22 @@
         <f:then>
             <f:if condition="{game.gameStartingSoon}">
                 <f:then>
-                    <span class="worldcup_goal m-1" data-comment="tooLateToBet">{game.userbet.goalsteam1}</span>
+                    <span class="worldcup_goal m-1" data-comment="tooLateToBet">{game.userbet.goalsteam1} </span>
                 </f:then>
                 <f:else>
                     <f:if condition="{requestedUser}">
                         <f:then>
-                            <span class="worldcup_goal m-1 " data-comment="stillSecret">??</span>
+                            <span class="worldcup_goal m-1 " data-comment="stillSecret">?? </span>
                         </f:then>
                         <f:else>
-                            <span class="worldcup_goal m-1 " data-comment="sameUser">{game.userbet.goalsteam1}</span>
+                            <span class="worldcup_goal m-1 " data-comment="sameUser">{game.userbet.goalsteam1} </span>
                         </f:else>
                     </f:if>
                 </f:else>
             </f:if>
         </f:then>
         <f:else>
-            <span class="worldcup_goal m-1 " data-comment="noBet">??</span>
+            <span class="worldcup_goal m-1 " data-comment="noBet">?? </span>
         </f:else>
     </f:if>
 </f:section>
@@ -49,22 +49,22 @@
         <f:then>
             <f:if condition="{game.gameStartingSoon}">
                 <f:then>
-                    <span class="worldcup_goal m-1 " data-comment="tooLateToBet">{game.userbet.goalsteam2}</span>
+                    <span class="worldcup_goal m-1 " data-comment="tooLateToBet"> {game.userbet.goalsteam2}</span>
                 </f:then>
                 <f:else>
                     <f:if condition="{requestedUser}">
                         <f:then>
-                            <span class="worldcup_goal m-1 " data-comment="stillSecret">??</span>
+                            <span class="worldcup_goal m-1 " data-comment="stillSecret"> ??</span>
                         </f:then>
                         <f:else>
-                            <span class="worldcup_goal m-1 " data-comment="sameUser">{game.userbet.goalsteam2}</span>
+                            <span class="worldcup_goal m-1 " data-comment="sameUser"> {game.userbet.goalsteam2}</span>
                         </f:else>
                     </f:if>
                 </f:else>
             </f:if>
         </f:then>
         <f:else>
-            <span class="worldcup_goal m-1 " data-comment="noBet">??</span>
+            <span class="worldcup_goal m-1 " data-comment="noBet"> ??</span>
         </f:else>
     </f:if>
 

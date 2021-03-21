@@ -6,13 +6,22 @@
             <f:for as="game" each="{games}">
                 <div class="game">
                     <span class="worldcup_playtime"><f:format.date format="d.m. | H:i">{game.playtime}</f:format.date></span>
-                    <f:spaceless><span class="mx-2 flag flag-{game.team1.flag}" title="{game.team1.name}"></span> <f:render section="goal1" arguments="{_ALL}" /> : <f:render section="goal2" arguments="{_ALL}" />  <span class="mx-2 flag flag-{game.team2.flag}" title="{game.team2.name}"></span></f:spaceless>
+                    <f:spaceless><span class="mx-2 flag flag-{game.team1.flag}" title="{game.team1.name}"></span>
+                        <span id="worldcup-result-{game.uid}">
+                            <f:render section="goal1" arguments="{_ALL}" /> : <f:render section="goal2" arguments="{_ALL}" />
+                        </span>
+                        <span class="mx-2 flag flag-{game.team2.flag}" title="{game.team2.name}"></span>
+                        <f:render partial="Bet" arguments="{_all}" />
+                    </f:spaceless>
+                    <f:render partial="Javascript" arguments="{_all}" />
                 </div>
             </f:for>
         </f:if>
 
     </div>
 </f:section>
+
+
 <f:section name="goal1">
     <f:if condition="{game.userbet}">
         <f:then>
@@ -33,7 +42,7 @@
             </f:if>
         </f:then>
         <f:else>
-            <span class="worldcup_goal m-1 " data-comment="noBet">??</span>
+            <span class="worldcup_goal m-1 " data-comment="noBet">--</span>
         </f:else>
     </f:if>
 </f:section>
@@ -58,7 +67,7 @@
             </f:if>
         </f:then>
         <f:else>
-            <span class="worldcup_goal m-1 " data-comment="noBet">??</span>
+            <span class="worldcup_goal m-1 " data-comment="noBet">--</span>
         </f:else>
     </f:if>
 

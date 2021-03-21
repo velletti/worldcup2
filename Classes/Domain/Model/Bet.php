@@ -22,6 +22,14 @@ class Bet extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $goalsteam1 = 0;
 
+
+    /**
+     * tstamp
+     *
+     * @var int
+     */
+    protected $tstamp = 0 ;
+
     /**
      * goalsteam2
      *
@@ -63,6 +71,7 @@ class Bet extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setGoalsteam1($goalsteam1)
     {
         $this->goalsteam1 = $goalsteam1;
+        $this->tstamp = time();
     }
 
     /**
@@ -84,6 +93,7 @@ class Bet extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setGoalsteam2($goalsteam2)
     {
         $this->goalsteam2 = $goalsteam2;
+        $this->tstamp = time();
     }
 
     /**
@@ -105,6 +115,7 @@ class Bet extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setGame(\JVE\Worldcup2\Domain\Model\Game $game)
     {
         $this->game = $game;
+        $this->tstamp = time();
     }
 
     /**
@@ -126,6 +137,7 @@ class Bet extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setFeuser(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $feuser)
     {
         $this->feuser = $feuser;
+        $this->tstamp = time();
     }
 
     /**
@@ -177,5 +189,7 @@ class Bet extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
         return 0;
     }
+
+
 
 }

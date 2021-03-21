@@ -1,0 +1,38 @@
+<script type="text/javascript">
+    let formid = "#worldcupform-<f:format.raw>{game.uid}</f:format.raw>" ;
+    jQuery(document).ready(function() {
+        $(".worldcupform-modal").submit( function(e) {
+            e.preventDefault();
+
+            $(".worldcupmodal").click() ;
+            let gameId = $(formid).data("game")
+            let goal1  = $("#goal1-" + gameId).val() ;
+            let goal2  = $("#goal2-" + gameId).val() ;
+
+            // alert("hello Form " + formid + "\n\nGame:" + gameId + " | " +  goal1 + ":" + goal2) ;
+            $.ajax( {
+                url: '/index.php' ,
+                data: '&tx_worldcup2_ajax[game]=' + gameId + '&tx_worldcup2_ajax[goal1]=' +  goal1 +  '&tx_worldcup2_ajax[goal2]=' +  goal2 ,
+
+                before: function() {
+                    $("#worldcup-result-1" ).html("#####") ;
+                   // $("#worldcup-result-" + gameId ).html("<span class='fa fa-spinner fa-spin'></span>") ;
+                } ,
+                success: function(response) {
+                    let json = JSON.parse(response)
+                   if(json && json.status) {
+                       if( response.status == 200 ) {
+                           $("#worldcup-result-" + gameId ).html( json.result ) ;
+                       }
+                   }
+
+                },
+                error: function(response) {
+                    let json = JSON.parse(response)
+                    $("#worldcup-result-" + gameId ).html( json.result ) ;
+                    alert("Undefined error");
+                }
+            })
+        })
+    }) ;
+</script>
