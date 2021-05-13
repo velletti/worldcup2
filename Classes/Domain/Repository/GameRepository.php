@@ -40,5 +40,19 @@ class GameRepository extends BaseRepository
         return $query->execute() ;
     }
 
+    public function findAll( int $limit=0 ) {
+        $query = $this->createQuery() ;
+        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+
+        $constraints = [] ;
+        if( count($constraints) > 0 ) {
+            $query->matching($query->logicalAnd($constraints));
+        }
+        if( $limit > 0 ) {
+            $query->setLimit($limit) ;
+        }
+        return $query->execute() ;
+    }
+
 
 }

@@ -3,7 +3,9 @@
             <f:else>
                 <f:if condition="{requestedUser}">
                     <f:else>
-                        <span class="ml-2 btn btn-xs btn-default" data-target="#worldcup-modal-{game.uid}" data-toggle="modal">
+                        <f:variable name="buttonClass">btn-primary</f:variable>
+                        <f:if condition="{game.userbet}"><f:variable name="buttonClass">btn-default</f:variable></f:if>
+                        <span class="ml-2 btn btn-xs {buttonClass}" data-target="#worldcup-modal-{game.uid}" data-toggle="modal">
                             <span class="far fa-edit"> </span> Bet
                         </span>
 

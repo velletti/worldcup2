@@ -142,15 +142,16 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     private function enhanceGames($games) {
         if($this->request->hasArgument("user")) {
             $user = (int)$this->request->getArgument("user") ;
-            $this->view->assign("requestedUser" , true ) ;
+            $this->view->assign("requestedUser" , $user ) ;
         } else {
             $user = $this->currentUser['id'] ;
             $this->view->assign("requestedUser" , false ) ;
         }
-
+        $enhancedGames= [] ;
         if( $games) {
             $isNextGameSet = false ;
             $now = new \DateTime("now") ;
+
             /** @var Game $game */
             foreach ($games as $game) {
                 /** @var Bet $bet */
@@ -160,9 +161,11 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                     $isNextGameSet = true;
                     $game->setNextGame(true);
                 }
+                $enhancedGames[] = $game ;
             }
         }
-        $this->view->assign("games" , $games ) ;
+        $this->view->assign("games" , $enhancedGames ) ;
+
         $this->view->assign("currentUser" , $this->currentUser ) ;
     }
 }

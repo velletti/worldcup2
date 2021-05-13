@@ -27,8 +27,30 @@ class BetRepository extends BaseRepository
 
         $query->matching($query->logicalAnd($constraints));
         $query->setLimit(1) ;
-       // $this->debugQuery($query) ;
+        // $this->debugQuery($query) ;
 
         return $query->execute()->getFirst()  ;
+    }
+
+    /**
+     * @param $gameUid
+     * @param int $limit
+     * @return mixed
+     */
+    public function findFinished( $limit = 20 ) {
+        $query = $this->createQuery() ;
+        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+
+        $constraints = [] ;
+        $now = new \DateTime("now") ;
+        $constraints[] = $query->lessThanOrEqual('game.playtime' , $now ) ;
+        $constraints[] = $query->equals('game.finished' , 1 ) ;
+        if( count($constraints) > 0 ) {
+            $query->matching($query->logicalAnd($constraints));
+        }
+        if( $limit > 0 ) {
+            $query->setLimit($limit) ;
+        }
+        return $query->execute() ;
     }
 }

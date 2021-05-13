@@ -46,10 +46,10 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * round
      *
-     * @var int
+     * @var string
      * @TYPO3\CMS\Extbase\Annotation\Validate("NotEmpty")
      */
-    protected $round = 0;
+    protected $round = '';
 
     /**
      * team1
@@ -153,7 +153,7 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the round
      *
-     * @return int $round
+     * @return string $round
      */
     public function getRound()
     {
@@ -163,10 +163,10 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the round
      *
-     * @param int $round
+     * @param string $round
      * @return void
      */
-    public function setRound($round)
+    public function setRound(string $round)
     {
         $this->round = $round;
     }
