@@ -13,8 +13,8 @@
                             <f:render partial="Goal" arguments="{team: 2, game: game, requestedUser: requestedUser}" />
                         </span>
                         <span class="mx-2 flag flag-{game.team2.flag}" title="{game.team2.name}"></span>
-                        <f:if condition="{currentUser}">
-                            <f:render partial="Bet" arguments="{_all}" />
+                        <f:if condition="{betPage}">
+                            <f:link.page class="btn btn-default" pageUid="{betPage}"><span class="fa fa-futbal"></span> Bet</f:link.page>>
                         </f:if>
                     </f:spaceless>
                     <f:render partial="Javascript" arguments="{_all}" />

@@ -32,7 +32,7 @@
                                | <f:if condition="{game.userbet}">{game.userbet.points}</f:if>
                             </f:then>
                             <f:else>
-                                <f:if condition="{currentUser}">
+                                <f:if condition="{currentUser > 0 }">
                                     <f:render partial="Bet" arguments="{_all}" />
                                 </f:if>
                             </f:else>

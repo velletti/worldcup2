@@ -123,6 +123,23 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     public function rankingAction()
     {
+        // todO GET FROM tYPOSCRIPT
+        $pid = $this->settings['storagePID'] ;
+        // tOdO REINTEGRATE BETTEAM
+        $betTeam = "" ;
+        $lastGames = $this->gameRepository->findLastGame() ;
+        $lastGame = $lastGames->getFirst() ;
+
+        if (  $lastGame ) {
+            $secondGame = $lastGames->next() ;
+        }
+
+        $rankingSql = $this->betRepository->getRankingSelectSql($pid)
+            . $this->betRepository->getRankingFilterSql($betTeam)
+            .  $this->betRepository->getRankingEndSql($pid) ;
+
+        echo $rankingSql ;
+        die;
     }
 
     /**

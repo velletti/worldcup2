@@ -27,6 +27,7 @@ class GameRepository extends BaseRepository
     public function findByDate( int $limit=0 ) {
         $query = $this->createQuery() ;
         $query->getQuerySettings()->setRespectStoragePage(FALSE);
+        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
 
         $constraints = [] ;
         $now = new \DateTime("now") ;
@@ -37,12 +38,31 @@ class GameRepository extends BaseRepository
         if( $limit > 0 ) {
             $query->setLimit($limit) ;
         }
+
+        return $query->execute() ;
+    }
+
+    public function findLastGame( ) {
+        $query = $this->createQuery() ;
+        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
+        $query->setOrderings( [ 'playtime' => QueryInterface::ORDER_DESCENDING]) ;
+
+        $constraints = [] ;
+        $now = new \DateTime("now") ;
+        $constraints[] = $query->lessThanOrEqual('playtime' , $now ) ;
+
+        $constraints[] = $query->equals('finished' , 1 ) ;
+        $query->matching($query->logicalAnd($constraints));
+        $query->setLimit(2) ;
+        // $this->debugQuery($query) ;
         return $query->execute() ;
     }
 
     public function findAll( int $limit=0 ) {
         $query = $this->createQuery() ;
         $query->getQuerySettings()->setRespectStoragePage(FALSE);
+        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
 
         $constraints = [] ;
         if( count($constraints) > 0 ) {
