@@ -19,7 +19,8 @@ class GameRepository extends BaseRepository
      * @var array
      */
     protected $defaultOrderings = array(
-        'playtime' => QueryInterface::ORDER_ASCENDING
+        'playtime' => QueryInterface::ORDER_ASCENDING ,
+        'remark' => QueryInterface::ORDER_DESCENDING
     );
 
 

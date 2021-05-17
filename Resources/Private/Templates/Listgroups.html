@@ -25,7 +25,6 @@
 
 
         <f:if condition="{games}">
-            <f:variable name="week">0</f:variable>
             <div class="row bold worldcup-game worldcup-gametitle alert alert-default">
                 <f:spaceless>
                     <span class="worldcup-playtime">Date</span>
@@ -40,9 +39,8 @@
             </div>
             <f:for as="game" each="{games}">
 
-                <f:if condition="{f:format.date( format: 'W' , date: '{game.playtime}')} > {week}">
-                    <f:variable name="week">{f:format.date( format: 'W' , date: '{game.playtime}')}</f:variable>
-                    <div class="row mb-1 "> </div>
+                <f:if condition="{game.remark}">
+                    <h3 class="mt-2">{game.remark}</h3>
                 </f:if>
                 <f:if condition="{f:format.date( format: 'z' , date: '{game.playtime}')} == {f:format.date( format: 'z' , date: 'now')}">
                     <f:then>

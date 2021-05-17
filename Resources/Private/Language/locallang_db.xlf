@@ -33,6 +33,9 @@
 			<trans-unit id="tx_worldcup2_domain_model_game" resname="tx_worldcup2_domain_model_game">
 				<source>Game</source>
 			</trans-unit>
+			<trans-unit id="tx_worldcup2_domain_model_game.remark" resname="tx_worldcup2_domain_model_game.remark">
+				<source>New Line Remark</source>
+			</trans-unit>
 			<trans-unit id="tx_worldcup2_domain_model_game.playtime" resname="tx_worldcup2_domain_model_game.playtime">
 				<source>Playtime</source>
 			</trans-unit>

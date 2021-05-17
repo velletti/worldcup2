@@ -23,6 +23,7 @@ CREATE TABLE tx_worldcup2_domain_model_game (
 	round varchar(2) DEFAULT '' NOT NULL,
 	finished SMALLINT(1) unsigned DEFAULT '0' NOT NULL,
 	team1 int(11) unsigned DEFAULT '0',
-	team2 int(11) unsigned DEFAULT '0'
+	team2 int(11) unsigned DEFAULT '0',
+    remark varchar(100) DEFAULT '' NOT NULL,
 
 );

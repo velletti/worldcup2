@@ -44,6 +44,11 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $userbet = null ;
 
     /**
+     * @var string
+     */
+    protected $remark = '' ;
+
+    /**
      * round
      *
      * @var string
@@ -272,6 +277,22 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setNextGame(bool $nextGame): void
     {
         $this->nextGame = $nextGame;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRemark(): string
+    {
+        return $this->remark;
+    }
+
+    /**
+     * @param string $remark
+     */
+    public function setRemark(string $remark): void
+    {
+        $this->remark = $remark;
     }
 
 

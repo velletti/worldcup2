@@ -12,7 +12,7 @@ return [
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'delete' => 'deleted',
-        "default_sortby" => "ORDER BY playtime",
+        "default_sortby" => "playtime ASC",
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
@@ -27,7 +27,7 @@ return [
     ],
     'palettes' => [
         'advanced' => ['showitem' => 'sys_language_uid, hidden , --linebreak--, l10n_parent'],
-        'infos' => ['showitem' => 'playtime,  round'],
+        'infos' => ['showitem' => 'playtime,  round, --linebreak--, remark'],
         'teams' => ['showitem' => 'team1 ,  team2 , --linebreak--, goalsteam1, goalsteam2, --linebreak--, finished'],
     ] ,
 
@@ -163,6 +163,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_worldcup2_domain_model_team',
+                'foreign_table_where' => ' AND tx_worldcup2_domain_model_team.pid = ###CURRENT_PID###  ORDER BY tx_worldcup2_domain_model_team.name',
                 'default' => 0,
                 'minitems' => 0,
                 'maxitems' => 1,
@@ -176,11 +177,22 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_worldcup2_domain_model_team',
+                'foreign_table_where' => ' AND tx_worldcup2_domain_model_team.pid = ###CURRENT_PID### ORDER BY tx_worldcup2_domain_model_team.name',
                 'default' => 0,
                 'minitems' => 0,
                 'maxitems' => 1,
             ],
 
+        ],
+        'remark' => [
+            'exclude' => true,
+            'l10n_mode' => 'exclude',
+            'label' => 'LLL:EXT:worldcup2/Resources/Private/Language/locallang_db.xlf:tx_worldcup2_domain_model_game.remark',
+            'config' => [
+                'type' => 'input',
+                'size' => 100,
+                'eval' => 'trim'
+            ]
         ],
 
     ],
