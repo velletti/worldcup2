@@ -1,0 +1,82 @@
+
+{namespace jve=JVE\Worldcup2\ViewHelpers}
+{namespace vhs=FluidTYPO3\Vhs\ViewHelpers}
+
+<f:layout name="default" />
+
+<f:section name="main">
+    <div data-template="extension" >
+        <f:render partial="Steps" arguments="{stepindicators: stepindicators}"></f:render>
+        <f:if condition="{currentUser}">
+            <h3 data-userid="{currentUser.id}">
+                Result {currentUser.username}: <f:if condition="{currentUserResult}"><span class="bold p-1">{currentUserResult.points} Points</span></f:if>
+                <span class="small"> ({lastUpdated})</span>
+            </h3>
+        </f:if>
+
+
+        <f:if condition="{rankings}">
+            <div class="row  worldcup-game worldcup-gametitle alert alert-default">
+                <f:spaceless>
+                    <span class="col-xs-1 p-1"> </span>
+                    <span class="col-xs-1 p-1 bold">Pos.</span>
+                    <span class="col-xs-1 p-1 "> </span>
+                    <span class="col-xs-4 col-sm-3 p-1 worldcup-player bold">Player</span>
+                    <span class="col-xs-2 p-1 bold">Points</span>
+                    <span class="col-xs-2 p-1" title="{lastGameText}">
+                        <f:render partial="Flag" arguments="{team: lastGame.team1}"/>:<f:render partial="Flag" arguments="{team: lastGame.team2}"/>
+                        <br>
+                        {lastGame.goalsteam1}:{lastGame.goalsteam2}
+                    </span>
+                    <span class="col-xs-2 p-1 hidden-xs" title="{secondGameText}">
+                        <f:render partial="Flag" arguments="{team: secondGame.team1}"/>:<f:render partial="Flag" arguments="{team: secondGame.team2}"/>
+                        <br>
+                        {secondGame.goalsteam1}:{secondGame.goalsteam2}
+                    </span>
+                </f:spaceless>
+            </div>
+            <f:for as="ranking" each="{rankings}">
+
+                <div class="row worldcup-ranking {f:if(condition: '{ranking.uid} == {currentUser.id}' , then: ' alert alert-info mt-0 mb-0 p-0 ')}">
+                    <f:spaceless>
+                        <span class="col-xs-1 p-1">
+                            <i class="userIcon userIcon-small {ranking.usericon}" alt="icon" title="{f:translate(key: 'LLL:EXT:nemconnections.{ranking.usericon}_public_view')}"></i>
+                        </span>
+
+                        <span class="col-xs-1 p-1 bold">{ranking.pos}</span>
+                        <span class="col-xs-1 mx-2 p-1">
+                            <i class="flag flag-{ranking.flag}" title="{ranking.flag}"></i>
+                        </span>
+                        <span class="col-xs-5 col-sm-3 p-1 worldcup-player">
+                            <f:link.page  pageUid="{settings.pids.listgames}"
+
+                                         additionalParams="{tx_worldcup2_play: {user: ranking.uid}}">
+                                <f:if condition="{settings.showFullname}">
+                                    <f:then>{ranking.tx_nem_firstname} {ranking.tx_nem_lastname}</f:then>
+                                    <f:else>{ranking.username} </f:else>
+                                </f:if>
+                         </f:link.page>
+                        </span>
+                        <span class="col-xs-2 p-1" title="Got {ranking.points} with {ranking.BetsTotal} Bets">{ranking.points}</span>
+                        <f:render section="lastgame" arguments="{game: ranking.lastBet}"></f:render>
+                        <f:render section="lastgame" arguments="{game: ranking.secondBet, class: ' hidden-xs'}"></f:render>
+                    </f:spaceless>
+                </div>
+            </f:for>
+        </f:if>
+
+    </div>
+</f:section>
+
+<f:section name="lastgame">
+    <span class="p-1 col-xs-2 {class}" title="{game.game}  = {game.goalsTeam1}:{game.goalsTeam2} => {game.points} Points">
+        <f:if condition="{game}">
+            <f:switch expression="{game.points}">
+                <f:case value="0">-</f:case>
+                <f:case value="1"><i class="fa fa-long-arrow-alt-up"></i></f:case>
+                <f:case value="2"><i class="fa fa-long-arrow-alt-up"></i><i class="fa fa-long-arrow-alt-up"></i></f:case>
+                <f:case value="3"><i class="fa fa-long-arrow-alt-up"></i><i class="fa fa-long-arrow-alt-up"></i><i class="fa fa-long-arrow-alt-up"></i></f:case>
+            </f:switch>
+        </f:if>
+    </span>
+</f:section>

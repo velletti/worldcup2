@@ -5,6 +5,7 @@ namespace JVE\Worldcup2\Controller;
 
 
 use Allplan\NemConnections\Utility\MigrationUtility;
+use Allplan\NemFeuser\Domain\Repository\UserRepository;
 use JVE\Worldcup2\Domain\Model\Bet;
 use JVE\Worldcup2\Domain\Model\Game;
 use JVE\Worldcup2\Domain\Repository\GameRepository;
@@ -40,6 +41,18 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     protected $currentUser = null ;
 
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
+     * @param UserRepository $userRepository
+     */
+    public function injectUserRepository(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
 
     /**
      * @param GameRepository $gameRepository
@@ -82,6 +95,8 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $this->settings['maxGames'] = $this->settings['flexform']['maxGames'] ;
         }
 
+
+
     }
 
     /**
@@ -93,7 +108,7 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     {
        // var_dump($this->settings);
         $this->enhanceGames($this->gameRepository->findByDate( (int)$this->settings['maxGames']) ) ;
-
+        $this->view->assign("currentUser" , $this->currentUser ) ;
     }
 
     /**
@@ -104,7 +119,15 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     public function listgroupsAction()
     {
         $this->enhanceGames( $this->gameRepository->findAll()) ;
+        $this->view->assign("currentUser" , $this->currentUser ) ;
+        $stepindicators = $this->getNotLoginStepIndicator() ;
+        if( $this->currentUser ) {
+            $stepindicators = $this->getPlayStepIndicator() ;
+        } else {
+            $stepindicators = $this->getNotLoginStepIndicator() ;
+        }
 
+        $this->view->assign("stepindicators" , $stepindicators ) ;
     }
 
     /**
@@ -123,23 +146,47 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     public function rankingAction()
     {
-        // todO GET FROM tYPOSCRIPT
-        $pid = $this->settings['storagePID'] ;
-        // tOdO REINTEGRATE BETTEAM
-        $betTeam = "" ;
-        $lastGames = $this->gameRepository->findLastGame() ;
-        $lastGame = $lastGames->getFirst() ;
+        $pid = intval($this->settings['pids']['storagePID']) > 0 ? intval($this->settings['pids']['storagePID']) : $GLOBALS['TSFE']->id;
 
-        if (  $lastGame ) {
-            $secondGame = $lastGames->next() ;
+        // ToDo :  REINTEGRATE BETTEAM selector
+        $betTeam = "WINNER-" ;
+
+        $start = 0 ;
+
+        $rankingSelectSql = $this->betRepository->getRankingSelectSql($pid) ;
+        $rankingFilterSql = $this->betRepository->getRankingFilterSql($betTeam) ;
+        $rankingEndSql =   $this->betRepository->getRankingEndSql($pid) ;
+
+        $rankingSql = $rankingSelectSql . $rankingFilterSql . $rankingEndSql . " LIMIT " . $start . ", 20 " ;
+
+        /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        /** @var \TYPO3\CMS\Core\Database\Connection $connection */
+        $connection = $connectionPool->getConnectionForTable('tx_worldcup2_domain_model_bet');
+
+        /*
+         echo $rankingSql . "<hr>" ;
+         var_dump($connection->executeQuery( $rankingSql )->fetchAllAssociative());
+        die;
+        */
+        $this->enhanceResult(  $connection->executeQuery( $rankingSql )->fetchAllAssociative() , $start ) ;
+
+        if( $this->currentUser['id'] ) {
+            $rankingSqlUser = $rankingSelectSql . " AND u.uid= " . $this->currentUser['id'] . " " . $rankingEndSql ;
+            $this->view->assign("currentUserResult" , $connection->executeQuery($rankingSqlUser . "")->fetchAssociative() ) ;
+        }
+        $this->view->assign("currentUser" , $this->currentUser ) ;
+
+
+        if( $this->currentUser ) {
+            $stepindicators = $this->getRankingStepIndicator() ;
+        } else {
+            $stepindicators = $this->getNotLoginStepIndicator() ;
         }
 
-        $rankingSql = $this->betRepository->getRankingSelectSql($pid)
-            . $this->betRepository->getRankingFilterSql($betTeam)
-            .  $this->betRepository->getRankingEndSql($pid) ;
+        $this->view->assign("stepindicators" , $stepindicators ) ;
+        $this->view->assign("lastUpdated" , date("d.m. H:i") ) ;
 
-        echo $rankingSql ;
-        die;
     }
 
     /**
@@ -152,14 +199,65 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     }
 
 
-    /**** ** Helper ***************************************
-     * @param $games
+    /**** *************************************** Helper ***************************************  */
+
+    private function getNotLoginStepIndicator() {
+        $stepindicators[] = $this->getStepIndicator( 1 ,"stepactive" , false , false , "Login" ,
+            $this->settings['pids']['login']) ;
+        $stepindicators[] = $this->getStepIndicator( 2 ,"stepinactive" , false , true , "Rules" ,
+            $this->settings['pids']['rules'] ) ;
+        $stepindicators[] = $this->getStepIndicator( 3 ,"stepinactive" , false , true , "Play" ,
+            $this->settings['pids']['listgames'] ) ;
+        $stepindicators[] = $this->getStepIndicator( 4 ,"stepinactive" , false , true , "Win" ,
+            $this->settings['pids']['ranking'] ) ;
+        return $stepindicators ;
+    }
+    private function getPlayStepIndicator() {
+        $stepindicators[] = $this->getStepIndicator( 1 ,"stepdone" , true , false , "Login" ,
+            $this->settings['pids']['login']) ;
+        $stepindicators[] = $this->getStepIndicator( 2 ,"stepdone" , true , false , "Rules" ,
+            $this->settings['pids']['rules'] ) ;
+        $stepindicators[] = $this->getStepIndicator( 3 ,"stepactive" , false , false , "Play" ,
+            $this->settings['pids']['listgames'] ) ;
+        $stepindicators[] = $this->getStepIndicator( 4 ,"stepinactive" , false , true , "Win" ,
+            $this->settings['pids']['ranking'] ) ;
+        return $stepindicators ;
+    }
+
+    private function getRankingStepIndicator() {
+        $stepindicators[] = $this->getStepIndicator( 1 ,"stepdone" , true , false , "Login" ,
+            $this->settings['pids']['login']) ;
+        $stepindicators[] = $this->getStepIndicator( 2 ,"stepdone" , true , false , "Rules" ,
+            $this->settings['pids']['rules'] ) ;
+        $stepindicators[] = $this->getStepIndicator( 3 ,"stepdone" , true , false , "Play" ,
+            $this->settings['pids']['listgames'] ) ;
+        $stepindicators[] = $this->getStepIndicator( 4 ,"stepactive" , false , false , "Win" ,
+            $this->settings['pids']['ranking'] ) ;
+        return $stepindicators ;
+    }
+
+
+    private function getStepIndicator( $index , $cssClass , $before , $after , $name , $pid ) {
+        return  [ "index" => $index ,
+            "linkBefore" => $before ,
+            "linkAfter" => $before ,
+            "cssClass" => $cssClass ,
+            "name" => $name ,
+            "style" => "width: 26.6%" ,
+            "pid"   => $pid
+        ] ;
+
+    }
+
+    /**
+     * @param Game|null $games
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    private function enhanceGames($games) {
+    private function enhanceGames($games=null  ) {
         if($this->request->hasArgument("user")) {
             $user = (int)$this->request->getArgument("user") ;
-            $this->view->assign("requestedUser" , $user ) ;
+            $requestedUser = $this->userRepository->findByUid($user) ;
+            $this->view->assign("requestedUser" , $requestedUser ) ;
         } else {
             $user = $this->currentUser['id'] ;
             $this->view->assign("requestedUser" , false ) ;
@@ -182,7 +280,75 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             }
         }
         $this->view->assign("games" , $enhancedGames ) ;
+    }
 
-        $this->view->assign("currentUser" , $this->currentUser ) ;
+    /**
+     * @param array|null $rankings
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     */
+    private function enhanceResult( $rankings=null , $start=0 ) {
+        if($this->request->hasArgument("user")) {
+            $user = (int)$this->request->getArgument("user") ;
+            $this->view->assign("requestedUser" , $user ) ;
+        } else {
+            $user = $this->currentUser['id'] ;
+            $this->view->assign("requestedUser" , false ) ;
+        }
+
+
+        if( $rankings) {
+            $secondGame = false ;
+            /** @var Game $lastGame */
+            $lastGame = $this->gameRepository->findLastGame()->getFirst() ;
+
+            $lastGameText = "" ;
+            $secondGameText = "" ;
+            if (  $lastGame ) {
+                $lastGameText = $lastGame->getUid() . " " . $lastGame->getTeam1()->getName() . ":" . $lastGame->getTeam2()->getName()
+                    . " (" . $lastGame->getGoalsteam1() . ": " . $lastGame->getGoalsteam2() . ")";
+                /** @var Game $secondGame */
+                $secondGame = $this->gameRepository->findLastGame($lastGame->getUid())->getFirst() ;
+
+                $this->view->assign("lastGame" ,  $lastGame ) ;
+                $this->view->assign("secondGame" ,  $secondGame ) ;
+            }
+            if (  $secondGame ) {
+                $secondGameText = $secondGame->getUid() . " " . $secondGame->getTeam1()->getName() . ":" . $secondGame->getTeam2()->getName()
+                    . " (" . $secondGame->getGoalsteam1() . ": " . $secondGame->getGoalsteam2() . ")";
+            }
+            $this->view->assign("lastGameText" ,  $lastGameText ) ;
+            $this->view->assign("secondGameText" ,  $secondGameText ) ;
+
+            $start++ ;
+            foreach ($rankings as $key => $row) {
+                $rankings[$key]['pos'] = $start++ ;
+                $rankings[$key]['flag'] = strtolower(  $rankings[$key]['flag'] ) ;
+
+                if (  $lastGame ) {
+                    /** @var Bet $bet */
+                    $bet = $this->betRepository->findByGameAndUser($lastGame->getUid() , $row['uid']) ;
+                    $rankings[$key]['lastBet']['points'] = $bet->getPoints() ;
+                    $rankings[$key]['lastBet']['game'] = $lastGameText  ;
+                    $rankings[$key]['lastBet']['goalsTeam1'] = $bet->getGoalsteam1() ;
+                    $rankings[$key]['lastBet']['goalsTeam2'] = $bet->getGoalsteam2() ;
+
+                } else {
+                    $rankings[$key]['lastBet'] = false ;
+                }
+                if (  $secondGame ) {
+                    /** @var Bet $bet */
+                    $bet = $this->betRepository->findByGameAndUser($secondGame->getUid() , $row['uid']) ;
+                    $rankings[$key]['secondBet']['points'] = $bet->getPoints() ;
+                    $rankings[$key]['secondBet']['game'] = $secondGameText  ;
+
+                    $rankings[$key]['secondBet']['goalsTeam1'] = $bet->getGoalsteam1() ;
+                    $rankings[$key]['secondBet']['goalsTeam2'] = $bet->getGoalsteam2() ;
+                } else {
+                    $rankings[$key]['secondBet'] = false ;
+                }
+            }
+        }
+        $this->view->assign("rankings" , $rankings ) ;
+
     }
 }

@@ -19,7 +19,20 @@ plugin.tx_worldcup2_play {
         requireCHashArgumentForActionArguments = 1
     }
     settings {
-      storagePID = 14313
+
+      ccsFile = EXT:worldcup2/Resources/Public/Css/worldcup.css
+
+      #show firstname + last name instead of username ?
+      showfullname =
+      pids {
+         storagePID = 14313
+
+         listgames = 14314
+         ranking = 14315
+         rules = 14316
+         login = 14317
+
+      }
     }
     mvc {
         #callDefaultActionIfActionCantBeResolved = 1

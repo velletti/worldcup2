@@ -1,0 +1,50 @@
+.worldcup2 {
+    width: 70%;
+}
+.md .worldcup2 {
+    width: 85%;
+}
+.sm .worldcup2 {
+    width: 95%;
+}
+.xs .worldcup2 {
+    width: 100%;
+}
+
+.worldcup2 span {
+    display: inline-table;
+    text-align: center;
+}
+.worldcup-gametitle {
+    border-bottom: 1px solid #d1d1d1;
+}
+.worldcup-playtime {
+    width: 15%;
+}
+.worldcup-group {
+    width: 7%;
+}
+.worldcup-team {
+    width: 18%;
+}
+.worldcup2 span.worldcup-team1 {
+    text-align: right ;
+}
+.worldcup2 span.worldcup-team2 {
+    text-align: left ;
+}
+
+.worldcup2 .worldcup-player{
+    text-align: left ;
+}
+
+.worldcup-flags {
+    width: 7%;
+}
+.worldcup-result {
+    width: 10%;
+}
+.worldcup-points {
+    width: 15%;
+
+}

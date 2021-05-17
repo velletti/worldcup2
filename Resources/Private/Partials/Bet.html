@@ -1,60 +1,56 @@
+<f:spaceless>
+    <f:if condition="{game.gameStartingSoon}">
+        <f:else>
+            <f:if condition="{requestedUser}">
+                <f:else>
+                    <f:variable name="buttonClass">btn-primary</f:variable>
+                    <f:if condition="{game.userbet}"><f:variable name="buttonClass">btn-default</f:variable></f:if>
+                    <span class="ml-2 btn btn-xs {buttonClass}" data-target="#worldcup-modal-{game.uid}" data-toggle="modal">
+                        <span class="far fa-edit"> </span> Bet
+                    </span>
+                    <!-- Modal -->
+                    <div class="modal fade" id="worldcup-modal-{game.uid}" tabindex="-1" role="dialog"  aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close worldcupmodal" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h5 class="modal-title"><span class="worldcup_playtime"><f:format.date format="d.m. | H:i">{game.playtime}</f:format.date></span></h5>
+                                </div>
+                                <f:form name="worldcupform-{game.uid}" id="worldcupform-{game.uid}" class="worldcupform-modal" data="{game: game.uid}" method="POST">
+                                    <f:form.hidden name="game-{game.uid}" value="{game.uid}"></f:form.hidden>
 
-        <f:if condition="{game.gameStartingSoon}">
-            <f:else>
-                <f:if condition="{requestedUser}">
-                    <f:else>
-                        <f:variable name="buttonClass">btn-primary</f:variable>
-                        <f:if condition="{game.userbet}"><f:variable name="buttonClass">btn-default</f:variable></f:if>
-                        <span class="ml-2 btn btn-xs {buttonClass}" data-target="#worldcup-modal-{game.uid}" data-toggle="modal">
-                            <span class="far fa-edit"> </span> Bet
-                        </span>
+                                    <div class="modal-body">
 
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="worldcup-modal-{game.uid}" tabindex="-1" role="dialog"  aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close worldcupmodal" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        <h5 class="modal-title"><span class="worldcup_playtime"><f:format.date format="d.m. | H:i">{game.playtime}</f:format.date></span></h5>
+                                            <div class="row">
+                                                <div class="col-xs-8">
+                                                    <f:render partial="Flag" arguments="{team: game.team1}"/> {game.team1.name}
+                                                </div>
+                                                <div class="col-xs-4">
+                                                    <f:form.textfield name="goal1-{game.uid}"  id="goal1-{game.uid}" class="centered text-center" type="number" maxlength="2" additionalAttributes="{min: 0 , max: 30}" value="{game.userbet.goalsteam1}">  </f:form.textfield>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-8">
+                                                    <f:render partial="Flag" arguments="{team: game.team2}"/> {game.team2.name}
+                                                </div>
+                                                <div class="col-xs-4">
+                                                    <f:form.textfield name="goal2-{game.uid}" id="goal2-{game.uid}" class="centered text-center" type="number" maxlength="2" additionalAttributes="{min: 0 , max: 30}" value="{game.userbet.goalsteam2}">  </f:form.textfield>
+                                                </div>
+                                            </div>
 
 
                                     </div>
-                                    <f:form name="worldcupform-{game.uid}" id="worldcupform-{game.uid}" class="worldcupform-modal" data="{game: game.uid}" method="POST">
-                                        <f:form.hidden name="game-{game.uid}" value="{game.uid}"></f:form.hidden>
-
-                                        <div class="modal-body">
-
-                                                <div class="row">
-                                                    <div class="col-xs-8">
-                                                        <span class="mx-2 flag flag-{game.team1.flag}" title="{game.team1.name}"></span> {game.team1.name}
-                                                    </div>
-                                                    <div class="col-xs-4">
-                                                        <f:form.textfield name="goal1-{game.uid}"  id="goal1-{game.uid}" class="centered text-center" type="number" maxlength="2" additionalAttributes="{min: 0 , max: 30}" value="{game.userbet.goalsteam1}">  </f:form.textfield>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-xs-8">
-                                                        <span class="mx-2 flag flag-{game.team2.flag}" title="{game.team1.name}"></span> {game.team2.name}
-                                                    </div>
-                                                    <div class="col-xs-4">
-                                                        <f:form.textfield name="goal2-{game.uid}" id="goal2-{game.uid}" class="centered text-center" type="number" maxlength="2" additionalAttributes="{min: 0 , max: 30}" value="{game.userbet.goalsteam2}">  </f:form.textfield>
-                                                    </div>
-                                                </div>
-
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <f:form.button class="btn btn-primary" >Save</f:form.button>
-                                        </div>
-                                    </f:form>
-                                </div>
+                                    <div class="modal-footer">
+                                        <f:form.button class="btn btn-primary" >Save</f:form.button>
+                                    </div>
+                                </f:form>
                             </div>
                         </div>
-                    </f:else>
-                </f:if>
-            </f:else>
-        </f:if>
-
+                    </div>
+                </f:else>
+            </f:if>
+        </f:else>
+    </f:if>
+</f:spaceless>

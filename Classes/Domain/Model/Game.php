@@ -250,11 +250,12 @@ class Game extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     public function isGameStartingSoon() {
-        $now = new \DateTime("now");
-        if( $now->modify('-1 hour')  < $this->playtime) {
-            return false ;
+        $now = new \DateTime("now" , new \DateTimeZone('Europe/Berlin'));
+
+        if( $now->modify('+1 hour')  > $this->playtime) {
+            return true ;
         }
-        return true ;
+        return false ;
     }
 
     /**

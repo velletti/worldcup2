@@ -1,0 +1,30 @@
+<div id="tx-jve-stepindicator">
+
+    <ul class="row steps" >
+
+        <f:for each="{stepindicators}" as="stepindicator">
+            <li class="step text-center step-{stepindicator.index}  {stepindicator.cssClass}"  style="{stepindicator.style}">
+                <f:link.page pageUid="{stepindicator.pid}">
+                    <f:if condition="{stepindicator.linkBefore}">
+                        <f:then>
+                            <span class="hidden-xs">{stepindicator.name}</span>
+                            <span class="hidden-sm hidden-lg hidden-md">{stepindicator.index}</span>
+                        </f:then>
+                        <f:else>
+                            <f:if condition="{stepindicator.linkAfter}">
+                                <f:then>
+                                    <span  class="hidden-xs">{stepindicator.name}</span>
+                                    <span class="hidden-sm hidden-lg hidden-md">{stepindicator.index}</span>
+                                </f:then>
+                                <f:else>
+                                    <span class="hidden-xs">{stepindicator.name}</span>
+                                    <span class="hidden-sm hidden-lg hidden-md">{stepindicator.index}</span>
+                                </f:else>
+                            </f:if>
+                        </f:else>
+                    </f:if>
+                </f:link.page>
+            </li>
+        </f:for>
+    </ul>
+</div>

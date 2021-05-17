@@ -1,0 +1,9 @@
+
+<f:switch expression="{team.flag}">
+    <f:case value="en"><f:variable name="flag">england</f:variable></f:case>
+    <f:case value="wa"><f:variable name="flag">wales</f:variable></f:case>
+    <f:case value="sc"><f:variable name="flag">scotland</f:variable></f:case>
+    <f:defaultCase><f:format.case mode="lower"><f:variable name="flag">{team.flag}</f:variable></f:format.case></f:defaultCase>
+</f:switch>
+
+<span class="mx-2 flag flag-{flag}" title="{team.name}"></span>

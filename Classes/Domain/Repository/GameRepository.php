@@ -42,7 +42,7 @@ class GameRepository extends BaseRepository
         return $query->execute() ;
     }
 
-    public function findLastGame( ) {
+    public function findLastGame( $notUid=0 ) {
         $query = $this->createQuery() ;
         $query->getQuerySettings()->setRespectStoragePage(FALSE);
         $query->getQuerySettings()->setRespectSysLanguage(FALSE);
@@ -53,9 +53,14 @@ class GameRepository extends BaseRepository
         $constraints[] = $query->lessThanOrEqual('playtime' , $now ) ;
 
         $constraints[] = $query->equals('finished' , 1 ) ;
+        if( $notUid > 0 ) {
+            $constraints[] = $query->logicalOr( [$query->lessThan('uid' , $notUid )
+                                              ,  $query->greaterThan('uid' , $notUid ) ] ) ;
+        }
         $query->matching($query->logicalAnd($constraints));
-        $query->setLimit(2) ;
-        // $this->debugQuery($query) ;
+
+        $query->setLimit(1) ;
+         //    $this->debugQuery($query) ;
         return $query->execute() ;
     }
 

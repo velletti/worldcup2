@@ -1,11 +1,21 @@
+
+{namespace jve=JVE\Worldcup2\ViewHelpers}
+{namespace vhs=FluidTYPO3\Vhs\ViewHelpers}
+
 <f:layout name="default" />
 
 <f:section name="main">
-    <div data-template="extension" class="next card">
+    <div data-template="extension">
+        <f:render partial="Steps" arguments="{stepindicators: stepindicators}"></f:render>
+
         <f:if condition="{currentUser}">
             <f:if condition="{requestedUser}">
                 <f:then>
-                    <h3> Requested user : {requestedUser.uid} </h3>
+                    <h3> Requested user : {requestedUser.uid}   <f:if condition="{settings.showFullname}">
+                        <f:then>{requestedUser.nemFirstname} {requestedUser.nemLastname}</f:then>
+                        <f:else>{requestedUser.username} </f:else>
+                        </f:if>
+                    </h3>
                 </f:then>
                 <f:else>
                     <h3>Your Bets  {currentUser.id}: {currentUser.username}</h3>
@@ -15,32 +25,70 @@
 
 
         <f:if condition="{games}">
+            <f:variable name="week">0</f:variable>
+            <div class="row bold worldcup-game worldcup-gametitle alert alert-default">
+                <f:spaceless>
+                    <span class="worldcup-playtime">Date</span>
+                    <span class="worldcup-group">Group</span>
+                    <span class="hidden-xs worldcup-team worldcup-team1 ">Team 1</span>
+                    <span class="worldcup-flags">&nbsp;</span>
+                    <span class="hidden-xs worldcup-team worldcup-team2 ">Team 2</span>
+                    <span class="worldcup-result">Result</span>
+                    <span class="worldcup-result">Player</span>
+                    <span class="worldcup-points">Point</span>
+                </f:spaceless>
+            </div>
             <f:for as="game" each="{games}">
-                <div class="worldcup-game">
-                    <span class="worldcup_playtime"><f:format.date format="d.m. | H:i">{game.playtime}</f:format.date></span>
-                    <f:render partial="GroupName" arguments="{round: '{game.round}'}" /> :
-                    <f:spaceless><span class="hidden-xs">{game.team1.name}</span> <span class="mx-2 flag flag-{game.team1.flag}" title="{game.team1.name}"></span> / <span class="mx-2 flag flag-{game.team2.flag}" title="{game.team2.name}"></span> <span class="hidden-xs">{game.team2.name}</span>
-                        <f:if condition="{game.finished}">
-                            <f:then>{game.goalsteam1}:{game.goalsteam2}
-                        </f:then><f:else>-- : --</f:else></f:if>
-                        <span id="worldcup-result-{game.uid}">
+
+                <f:if condition="{f:format.date( format: 'W' , date: '{game.playtime}')} > {week}">
+                    <f:variable name="week">{f:format.date( format: 'W' , date: '{game.playtime}')}</f:variable>
+                    <div class="row mb-1 "> </div>
+                </f:if>
+                <f:if condition="{f:format.date( format: 'z' , date: '{game.playtime}')} == {f:format.date( format: 'z' , date: 'now')}">
+                    <f:then>
+                        <f:variable name="todayClass">alert-info </f:variable>
+                    </f:then>
+                    <f:else>
+                        <f:if condition="{todayClass}"><div class="row mb-1"> </div></f:if>
+                        <f:variable name="todayClass"></f:variable>
+                    </f:else>
+                </f:if>
+
+                <div class="row worldcup-game alert p-0 {todayClass} mt-0 mb-0  ">
+                    <f:spaceless>
+                        <span class="worldcup-playtime"><f:format.date format="d.m. | H:i">{game.playtime}</f:format.date></span>
+                        <f:render partial="GroupName" arguments="{round: '{game.round}'}" />
+                        <span class="hidden-xs worldcup-team worldcup-team1">{game.team1.name}</span>
+                        <span class="worldcup-flags">
+                            <f:render partial="Flag" arguments="{team: game.team1}"/> : <f:render partial="Flag" arguments="{team: game.team2}"/>
+                        </span>
+                        <span class="hidden-xs worldcup-team worldcup-team2">{game.team2.name}</span>
+                        <span class="worldcup-result">
+                            <f:if condition="{game.finished}">
+                                <f:then>{game.goalsteam1}:{game.goalsteam2}
+                            </f:then><f:else>-- : --</f:else></f:if>
+                        </span>
+                        <span id="worldcup-result-{game.uid}" class="worldcup-result">
                             <f:render partial="Goal" arguments="{team: 1, game: game, requestedUser: requestedUser}" /> :
                             <f:render partial="Goal" arguments="{team: 2, game: game, requestedUser: requestedUser}" />
                         </span>
-                        <f:if condition="{game.finished}">
-                            <f:then>
-                               | <f:if condition="{game.userbet}">{game.userbet.points}</f:if>
-                            </f:then>
-                            <f:else>
-                                <f:if condition="{currentUser > 0 }">
-                                    <f:render partial="Bet" arguments="{_all}" />
-                                </f:if>
-                            </f:else>
-                        </f:if>
+                        <span class="worldcup-points">
+                            <f:if condition="{game.finished}">
+                                <f:then>
+                                   <span class="worldcup-points"> <f:if condition="{game.userbet}">{game.userbet.points}</f:if>
+                                </f:then>
+                                <f:else>
+                                    <f:if condition="{currentUser} > 0">
+                                        <f:render partial="Bet" arguments="{_all}" />
+                                    </f:if>
+                                </f:else>
+                            </f:if>
+                        </span>
                     </f:spaceless>
-                    <f:render partial="Javascript" arguments="{_all}" />
+
                 </div>
             </f:for>
+            <f:render partial="Javascript" arguments="{_all}" />
         </f:if>
 
     </div>

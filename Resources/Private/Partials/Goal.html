@@ -1,22 +1,24 @@
-<f:if condition="{game.userbet}">
-    <f:then>
-        <f:if condition="{game.gameStartingSoon}">
-            <f:then>
-                <span class="worldcup_goal worldcup_team{team} m-1 partial" data-comment="tooLateToBet">{game.userbet.goalsteam{team}}</span>
-            </f:then>
-            <f:else>
-                <f:if condition="{requestedUser}">
-                    <f:then>
-                        <span class="worldcup_goal worldcup_team{team} m-1  partial" data-comment="stillSecret">??</span>
-                    </f:then>
-                    <f:else>
-                        <span class="worldcup_goal worldcup_team{team} m-1  partial" data-comment="sameUser">{game.userbet.goalsteam{team}}</span>
-                    </f:else>
-                </f:if>
-            </f:else>
-        </f:if>
-    </f:then>
-    <f:else>
-        <span class="worldcup_goal worldcup_team{team} m-1  partial" data-comment="noBet">--</span>
-    </f:else>
-</f:if>
+<f:spaceless>
+    <f:if condition="{game.userbet}">
+        <f:then>
+            <f:if condition="{game.gameStartingSoon}">
+                <f:then>
+                    <span class="worldcup_goal worldcup_team{team} m-1 partial" data-comment="tooLateToBet">{game.userbet.goalsteam{team}}</span>
+                </f:then>
+                <f:else>
+                    <f:if condition="{requestedUser}">
+                        <f:then>
+                            <span class="worldcup_goal worldcup_team{team} m-1  partial" data-comment="stillSecret">??</span>
+                        </f:then>
+                        <f:else>
+                            <span class="worldcup_goal worldcup_team{team} m-1  partial" data-comment="sameUser">{game.userbet.goalsteam{team}}</span>
+                        </f:else>
+                    </f:if>
+                </f:else>
+            </f:if>
+        </f:then>
+        <f:else>
+            <span class="worldcup_goal worldcup_team{team} m-1  partial" data-comment="noBet">--</span>
+        </f:else>
+    </f:if>
+</f:spaceless>

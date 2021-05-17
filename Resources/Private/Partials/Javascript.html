@@ -28,9 +28,16 @@
                                 $("#worldcup-result-" + gameId + " .worldcup_team2").html( json.input.goal2 ) ;
                             } else {
                                 $("#worldcup-result-" + gameId ).html( json.result ) ;
+                                alert("too late") ;
+                                location.reload() ;
                             }
                         }
 
+                    },
+                    401: function(response) {
+                        let json = JSON.parse(response)
+                        $("#worldcup-result-" + gameId ).html( json.result ) ;
+                        alert("error" + json.msg);
                     },
                     error: function(response) {
                         let json = JSON.parse(response)

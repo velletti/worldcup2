@@ -57,6 +57,7 @@ class BetRepository extends BaseRepository
     public function getRankingSelectSql( $pid ) {
 
         return "SELECT	u.username,
+						u.tx_nem_firstname,
 						u.tx_nem_lastname,
 						CASE when FIND_IN_SET( 7, u.usergroup )
 							then
@@ -96,6 +97,7 @@ class BetRepository extends BaseRepository
 						u.tx_nem_country as flag,
 
 						u.tx_nem_comments,
+                        count( b.uid ) as BetsTotal ,
                         SUM( b.goalsteam1 ) as BetGoalsTotal1 ,
                         SUM( b.goalsteam2 ) as BetGoalsTotal2 ,
 
@@ -113,8 +115,8 @@ class BetRepository extends BaseRepository
 								ELSE 0
 						END) AS points
 
-				FROM	(tx_worldcup2_domain_model_bet b INNER JOIN fe_users u
-				ON		b.feuser = u.uid
+				FROM (tx_worldcup2_domain_model_bet b
+				INNER JOIN fe_users u ON		b.feuser = u.uid
 				AND     b.pid = " . $pid . "
 				AND		u.deleted = 0 " ;
     }
@@ -203,18 +205,15 @@ class BetRepository extends BaseRepository
             }
 
         }
-        return '' ;
+        return ' ' ;
     }
     public function getRankingEndSql($pid) {
-        return  " AND		b.deleted = 0
-				AND		b.goalsteam1 <> ''
-				AND		b.goalsteam2 <> '') LEFT OUTER JOIN tx_worldcup2_domain_model_game g
+        return  " AND b.deleted = 0 )
+				LEFT OUTER JOIN tx_worldcup2_domain_model_game g
 				ON		b.game = g.uid
 				AND		g.deleted = 0
 				AND     g.pid = " . $pid . "
 				AND		g.playtime < ".time()."
-				AND		g.goalsteam1 <> ''
-				AND		g.goalsteam2 <> ''
 				AND     g.finished = 1
 				GROUP BY	u.username,
 							u.uid

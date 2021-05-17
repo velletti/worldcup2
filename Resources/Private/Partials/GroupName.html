@@ -1,17 +1,21 @@
-<f:switch expression="{round}">
-    <f:case value="A">Group {round}</f:case>
-    <f:case value="B">Group {round}</f:case>
-    <f:case value="C">Group {round}</f:case>
-    <f:case value="D">Group {round}</f:case>
-    <f:case value="E">Group {round}</f:case>
-    <f:case value="F">Group {round}</f:case>
-    <f:case value="G">Group {round}</f:case>
-    <f:case value="H">Group {round}</f:case>
-    <f:case value="I">Group {round}</f:case>
-    <f:case value="J">Group {round}</f:case>
-    <f:case value="K">Group {round}</f:case>
-    <f:case value="2">Final </f:case>
-    <f:case value="4">Semi Final</f:case>
-    <f:defaultCase>Last {round}</f:defaultCase>
+<f:spaceless>
+    <span class="hidden-xs worldcup-group">
+        <f:switch expression="{round}">
+            <f:case value="A">Group {round}</f:case>
+            <f:case value="B">Group {round}</f:case>
+            <f:case value="C">Group {round}</f:case>
+            <f:case value="D">Group {round}</f:case>
+            <f:case value="E">Group {round}</f:case>
+            <f:case value="F">Group {round}</f:case>
+            <f:case value="G">Group {round}</f:case>
+            <f:case value="H">Group {round}</f:case>
+            <f:case value="I">Group {round}</f:case>
+            <f:case value="J">Group {round}</f:case>
+            <f:case value="K">Group {round}</f:case>
+            <f:case value="2">Final </f:case>
+            <f:case value="4">Semi Final</f:case>
+            <f:defaultCase>Last {round}</f:defaultCase>
 
-</f:switch>
+        </f:switch>
+    </span>
+</f:spaceless>
