@@ -14,30 +14,11 @@ namespace JVE\Worldcup2\Domain\Repository;
 class BetRepository extends BaseRepository
 {
     /**
-     * @param $gameUid
-     * @param $userUid
-     * @return mixed
-     */
-    public function findByGameAndUser( $gameUid , $userUid) {
-        $query = $this->createQuery() ;
-        $query->getQuerySettings()->setRespectStoragePage(FALSE);
-
-        $constraints[] = $query->equals( "game" , $gameUid ) ;
-        $constraints[] = $query->equals( "feuser" , $userUid ) ;
-
-        $query->matching($query->logicalAnd($constraints));
-        $query->setLimit(1) ;
-        // $this->debugQuery($query) ;
-
-        return $query->execute()->getFirst()  ;
-    }
-
-    /**
-     * @param $gameUid
      * @param int $limit
+     * @param int $pid
      * @return mixed
      */
-    public function findFinished( $limit = 20 ) {
+    public function findFinished( $limit = 20 , $pid = 0 ) {
         $query = $this->createQuery() ;
         $query->getQuerySettings()->setRespectStoragePage(FALSE);
 
@@ -45,13 +26,33 @@ class BetRepository extends BaseRepository
         $now = new \DateTime("now") ;
         $constraints[] = $query->lessThanOrEqual('game.playtime' , $now ) ;
         $constraints[] = $query->equals('game.finished' , 1 ) ;
-        if( count($constraints) > 0 ) {
-            $query->matching($query->logicalAnd($constraints));
-        }
+        $constraints[] = $query->equals('pid' , $pid ) ;
+        $query->matching($query->logicalAnd($constraints));
+
         if( $limit > 0 ) {
             $query->setLimit($limit) ;
         }
         return $query->execute() ;
+    }
+
+    /**
+     * @param int $gameUid
+     * @param int $userUid
+     * @param int $pid
+     * @return mixed
+     */
+    public function findByGameAndUser(int $gameUid , int $userUid , int $pid) {
+        $query = $this->createQuery() ;
+        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+
+        $constraints[] = $query->equals( "game" , $gameUid ) ;
+        $constraints[] = $query->equals( "feuser" , $userUid ) ;
+        $constraints[] = $query->equals( "pid" , $pid ) ;
+        $query->matching($query->logicalAnd($constraints));
+        $query->setLimit(1) ;
+        // $this->debugQuery($query) ;
+
+        return $query->execute()->getFirst()  ;
     }
 
     public function getRankingSelectSql( $pid ) {

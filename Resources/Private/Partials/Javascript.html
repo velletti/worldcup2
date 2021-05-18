@@ -4,7 +4,7 @@
             e.preventDefault();
 
 
-
+            let ajaxCurrentPageUid = parseInt($('meta[name=pageUid]').attr('content'));
             let gameId = $(this).data("game")
             let goal1  = $("#goal1-" + gameId).val() ;
             let goal2  = $("#goal2-" + gameId).val() ;
@@ -13,7 +13,7 @@
                 //  alert("hello Form " + formid + "\n\nGame:" + gameId + " | " +  goal1 + ":" + goal2) ;
                 $.ajax( {
                     url: '/index.php' ,
-                    data: '&tx_worldcup2_ajax[game]=' + gameId + '&tx_worldcup2_ajax[goal1]=' +  goal1 +  '&tx_worldcup2_ajax[goal2]=' +  goal2 ,
+                    data: '&tx_worldcup2_ajax[game]=' + gameId +  "&tx_worldcup2_ajax[pid]=" + ajaxCurrentPageUid + '&tx_worldcup2_ajax[goal1]=' +  goal1 +  '&tx_worldcup2_ajax[goal2]=' +  goal2 ,
 
                     before: function() {
                         // $("#worldcup-result-" + gameId ).html("#####") ;

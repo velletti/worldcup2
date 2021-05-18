@@ -25,12 +25,14 @@ plugin.tx_worldcup2_play {
       #show firstname + last name instead of username ?
       showfullname =
       pids {
-         storagePID = 14313
+        #  here  GAME and Team Data
+         storagePID = 5347
+         userbetPID = 5346
 
-         listgames = 14314
-         ranking = 14315
-         rules = 14316
-         login = 14317
+         listgames = 5346
+         ranking = 5360
+         rules = 5359
+         login = 5364
 
       }
     }

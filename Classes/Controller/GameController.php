@@ -37,6 +37,11 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     protected $betRepository = null;
 
     /**
+     * @var int
+     */
+    protected $betPid = 0 ;
+
+    /**
      * @var array|null
      */
     protected $currentUser = null ;
@@ -106,6 +111,11 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     public function nextAction()
     {
+        $pid = intval($this->settings['pids']['storagePID']) > 0 ? intval($this->settings['pids']['storagePID']) : $GLOBALS['TSFE']->id;
+        $this->betPid = intval($this->settings['pids']['userbetPID']) ;
+        if( $this->betPid < 1 ) {
+            $this->betPid = $pid ;
+        }
        // var_dump($this->settings);
         $this->enhanceGames($this->gameRepository->findByDate( (int)$this->settings['maxGames']) ) ;
         $this->view->assign("currentUser" , $this->currentUser ) ;
@@ -118,6 +128,12 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      */
     public function listgroupsAction()
     {
+        $pid = intval($this->settings['pids']['storagePID']) > 0 ? intval($this->settings['pids']['storagePID']) : $GLOBALS['TSFE']->id;
+        $this->betPid = intval($this->settings['pids']['userbetPID']) ;
+        if( $this->betPid < 1 ) {
+            $this->betPid = $pid ;
+        }
+
         $this->enhanceGames( $this->gameRepository->findAll()) ;
         $this->view->assign("currentUser" , $this->currentUser ) ;
         $stepindicators = $this->getNotLoginStepIndicator() ;
@@ -147,13 +163,16 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     public function rankingAction()
     {
         $pid = intval($this->settings['pids']['storagePID']) > 0 ? intval($this->settings['pids']['storagePID']) : $GLOBALS['TSFE']->id;
-
+        $this->betPid = intval($this->settings['pids']['userbetPID']) ;
+        if( $this->betPid < 1 ) {
+            $this->betPid = $pid ;
+        }
         // ToDo :  REINTEGRATE BETTEAM selector
         $betTeam = "WINNER-" ;
 
         $start = 0 ;
 
-        $rankingSelectSql = $this->betRepository->getRankingSelectSql($pid) ;
+        $rankingSelectSql = $this->betRepository->getRankingSelectSql($this->betPid ) ;
         $rankingFilterSql = $this->betRepository->getRankingFilterSql($betTeam) ;
         $rankingEndSql =   $this->betRepository->getRankingEndSql($pid) ;
 
@@ -270,7 +289,7 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             /** @var Game $game */
             foreach ($games as $game) {
                 /** @var Bet $bet */
-                $bet = $this->betRepository->findbyGameAndUser($game->getUid() , $user ) ;
+                $bet = $this->betRepository->findbyGameAndUser($game->getUid() , $user , $this->betPid ) ;
                 $game->setUserbet($bet);
                 if( $game->getPlaytime() > $now && !$isNextGameSet ) {
                     $isNextGameSet = true;
@@ -326,7 +345,7 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
                 if (  $lastGame ) {
                     /** @var Bet $bet */
-                    $bet = $this->betRepository->findByGameAndUser($lastGame->getUid() , $row['uid']) ;
+                    $bet = $this->betRepository->findByGameAndUser($lastGame->getUid() , $row['uid'] , $this->betPid ) ;
                     $rankings[$key]['lastBet']['points'] = $bet->getPoints() ;
                     $rankings[$key]['lastBet']['game'] = $lastGameText  ;
                     $rankings[$key]['lastBet']['goalsTeam1'] = $bet->getGoalsteam1() ;
@@ -337,7 +356,7 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 }
                 if (  $secondGame ) {
                     /** @var Bet $bet */
-                    $bet = $this->betRepository->findByGameAndUser($secondGame->getUid() , $row['uid']) ;
+                    $bet = $this->betRepository->findByGameAndUser($secondGame->getUid() , $row['uid'] , $this->betPid ) ;
                     $rankings[$key]['secondBet']['points'] = $bet->getPoints() ;
                     $rankings[$key]['secondBet']['game'] = $secondGameText  ;
 

@@ -84,16 +84,17 @@ class Ajax implements MiddlewareInterface
             /** @var PersistenceManager $persistenceManager */
             $persistenceManager = $objectManager->get("TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface");
 
-            /** @var Game $game */
+                /** @var Game $game */
             $game = $gameRepository->findByUid( $output['input']['game'] ) ;
             $output['debug'][__LINE__] = "init" ;
             if($game ) {
                 $output['debug'][__LINE__] = "is game" ;
                 if(!$game->isGameStartingSoon()) {
                     $output['debug'][__LINE__] = "Not starting soon" ;
+                    $pid = $this->cleanInput($_gp['pid'])  ;
 
                     /** @var Bet $bet */
-                    $bet = $betRepository->findByGameAndUser( $output['input']['game']  , $output['user']  ) ;
+                    $bet = $betRepository->findByGameAndUser( $output['input']['game']  , $output['user'] , $pid ) ;
                     if( $bet instanceof Bet && $bet->getUid() > 0 ) {
                         $output['debug'][__LINE__] = "Found BET for Game " .$output['input']['game'] . " and " . $output['user']  . " Uid: " . $bet->getUid()  ;
                         $bet->setGoalsteam1( $output['input']['goal1']);
@@ -115,11 +116,12 @@ class Ajax implements MiddlewareInterface
                         }
                     } else {
                         $output['debug'][__LINE__] = "new bet " ;
+
                         /** @var Bet $bet */
                         $bet = $objectManager->get('JVE\\Worldcup2\\Domain\\Model\\Bet');
                         $bet->setFeuser( $feuser );
                         $bet->setGame( $game );
-                        $bet->setPid( $game->getPid() );
+                        $bet->setPid( $pid );
                         $bet->setGoalsteam1( $output['input']['goal1']);
                         $bet->setGoalsteam2( $output['input']['goal2']);
                         if( $bet->getPoints() > 0) {
