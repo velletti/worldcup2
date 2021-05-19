@@ -58,8 +58,8 @@
                          </f:link.page>
                         </span>
                         <span class="col-xs-2 p-1" title="Got {ranking.points} with {ranking.BetsTotal} Bets">{ranking.points}</span>
-                        <f:render section="lastgame" arguments="{game: ranking.lastBet}"></f:render>
-                        <f:render section="lastgame" arguments="{game: ranking.secondBet, class: ' hidden-xs'}"></f:render>
+                        <f:render section="lastgame" arguments="{bet: ranking.lastBet}"/>
+                        <f:render section="lastgame" arguments="{bet: ranking.secondBet, class: ' hidden-xs'}"/>
                     </f:spaceless>
                 </div>
             </f:for>
@@ -69,14 +69,21 @@
 </f:section>
 
 <f:section name="lastgame">
-    <span class="p-1 col-xs-2 {class}" title="{game.game}  = {game.goalsTeam1}:{game.goalsTeam2} => {game.points} Points">
-        <f:if condition="{game}">
-            <f:switch expression="{game.points}">
-                <f:case value="0">-</f:case>
-                <f:case value="1"><i class="fa fa-long-arrow-alt-up"></i></f:case>
-                <f:case value="2"><i class="fa fa-long-arrow-alt-up"></i><i class="fa fa-long-arrow-alt-up"></i></f:case>
-                <f:case value="3"><i class="fa fa-long-arrow-alt-up"></i><i class="fa fa-long-arrow-alt-up"></i><i class="fa fa-long-arrow-alt-up"></i></f:case>
-            </f:switch>
-        </f:if>
-    </span>
+
+    <f:if condition="{bet}">
+        <f:then>
+            <span class="p-1 col-xs-2 {class}" title="{bet.game}  = {bet.goalsTeam1}:{bet.goalsTeam2} => {bet.points} Points">
+                <f:switch expression="{bet.points}">
+                    <f:case value="0"><i class="fa fa-long-arrow-alt-right"></i></f:case>
+                    <f:case value="1"><i class="fa fa-long-arrow-alt-up"></i></f:case>
+                    <f:case value="2"><i class="fa fa-long-arrow-alt-up"></i><i class="fa fa-long-arrow-alt-up"></i></f:case>
+                    <f:case value="3"><i class="fa fa-long-arrow-alt-up"></i><i class="fa fa-long-arrow-alt-up"></i><i class="fa fa-long-arrow-alt-up"></i></f:case>
+                </f:switch>
+             </span>
+        </f:then>
+        <f:else>
+        <span class="p-1 col-xs-2 {class}">--</span>
+        </f:else>
+    </f:if>
+
 </f:section>

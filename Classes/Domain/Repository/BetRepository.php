@@ -132,8 +132,9 @@ class BetRepository extends BaseRepository
 
                     // is nemetschek ONE user Group 44 then By Company means by Email Domain !
                     if ( in_array( "44" , explode(  "," , $GLOBALS['TSFE']->fe_user->user['usergroup'] ))){
-                        $mailDomain = explode("@" , $GLOBALS['TSFE']->fe_user->user['email'] ) ;
-                       return " AND u.email like '%@" .  $mailDomain[1] ."'" ;
+                        $mailDomainArr = explode("@" , $GLOBALS['TSFE']->fe_user->user['email'] ) ;
+                        $mailDomain = substr( $mailDomainArr[1] , 0 , strrpos( $mailDomainArr[1] , ".")) ;
+                       return " AND u.email like '%@" .  $mailDomain .".%'" ;
 
                     } else {
                         // für kunden

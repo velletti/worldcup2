@@ -3,18 +3,21 @@
 <f:section name="main">
     <div data-template="extension" class="next card">
         <f:if condition="{games}">
-            <div id="worldcup-msg" class="alert alert-info"></div>
+
             <f:for as="game" each="{games}">
                 <div class="game">
                     <span class="worldcup_playtime"><f:format.date format="d.m. | H:i">{game.playtime}</f:format.date></span>
-                    <f:spaceless><span class="mx-2 flag flag-{game.team1.flag}" title="{game.team1.name}"></span>
+                    <f:spaceless>
+                        <f:render partial="Flag" arguments="{team: game.team1}"/>
                         <span id="worldcup-result-{game.uid}">
                             <f:render partial="Goal" arguments="{team: 1, game: game, requestedUser: requestedUser}" /> :
                             <f:render partial="Goal" arguments="{team: 2, game: game, requestedUser: requestedUser}" />
                         </span>
-                        <span class="mx-2 flag flag-{game.team2.flag}" title="{game.team2.name}"></span>
-                        <f:if condition="{betPage}">
-                            <f:link.page class="btn btn-default" pageUid="{betPage}"><span class="fa fa-futbal"></span> Bet</f:link.page>>
+                        <f:render partial="Flag" arguments="{team: game.team2}"/>
+                        <f:if condition="{settings.pids.betPage}">
+                            <f:link.page class="btn btn-default" pageUid="{settings.pids.betPage}">
+                                <span class="fa fa-futbal-o"></span> <f:translate key="bet">Bet</f:translate>
+                            </f:link.page>>
                         </f:if>
                     </f:spaceless>
                     <f:render partial="Javascript" arguments="{_all}" />

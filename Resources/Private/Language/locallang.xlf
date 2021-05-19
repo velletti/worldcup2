@@ -51,6 +51,26 @@
 			<trans-unit id="tx_worldcup2_domain_model_game.team2" resname="tx_worldcup2_domain_model_game.team2">
 				<source>Team2</source>
 			</trans-unit>
+
+			<trans-unit id="bet" resname="bet">
+				<source>Bet</source>
+			</trans-unit>
+			<trans-unit id="day" resname="day">
+				<source>Day</source>
+			</trans-unit>
+			<trans-unit id="Last16" resname="Last16">
+				<source>Round of last 16</source>
+			</trans-unit>
+			<trans-unit id="quarterfinal" resname="quarterfinals">
+				<source>Quarter finals</source>
+			</trans-unit>
+			<trans-unit id="semifinals" resname="semifinals">
+				<source>Semi finals</source>
+			</trans-unit>
+			<trans-unit id="final" resname="final">
+				<source>Final</source>
+			</trans-unit>
+
 		</body>
 	</file>
 </xliff>
