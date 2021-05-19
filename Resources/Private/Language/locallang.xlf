@@ -71,6 +71,13 @@
 				<source>Final</source>
 			</trans-unit>
 
+			<trans-unit id="noranking" resname="noranking">
+				<source>No rankings yet</source>
+			</trans-unit>
+			<trans-unit id="noranking.subline" resname="noranking.subline">
+				<source>The ranking list will appear after the first game has finshed and result is updated in our platform.</source>
+			</trans-unit>
+
 		</body>
 	</file>
 </xliff>

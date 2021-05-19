@@ -16,53 +16,66 @@
 
 
         <f:if condition="{rankings}">
-            <div class="row  worldcup-game worldcup-gametitle alert alert-default">
-                <f:spaceless>
-                    <span class="col-xs-1 p-1"> </span>
-                    <span class="col-xs-1 p-1 bold">Pos.</span>
-                    <span class="col-xs-1 p-1 "> </span>
-                    <span class="col-xs-4 col-sm-3 p-1 worldcup-player bold">Player</span>
-                    <span class="col-xs-2 p-1 bold">Points</span>
-                    <span class="col-xs-2 p-1" title="{lastGameText}">
-                        <f:render partial="Flag" arguments="{team: lastGame.team1}"/>:<f:render partial="Flag" arguments="{team: lastGame.team2}"/>
-                        <br>
-                        {lastGame.goalsteam1}:{lastGame.goalsteam2}
-                    </span>
-                    <span class="col-xs-2 p-1 hidden-xs" title="{secondGameText}">
-                        <f:render partial="Flag" arguments="{team: secondGame.team1}"/>:<f:render partial="Flag" arguments="{team: secondGame.team2}"/>
-                        <br>
-                        {secondGame.goalsteam1}:{secondGame.goalsteam2}
-                    </span>
-                </f:spaceless>
-            </div>
-            <f:for as="ranking" each="{rankings}">
-
-                <div class="row worldcup-ranking {f:if(condition: '{ranking.uid} == {currentUser.id}' , then: ' alert alert-info mt-0 mb-0 p-0 ')}">
+            <f:then>
+                <div class="row  worldcup-game worldcup-gametitle alert alert-default">
                     <f:spaceless>
-                        <span class="col-xs-1 p-1">
-                            <i class="userIcon userIcon-small {ranking.usericon}" alt="icon" title="{f:translate(key: 'LLL:EXT:nemconnections.{ranking.usericon}_public_view')}"></i>
+                        <span class="col-xs-1 p-1"> </span>
+                        <span class="col-xs-1 p-1 bold">Pos.</span>
+                        <span class="col-xs-1 p-1 "> </span>
+                        <span class="col-xs-4 col-sm-3 p-1 worldcup-player bold">Player</span>
+                        <span class="col-xs-2 p-1 bold">Points</span>
+                        <span class="col-xs-2 p-1" title="{lastGameText}">
+                            <f:render partial="Flag" arguments="{team: lastGame.team1}"/>:<f:render partial="Flag" arguments="{team: lastGame.team2}"/>
+                            <br>
+                            {lastGame.goalsteam1}:{lastGame.goalsteam2}
                         </span>
-
-                        <span class="col-xs-1 p-1 bold">{ranking.pos}</span>
-                        <span class="col-xs-1 mx-2 p-1">
-                            <i class="flag flag-{ranking.flag}" title="{ranking.flag}"></i>
+                        <span class="col-xs-2 p-1 hidden-xs" title="{secondGameText}">
+                            <f:render partial="Flag" arguments="{team: secondGame.team1}"/>:<f:render partial="Flag" arguments="{team: secondGame.team2}"/>
+                            <br>
+                            {secondGame.goalsteam1}:{secondGame.goalsteam2}
                         </span>
-                        <span class="col-xs-5 col-sm-3 p-1 worldcup-player">
-                            <f:link.page  pageUid="{settings.pids.listgames}"
-
-                                         additionalParams="{tx_worldcup2_play: {user: ranking.uid}}">
-                                <f:if condition="{settings.showFullname}">
-                                    <f:then>{ranking.tx_nem_firstname} {ranking.tx_nem_lastname}</f:then>
-                                    <f:else>{ranking.username} </f:else>
-                                </f:if>
-                         </f:link.page>
-                        </span>
-                        <span class="col-xs-2 p-1" title="Got {ranking.points} with {ranking.BetsTotal} Bets">{ranking.points}</span>
-                        <f:render section="lastgame" arguments="{bet: ranking.lastBet}"/>
-                        <f:render section="lastgame" arguments="{bet: ranking.secondBet, class: ' hidden-xs'}"/>
                     </f:spaceless>
                 </div>
-            </f:for>
+                <f:for as="ranking" each="{rankings}">
+
+                    <div class="row worldcup-ranking {f:if(condition: '{ranking.uid} == {currentUser.id}' , then: ' alert alert-info mt-0 mb-0 p-0 ')}">
+                        <f:spaceless>
+                            <span class="col-xs-1 p-1">
+                                <i class="userIcon userIcon-small {ranking.usericon}" alt="icon" title="{f:translate(key: 'LLL:EXT:nemconnections.{ranking.usericon}_public_view')}"></i>
+                            </span>
+
+                            <span class="col-xs-1 p-1 bold">{ranking.pos}</span>
+                            <span class="col-xs-1 mx-2 p-1">
+                                <i class="flag flag-{ranking.flag}" title="{ranking.flag}"></i>
+                            </span>
+                            <span class="col-xs-5 col-sm-3 p-1 worldcup-player">
+                                <f:link.page  pageUid="{settings.pids.listgames}"
+
+                                             additionalParams="{tx_worldcup2_play: {user: ranking.uid}}">
+                                    <f:if condition="{settings.showFullname}">
+                                        <f:then>{ranking.tx_nem_firstname} {ranking.tx_nem_lastname}</f:then>
+                                        <f:else>{ranking.username} </f:else>
+                                    </f:if>
+                             </f:link.page>
+                            </span>
+                            <span class="col-xs-2 p-1" title="Got {ranking.points} with {ranking.BetsTotal} Bets">{ranking.points}</span>
+                            <f:render section="lastgame" arguments="{bet: ranking.lastBet}"/>
+                            <f:render section="lastgame" arguments="{bet: ranking.secondBet, class: ' hidden-xs'}"/>
+                        </f:spaceless>
+                    </div>
+                </f:for>
+            </f:then>
+            <f:else>
+            <div class="alert alert-info">
+                <h3>
+                    <f:translate key="noranking" default="No Ranking yet"/>
+                </h3>
+
+                <p>
+                    <f:translate key="noranking.subline" default="coming soon"/>
+                </p>
+            </div>
+            </f:else>
         </f:if>
 
     </div>
