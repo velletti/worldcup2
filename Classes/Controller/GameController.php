@@ -346,10 +346,12 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 if (  $lastGame ) {
                     /** @var Bet $bet */
                     $bet = $this->betRepository->findByGameAndUser($lastGame->getUid() , $row['uid'] , $this->betPid ) ;
-                    $rankings[$key]['lastBet']['points'] = $bet->getPoints() ;
                     $rankings[$key]['lastBet']['game'] = $lastGameText  ;
-                    $rankings[$key]['lastBet']['goalsTeam1'] = $bet->getGoalsteam1() ;
-                    $rankings[$key]['lastBet']['goalsTeam2'] = $bet->getGoalsteam2() ;
+                    if ( $bet ) {
+                        $rankings[$key]['lastBet']['points'] = $bet->getPoints() ;
+                        $rankings[$key]['lastBet']['goalsTeam1'] = $bet->getGoalsteam1() ;
+                        $rankings[$key]['lastBet']['goalsTeam2'] = $bet->getGoalsteam2() ;
+                    }
 
                 } else {
                     $rankings[$key]['lastBet'] = false ;
@@ -357,11 +359,13 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 if (  $secondGame ) {
                     /** @var Bet $bet */
                     $bet = $this->betRepository->findByGameAndUser($secondGame->getUid() , $row['uid'] , $this->betPid ) ;
-                    $rankings[$key]['secondBet']['points'] = $bet->getPoints() ;
                     $rankings[$key]['secondBet']['game'] = $secondGameText  ;
+                    if ( $bet ) {
+                        $rankings[$key]['secondBet']['points'] = $bet->getPoints() ;
+                        $rankings[$key]['secondBet']['goalsTeam1'] = $bet->getGoalsteam1() ;
+                        $rankings[$key]['secondBet']['goalsTeam2'] = $bet->getGoalsteam2() ;
+                    }
 
-                    $rankings[$key]['secondBet']['goalsTeam1'] = $bet->getGoalsteam1() ;
-                    $rankings[$key]['secondBet']['goalsTeam2'] = $bet->getGoalsteam2() ;
                 } else {
                     $rankings[$key]['secondBet'] = false ;
                 }
