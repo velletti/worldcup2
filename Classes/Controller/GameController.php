@@ -223,32 +223,32 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     private function getNotLoginStepIndicator() {
         $stepindicators[] = $this->getStepIndicator( 1 ,"stepactive" , false , false , "Login" ,
             $this->settings['pids']['login']) ;
-        $stepindicators[] = $this->getStepIndicator( 2 ,"stepinactive" , false , true , "Rules" ,
+        $stepindicators[] = $this->getStepIndicator( 2 ,"stepClickable" , false , true , "Rules" ,
             $this->settings['pids']['rules'] ) ;
         $stepindicators[] = $this->getStepIndicator( 3 ,"stepinactive" , false , true , "Play" ,
-            $this->settings['pids']['listgames'] ) ;
+            0 ) ;
         $stepindicators[] = $this->getStepIndicator( 4 ,"stepinactive" , false , true , "Win" ,
-            $this->settings['pids']['ranking'] ) ;
+            0 ) ;
         return $stepindicators ;
     }
     private function getPlayStepIndicator() {
         $stepindicators[] = $this->getStepIndicator( 1 ,"stepdone" , true , false , "Login" ,
-            $this->settings['pids']['login']) ;
-        $stepindicators[] = $this->getStepIndicator( 2 ,"stepdone" , true , false , "Rules" ,
+            0) ;
+        $stepindicators[] = $this->getStepIndicator( 2 ,"stepClickable" , true , false , "Rules" ,
             $this->settings['pids']['rules'] ) ;
         $stepindicators[] = $this->getStepIndicator( 3 ,"stepactive" , false , false , "Play" ,
             $this->settings['pids']['listgames'] ) ;
-        $stepindicators[] = $this->getStepIndicator( 4 ,"stepinactive" , false , true , "Win" ,
+        $stepindicators[] = $this->getStepIndicator( 4 ,"stepClickable" , false , true , "Win" ,
             $this->settings['pids']['ranking'] ) ;
         return $stepindicators ;
     }
 
     private function getRankingStepIndicator() {
         $stepindicators[] = $this->getStepIndicator( 1 ,"stepdone" , true , false , "Login" ,
-            $this->settings['pids']['login']) ;
-        $stepindicators[] = $this->getStepIndicator( 2 ,"stepdone" , true , false , "Rules" ,
+            0 ) ;
+        $stepindicators[] = $this->getStepIndicator( 2 ,"stepClickable" , true , false , "Rules" ,
             $this->settings['pids']['rules'] ) ;
-        $stepindicators[] = $this->getStepIndicator( 3 ,"stepdone" , true , false , "Play" ,
+        $stepindicators[] = $this->getStepIndicator( 3 ,"stepClickable" , true , false , "Play" ,
             $this->settings['pids']['listgames'] ) ;
         $stepindicators[] = $this->getStepIndicator( 4 ,"stepactive" , false , false , "Win" ,
             $this->settings['pids']['ranking'] ) ;

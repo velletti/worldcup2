@@ -51,7 +51,8 @@ class Ajax implements MiddlewareInterface
                 ->withHeader('Expires', '0')
 
                 ->withBody($body)
-                ->withStatus($output['status']);
+          //      ->withStatus($output['status'])
+                ;
 
         }
         return $handler->handle($request);

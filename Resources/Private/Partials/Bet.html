@@ -28,7 +28,7 @@
                                                     <f:render partial="Flag" arguments="{team: game.team1}"/> {game.team1.name}
                                                 </div>
                                                 <div class="col-xs-4">
-                                                    <f:form.textfield name="goal1-{game.uid}"  id="goal1-{game.uid}" class="centered text-center" type="number" maxlength="2" additionalAttributes="{min: 0 , max: 30}" value="{game.userbet.goalsteam1}">  </f:form.textfield>
+                                                    <f:form.textfield  name="goal1-{game.uid}"  id="goal1-{game.uid}" class="centered text-center col-xs-6" type="number" maxlength="2" additionalAttributes="{min: 0 , max: 30}" value="{game.userbet.goalsteam1}">  </f:form.textfield>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -36,7 +36,7 @@
                                                     <f:render partial="Flag" arguments="{team: game.team2}"/> {game.team2.name}
                                                 </div>
                                                 <div class="col-xs-4">
-                                                    <f:form.textfield name="goal2-{game.uid}" id="goal2-{game.uid}" class="centered text-center" type="number" maxlength="2" additionalAttributes="{min: 0 , max: 30}" value="{game.userbet.goalsteam2}">  </f:form.textfield>
+                                                    <f:form.textfield name="goal2-{game.uid}" id="goal2-{game.uid}" class="centered text-center col-xs-6" type="number" maxlength="2" additionalAttributes="{min: 0 , max: 30}" value="{game.userbet.goalsteam2}">  </f:form.textfield>
                                                 </div>
                                             </div>
 
@@ -45,7 +45,7 @@
                                     <div class="modal-footer">
                                         <f:form.button class="btn btn-primary" >
                                             <f:translate key="bet">Bet</f:translate>
-                                            <span class="mx-1 far fa-caret-right"> </span>
+                                            <span class="ml-2 fa fa-caret-square-right"> </span>
                                         </f:form.button>
                                     </div>
                                 </f:form>

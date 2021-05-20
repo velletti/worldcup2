@@ -5,6 +5,8 @@
 <f:layout name="default" />
 
 <f:section name="main">
+
+
     <div data-template="extension">
         <f:render partial="Steps" arguments="{stepindicators: stepindicators}"></f:render>
         <div id="worldcup-msg" class="alert alert-info hidden"></div>
@@ -53,7 +55,7 @@
                     </f:else>
                 </f:if>
 
-                <div class="row worldcup-game alert p-0 {todayClass} mt-0 mb-0  ">
+                <div class="row worldcup-game alert p-0 {todayClass} mt-0 mb-0  "  id="worldcup-game-{game.uid}">
                     <f:spaceless>
                         <span class="worldcup-playtime"><f:format.date format="d.m. | H:i">{game.playtime}</f:format.date></span>
                         <f:render partial="GroupName" arguments="{round: '{game.round}'}" />
@@ -87,7 +89,7 @@
 
                 </div>
             </f:for>
-            <f:render partial="Javascript" arguments="{_all}" />
+
         </f:if>
 
     </div>

@@ -1,3 +1,18 @@
+page {
+  includeCSS {
+    worldcup2 = EXT:worldcup2/Resources/Public/Css/worldcup.css
+  }
+  includeJSFooter {
+    worldcup2 = EXT:worldcup2/Resources/Public/JavaScript/worldcup.js
+    worldcup2 {
+      excludeFromConcatenation = 1
+      disableCompression = 1
+    }
+  }
+}
+
+
+
 plugin.tx_worldcup2_play {
     view {
         templateRootPaths.0 = EXT:worldcup2/Resources/Private/Templates/
@@ -20,7 +35,7 @@ plugin.tx_worldcup2_play {
     }
     settings {
 
-      ccsFile = EXT:worldcup2/Resources/Public/Css/worldcup.css
+
 
       #show firstname + last name instead of username ?
       showfullname =
