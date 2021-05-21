@@ -30,7 +30,10 @@
 										<numIndex index="0">Show ranking</numIndex>
 										<numIndex index="1">Game->ranking</numIndex>
 									</numIndex>
-
+                                    <numIndex index="4">
+                                        <numIndex index="0">Show agb</numIndex>
+                                        <numIndex index="1">Game->showagb</numIndex>
+                                    </numIndex>
 								</items>
 							</config>
 						</TCEforms>

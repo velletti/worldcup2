@@ -30,14 +30,14 @@
         <f:if condition="{games}">
             <div class="row bold worldcup-game worldcup-gametitle alert alert-default">
                 <f:spaceless>
-                    <span class="worldcup-playtime">Date</span>
-                    <span class="worldcup-group">Group</span>
-                    <span class="hidden-xs worldcup-team worldcup-team1 ">Team 1</span>
+                    <span class="worldcup-playtime"><f:translate key="date"/></span>
+                    <span class="worldcup-group"><f:translate key="tx_worldcup2_domain_model_game.round"/></span>
+                    <span class="hidden-xs worldcup-team worldcup-team1 "><f:translate key="tx_worldcup2_domain_model_game.team1"/></span>
                     <span class="worldcup-flags">&nbsp;</span>
-                    <span class="hidden-xs worldcup-team worldcup-team2 ">Team 2</span>
-                    <span class="worldcup-result">Result</span>
-                    <span class="worldcup-result">Player</span>
-                    <span class="worldcup-points">Point</span>
+                    <span class="hidden-xs worldcup-team worldcup-team2 "><f:translate key="tx_worldcup2_domain_model_game.team1"/></span>
+                    <span class="worldcup-result"><f:translate key="result"/></span>
+                    <span class="worldcup-result"><f:translate key="tx_worldcup2_domain_model_bet.feuser"/></span>
+                    <span class="worldcup-points"><f:translate key="points"/></span>
                 </f:spaceless>
             </div>
             <f:for as="game" each="{games}">

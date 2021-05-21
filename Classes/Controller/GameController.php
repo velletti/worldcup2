@@ -207,6 +207,23 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $this->view->assign("lastUpdated" , date("d.m. H:i") ) ;
 
     }
+    /**
+     * action AGBs (mainly used to show the step navigation
+     *
+     * @return string|object|null|void
+     */
+    public function showagbAction()
+    {
+
+        if( $this->currentUser ) {
+            $stepindicators = $this->getAgbStepIndicator() ;
+        } else {
+            $stepindicators = $this->getNotLoginStepIndicator() ;
+        }
+
+        $this->view->assign("stepindicators" , $stepindicators ) ;
+
+    }
 
     /**
      * action showgroup
@@ -219,6 +236,18 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 
     /**** *************************************** Helper ***************************************  */
+
+    private function getAgbStepIndicator() {
+        $stepindicators[] = $this->getStepIndicator( 1 ,"stepdone" , true , false , "Login" ,
+            0) ;
+        $stepindicators[] = $this->getStepIndicator( 2 ,"stepactive" , false , false , "Rules" ,
+            $this->settings['pids']['rules'] ) ;
+        $stepindicators[] = $this->getStepIndicator( 3 ,"stepClickable" , false , true , "Play" ,
+            $this->settings['pids']['listgames'] ) ;
+        $stepindicators[] = $this->getStepIndicator( 4 ,"stepClickable" , false , true , "Win" ,
+            $this->settings['pids']['ranking'] ) ;
+        return $stepindicators ;
+    }
 
     private function getNotLoginStepIndicator() {
         $stepindicators[] = $this->getStepIndicator( 1 ,"stepactive" , false , false , "Login" ,

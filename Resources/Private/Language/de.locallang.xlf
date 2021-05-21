@@ -4,104 +4,131 @@
 		<header/>
 		<body>
 			<trans-unit id="tx_worldcup2_domain_model_team" resname="tx_worldcup2_domain_model_team">
-				<source>Team</source>
+				<source>Team</source>v
+				<target>Team</target>
 			</trans-unit>
 			<trans-unit id="tx_worldcup2_domain_model_team.name" resname="tx_worldcup2_domain_model_team.name">
 				<source>Name</source>
+				<target>Name</target>
 			</trans-unit>
 			<trans-unit id="tx_worldcup2_domain_model_team.flag" resname="tx_worldcup2_domain_model_team.flag">
 				<source>Flag</source>
+				<target>Flagge</target>
+
 			</trans-unit>
 			<trans-unit id="tx_worldcup2_domain_model_team.shortcutfifa" resname="tx_worldcup2_domain_model_team.shortcutfifa">
+				<target>Shortcutfifa</target>
 				<source>Shortcutfifa</source>
 			</trans-unit>
 			<trans-unit id="tx_worldcup2_domain_model_bet" resname="tx_worldcup2_domain_model_bet">
+				<target>Tipp</target>
 				<source>Bet</source>
 			</trans-unit>
 			<trans-unit id="tx_worldcup2_domain_model_bet.goalsteam1" resname="tx_worldcup2_domain_model_bet.goalsteam1">
-				<source>Goals team 1</source>
-			</trans-unit>
-			<trans-unit id="tx_worldcup2_domain_model_bet.goalsteam2" resname="tx_worldcup2_domain_model_bet.goalsteam2">
+				<target>Tore Team 1</target>
 				<source>Goals team 2</source>
 			</trans-unit>
 			<trans-unit id="tx_worldcup2_domain_model_bet.game" resname="tx_worldcup2_domain_model_bet.game">
+				<target>Spiel</target>
 				<source>Game</source>
 			</trans-unit>
 			<trans-unit id="tx_worldcup2_domain_model_bet.feuser" resname="tx_worldcup2_domain_model_bet.feuser">
+				<target>Spieler</target>
 				<source>Player</source>
 			</trans-unit>
 			<trans-unit id="tx_worldcup2_domain_model_game" resname="tx_worldcup2_domain_model_game">
+				<target>Spiel</target>
 				<source>Game</source>
 			</trans-unit>
 			<trans-unit id="tx_worldcup2_domain_model_game.playtime" resname="tx_worldcup2_domain_model_game.playtime">
+				<target>Playtime</target>
 				<source>Playtime</source>
 			</trans-unit>
 			<trans-unit id="tx_worldcup2_domain_model_game.goalsteam1" resname="tx_worldcup2_domain_model_game.goalsteam1">
+				<target>Goalsteam1</target>
 				<source>Goalsteam1</source>
 			</trans-unit>
 			<trans-unit id="tx_worldcup2_domain_model_game.goalsteam2" resname="tx_worldcup2_domain_model_game.goalsteam2">
+				<target>Goalsteam2</target>
 				<source>Goalsteam2</source>
 			</trans-unit>
 			<trans-unit id="tx_worldcup2_domain_model_game.round" resname="tx_worldcup2_domain_model_game.round">
+				<target>Runde</target>
 				<source>Round</source>
 			</trans-unit>
 			<trans-unit id="tx_worldcup2_domain_model_game.team1" resname="tx_worldcup2_domain_model_game.team1">
+				<target>Team 1</target>
 				<source>Team 1</source>
 			</trans-unit>
 			<trans-unit id="tx_worldcup2_domain_model_game.team2" resname="tx_worldcup2_domain_model_game.team2">
+				<target>Team 2</target>
 				<source>Team 2</source>
 			</trans-unit>
 
 			<trans-unit id="bet" resname="bet">
 				<source>Bet</source>
+				<target>Tippen</target>
 			</trans-unit>
 			<trans-unit id="day" resname="day">
+				<target>Tag</target>
 				<source>Day</source>
 			</trans-unit>
 			<trans-unit id="Last16" resname="Last16">
 				<source>Round of last 16</source>
+				<target>Runde der letzen 16</target>
 			</trans-unit>
 			<trans-unit id="quarterfinal" resname="quarterfinals">
+				<target>Viertelfinale</target>
 				<source>Quarter finals</source>
 			</trans-unit>
 			<trans-unit id="semifinals" resname="semifinals">
+				<target>Halbfinale</target>
 				<source>Semi finals</source>
 			</trans-unit>
 			<trans-unit id="final" resname="final">
+				<target>Finale</target>
 				<source>Final</source>
 			</trans-unit>
 
 			<trans-unit id="date" resname="date">
+				<target>Datum</target>
 				<source>Date</source>
 			</trans-unit>
 			<trans-unit id="points" resname="points">
 				<source>Points</source>
+				<target>Points</target>
 			</trans-unit>
 			<trans-unit id="result" resname="result">
 				<source>Result</source>
+				<target>Ergebnis</target>
 			</trans-unit>
 
 			<trans-unit id="noranking" resname="noranking">
+				<target>Noch keine Punkte vergeben</target>
 				<source>No rankings yet</source>
 			</trans-unit>
 			<trans-unit id="noranking.subline" resname="noranking.subline">
 				<source>The ranking list will appear after the first game has finshed and result is updated in our platform.</source>
+
+				<target>Die Punkte Liste wird erst nach dem ersten abgeschlossenen Spiel veröffentlicht und auch immer durch das Web Admin Team, nachdem das Spiel Ergebnis in usnerem System eingetragen wurde, aktualisiert.</target>
 			</trans-unit>
 
 			<trans-unit id="step.Login" resname="step.Login">
+				<target>Registrierung</target>
 				<source>Register</source>
 			</trans-unit>
 			<trans-unit id="step.Rules" resname="step.Rules">
+				<target>Regeln</target>
 				<source>Rules</source>
 			</trans-unit>
 			<trans-unit id="step.Play" resname="step.Play">
+				<target>Tippen</target>
 				<source>Play</source>
 			</trans-unit>
 			<trans-unit id="step.Win" resname="step.Win">
+				<target>Gewinnen</target>
 				<source>Win</source>
 			</trans-unit>
-
-
 
 
 		</body>
