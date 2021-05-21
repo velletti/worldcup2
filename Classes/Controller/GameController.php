@@ -313,12 +313,15 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $user = $this->currentUser['id'] ;
             $this->view->assign("requestedUser" , false ) ;
         }
+        $secondGame = false ;
+        /** @var Game $lastGame */
+        $lastGame = $this->gameRepository->findLastGame()->getFirst() ;
 
+        if (!$lastGame ) {
+            $rankings = null ;
+        }
 
         if( $rankings) {
-            $secondGame = false ;
-            /** @var Game $lastGame */
-            $lastGame = $this->gameRepository->findLastGame()->getFirst() ;
 
             $lastGameText = "" ;
             $secondGameText = "" ;
