@@ -136,6 +136,7 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
         $this->enhanceGames( $this->gameRepository->findAll()) ;
         $this->view->assign("currentUser" , $this->currentUser ) ;
+        $this->view->assign("betPid" , $this->betPid ) ;
         $stepindicators = $this->getNotLoginStepIndicator() ;
         if( $this->currentUser ) {
             $stepindicators = $this->getPlayStepIndicator() ;

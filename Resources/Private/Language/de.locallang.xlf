@@ -96,7 +96,7 @@
 			</trans-unit>
 			<trans-unit id="points" resname="points">
 				<source>Points</source>
-				<target>Points</target>
+				<target>Punkte</target>
 			</trans-unit>
 			<trans-unit id="result" resname="result">
 				<source>Result</source>

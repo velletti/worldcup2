@@ -14,21 +14,24 @@
         <f:if condition="{currentUser}">
             <f:if condition="{requestedUser}">
                 <f:then>
-                    <h3> Requested user : {requestedUser.uid}   <f:if condition="{settings.showFullname}">
+                    <h3> <f:translate key="tx_worldcup2_domain_model_bet.feuser"/>: <f:if condition="{settings.showFullname}">
                         <f:then>{requestedUser.nemFirstname} {requestedUser.nemLastname}</f:then>
                         <f:else>{requestedUser.username} </f:else>
                         </f:if>
                     </h3>
                 </f:then>
                 <f:else>
-                    <h3>Your Bets  {currentUser.id}: {currentUser.username}</h3>
+                    <h3><f:translate key="tx_worldcup2_domain_model_bet.feuser"/>:  <f:if condition="{settings.showFullname}">
+                        <f:then>{currentUser.nemFirstname} {currentUser.nemLastname}</f:then>
+                        <f:else>{currentUser.username}  {currentUser.nemFirstname} {currentUser.nemLastname} </f:else>
+                    </f:if></h3>
                 </f:else>
             </f:if>
         </f:if>
 
 
         <f:if condition="{games}">
-            <div class="row bold worldcup-game worldcup-gametitle alert alert-default">
+            <div class="row bold worldcup-game worldcup-gametitle alert alert-default" data-pid="betPid">
                 <f:spaceless>
                     <span class="worldcup-playtime"><f:translate key="date"/></span>
                     <span class="worldcup-group"><f:translate key="tx_worldcup2_domain_model_game.round"/></span>
