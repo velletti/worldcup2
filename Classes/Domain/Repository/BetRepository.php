@@ -21,6 +21,7 @@ class BetRepository extends BaseRepository
     public function findFinished( $limit = 20 , $pid = 0 ) {
         $query = $this->createQuery() ;
         $query->getQuerySettings()->setRespectStoragePage(FALSE);
+        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
 
         $constraints = [] ;
         $now = new \DateTime("now") ;
@@ -44,6 +45,7 @@ class BetRepository extends BaseRepository
     public function findByGameAndUser(int $gameUid , int $userUid , int $pid) {
         $query = $this->createQuery() ;
         $query->getQuerySettings()->setRespectStoragePage(FALSE);
+        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
 
         $constraints[] = $query->equals( "game" , $gameUid ) ;
         $constraints[] = $query->equals( "feuser" , $userUid ) ;
