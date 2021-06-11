@@ -170,14 +170,22 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         }
         // ToDo :  REINTEGRATE BETTEAM selector
         $betTeam = "WINNER-" ;
+        if($this->request->hasArgument("filter")) {
+            $betTeam = $this->request->getArgument("filter") ;
+            $this->view->assign("filter" , $betTeam ) ;
+        }
 
         $start = 0 ;
+        if($this->request->hasArgument("start")) {
+            $start = intval ($this->request->getArgument("start") ) ;
+        }
 
         $rankingSelectSql = $this->betRepository->getRankingSelectSql($this->betPid ) ;
         $rankingFilterSql = $this->betRepository->getRankingFilterSql($betTeam) ;
         $rankingEndSql =   $this->betRepository->getRankingEndSql($pid) ;
 
-        $rankingSql = $rankingSelectSql . $rankingFilterSql . $rankingEndSql . " LIMIT " . $start . ", 20 " ;
+        $rankingSql = $rankingSelectSql . $rankingFilterSql . $rankingEndSql . " LIMIT " . $start . ", 50 " ;
+        $this->view->assign("debugSQL" , $rankingSql ) ;
 
         /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
         $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
@@ -347,16 +355,13 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         /** @var Game $lastGame */
         $lastGame = $this->gameRepository->findLastGame()->getFirst() ;
 
-        if (!$lastGame ) {
-            $rankings = null ;
-        }
 
-        if( $rankings) {
+        if( $rankings && count ($rankings) > 0  ) {
 
             $lastGameText = "" ;
             $secondGameText = "" ;
             if (  $lastGame ) {
-                $lastGameText = $lastGame->getUid() . " " . $lastGame->getTeam1()->getName() . ":" . $lastGame->getTeam2()->getName()
+                $lastGameText =   $lastGame->getTeam1()->getName() . ":" . $lastGame->getTeam2()->getName()
                     . " (" . $lastGame->getGoalsteam1() . ": " . $lastGame->getGoalsteam2() . ")";
                 /** @var Game $secondGame */
                 $secondGame = $this->gameRepository->findLastGame($lastGame->getUid())->getFirst() ;
@@ -365,7 +370,7 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 $this->view->assign("secondGame" ,  $secondGame ) ;
             }
             if (  $secondGame ) {
-                $secondGameText = $secondGame->getUid() . " " . $secondGame->getTeam1()->getName() . ":" . $secondGame->getTeam2()->getName()
+                $secondGameText = $secondGame->getTeam1()->getName() . ":" . $secondGame->getTeam2()->getName()
                     . " (" . $secondGame->getGoalsteam1() . ": " . $secondGame->getGoalsteam2() . ")";
             }
             $this->view->assign("lastGameText" ,  $lastGameText ) ;
@@ -375,6 +380,10 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             foreach ($rankings as $key => $row) {
                 $rankings[$key]['pos'] = $start++ ;
                 $rankings[$key]['flag'] = strtolower(  $rankings[$key]['flag'] ) ;
+
+                $domain = explode('@', $rankings[$key]['email'] ) ;
+                $domain = explode('.', $domain[1] ) ;
+                $rankings[$key]['domain'] =  $domain[0] ;
 
                 if (  $lastGame ) {
                     /** @var Bet $bet */

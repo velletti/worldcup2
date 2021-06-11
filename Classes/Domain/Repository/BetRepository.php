@@ -60,6 +60,7 @@ class BetRepository extends BaseRepository
     public function getRankingSelectSql( $pid ) {
 
         return "SELECT	u.username,
+						u.email,
 						u.tx_nem_firstname,
 						u.tx_nem_lastname,
 						CASE when FIND_IN_SET( 7, u.usergroup )
@@ -127,13 +128,18 @@ class BetRepository extends BaseRepository
     public function getRankingFilterSql( $betteam ) {
         if ( $betteam <> '' && is_object($GLOBALS['TSFE']->fe_user) && is_array( $GLOBALS['TSFE']->fe_user->user )) {
             $filter = substr( $betteam , 0 , 7) ;
-            $subfilter = substr( $betteam , 8 , 10) ;
+            $subfilter = substr( $betteam , 8 , 20) ;
 
             switch ($filter) {
                 case 'KD-NUM-':
-
                     // is nemetschek ONE user Group 44 then By Company means by Email Domain !
                     if ( in_array( "44" , explode(  "," , $GLOBALS['TSFE']->fe_user->user['usergroup'] ))){
+                        if( $subfilter ) {
+                            return " AND u.email like '%@" .  $subfilter .".%'" ;
+                        }
+
+                        // OR ONLY Members of his Own Company ?
+
                         $mailDomainArr = explode("@" , $GLOBALS['TSFE']->fe_user->user['email'] ) ;
                         $mailDomain = substr( $mailDomainArr[1] , 0 , strrpos( $mailDomainArr[1] , ".")) ;
                        return " AND u.email like '%@" .  $mailDomain .".%'" ;

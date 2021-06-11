@@ -52,6 +52,7 @@ class GameRepository extends BaseRepository
         $constraints = [] ;
         $now = new \DateTime("now") ;
         $constraints[] = $query->lessThanOrEqual('playtime' , $now->modify("-1 hour") ) ;
+        $constraints[] = $query->equals('finished' , 1 ) ;
 
    //     $constraints[] = $query->equals('finished' , 1 ) ;
 

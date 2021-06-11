@@ -14,10 +14,16 @@
                 <span class="small"> ({lastUpdated})</span>
             </h3>
         </f:if>
-
+        <f:if condition="{filter}">
+            <div class="alert alert-info">
+                FILTER: {filter}
+            </div>
+        </f:if>
 
         <f:if condition="{rankings}">
             <f:then>
+
+
                 <div class="row  worldcup-game worldcup-gametitle alert alert-default">
                     <f:spaceless>
                         <span class="col-xs-1 p-1"> </span>
@@ -42,17 +48,35 @@
                     <div class="row worldcup-ranking {f:if(condition: '{ranking.uid} == {currentUser.id}' , then: ' alert alert-info mt-0 mb-0 p-0 ')}">
                         <f:spaceless>
                             <span class="col-xs-1 p-1">
-                                <i class="userIcon userIcon-small {ranking.usericon}" alt="icon" title="{f:translate(key: 'LLL:EXT:nemconnections.{ranking.usericon}_public_view')}"></i>
+                                 <f:if condition="{settings.showDomain}">
+                                     <f:then>
+                                        <i class="userIcon userIcon-small {ranking.usericon}" alt="icon" title="{f:translate(key: 'LLL:EXT:nemconnections.{ranking.usericon}_public_view')}"></i>
+                                     </f:then>
+                                     <f:else>
+                                        <f:link.page additionalParams="{tx_worldcup2_play: {filter: 'USERTYP'}}">
+                                            <i class="userIcon userIcon-small {ranking.usericon}" alt="icon" title="{f:translate(key: 'LLL:EXT:nemconnections.{ranking.usericon}_public_view')}"></i>
+                                        </f:link.page>
+                                     </f:else>
+                                 </f:if>
                             </span>
 
                             <span class="col-xs-1 p-1 bold">{ranking.pos}</span>
                             <span class="col-xs-1 mx-2 p-1">
-                                <i class="flag flag-{ranking.flag}" title="{ranking.flag}"></i>
+                                <f:link.page additionalParams="{tx_worldcup2_play: {filter: 'COUNTRY-{ranking.flag}'}}">
+                                    <i class="flag flag-{ranking.flag}" title="{ranking.flag}"></i>
+                                </f:link.page>
                             </span>
                             <span class="col-xs-5 col-sm-3 p-1 worldcup-player">
+                                <f:if condition="{settings.showDomain}">
+                                    <f:link.page additionalParams="{tx_worldcup2_play: {filter: 'KD-NUM--{ranking.domain}'}}">
+                                        [{ranking.domain}]
+                                    </f:link.page>
+
+                                </f:if>
                                 <f:link.page  pageUid="{settings.pids.listgames}"
 
                                              additionalParams="{tx_worldcup2_play: {user: ranking.uid}}">
+
                                     <f:if condition="{settings.showFullname}">
                                         <f:then>{ranking.tx_nem_firstname} {ranking.tx_nem_lastname}</f:then>
                                         <f:else>{ranking.username} </f:else>

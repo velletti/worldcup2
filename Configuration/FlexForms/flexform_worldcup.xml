@@ -47,6 +47,15 @@
 							</config>
 						</TCEforms>
 					</settings.flexform.maxGames>
+                    <settings.flexform.showDomain>
+                        <TCEforms>
+                            <label>Show Domain Part of the Email </label>
+                            <config>
+                                <type>check</type>
+                                <eval>int</eval>
+                            </config>
+                        </TCEforms>
+                    </settings.flexform.showDomain>
 
 				</el>
 			</ROOT>
