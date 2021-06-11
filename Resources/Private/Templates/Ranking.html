@@ -48,7 +48,7 @@
                     <div class="row worldcup-ranking {f:if(condition: '{ranking.uid} == {currentUser.id}' , then: ' alert alert-info mt-0 mb-0 p-0 ')}">
                         <f:spaceless>
                             <span class="col-xs-1 p-1">
-                                 <f:if condition="{settings.showDomain}">
+                                 <f:if condition="{settings.flexform.showDomain}">
                                      <f:then>
                                         <i class="userIcon userIcon-small {ranking.usericon}" alt="icon" title="{f:translate(key: 'LLL:EXT:nemconnections.{ranking.usericon}_public_view')}"></i>
                                      </f:then>
@@ -67,7 +67,7 @@
                                 </f:link.page>
                             </span>
                             <span class="col-xs-5 col-sm-3 p-1 worldcup-player">
-                                <f:if condition="{settings.showDomain}">
+                                <f:if condition="{settings.flexform.showDomain}">
                                     <f:link.page additionalParams="{tx_worldcup2_play: {filter: 'KD-NUM--{ranking.domain}'}}">
                                         [{ranking.domain}]
                                     </f:link.page>
