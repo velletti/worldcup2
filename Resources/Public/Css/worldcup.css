@@ -12,6 +12,10 @@
 .worldcup-playtime {
     width: 15%;
 }
+.xs .worldcup-playtime {
+    width: 25%;
+}
+
 .worldcup-group {
     width: 7%;
 }
@@ -31,11 +35,20 @@
 
 .worldcup-flags {
     width: 7%;
+    text-align: center;
+}
+.xs .worldcup-flags {
+    width: 20%;
 }
 .worldcup-result {
     width: 10%;
+    text-align: center;
+}
+.xs .worldcup-result {
+    width: 20%;
 }
 .worldcup-points {
     width: 15%;
 
 }
+.xs

@@ -29,14 +29,14 @@
                         <span class="col-xs-1 p-1"> </span>
                         <span class="col-xs-1 p-1 bold">Pos.</span>
                         <span class="col-xs-1 p-1 "> </span>
-                        <span class="col-xs-4 col-sm-3 p-1 worldcup-player bold">Player</span>
+                        <span class="col-xs-5 col-sm-3 p-1 worldcup-player bold">Player</span>
                         <span class="col-xs-2 p-1 bold">Points</span>
                         <span class="col-xs-2 p-1" title="{lastGameText}">
                             <f:render partial="Flag" arguments="{team: lastGame.team1}"/>:<f:render partial="Flag" arguments="{team: lastGame.team2}"/>
                             <br>
                             {lastGame.goalsteam1}:{lastGame.goalsteam2}
                         </span>
-                        <span class="col-xs-2 p-1 hidden-xs" title="{secondGameText}">
+                        <span class="col-sm-2 p-1 hidden-xs" title="{secondGameText}">
                             <f:render partial="Flag" arguments="{team: secondGame.team1}"/>:<f:render partial="Flag" arguments="{team: secondGame.team2}"/>
                             <br>
                             {secondGame.goalsteam1}:{secondGame.goalsteam2}
