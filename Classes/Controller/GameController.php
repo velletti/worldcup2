@@ -176,9 +176,10 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         }
 
         $start = 0 ;
-        if($this->request->hasArgument("start")) {
+        if($this->request->hasArgument("start") ) {
             $start = intval ($this->request->getArgument("start") ) ;
         }
+        $playersCountSql = $this->betRepository->getPlayersCountSql($this->betPid ) ;
 
         $rankingSelectSql = $this->betRepository->getRankingSelectSql($this->betPid ) ;
         $rankingFilterSql = $this->betRepository->getRankingFilterSql($betTeam) ;
@@ -192,6 +193,7 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         /** @var \TYPO3\CMS\Core\Database\Connection $connection */
         $connection = $connectionPool->getConnectionForTable('tx_worldcup2_domain_model_bet');
 
+        $this->view->assign("playerTotal" , $connection->executeQuery( $playersCountSql )->rowCount() ) ;
         /*
          echo $rankingSql . "<hr>" ;
          var_dump($connection->executeQuery( $rankingSql )->fetchAllAssociative());
@@ -375,8 +377,10 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             }
             $this->view->assign("lastGameText" ,  $lastGameText ) ;
             $this->view->assign("secondGameText" ,  $secondGameText ) ;
+            $this->view->assign("start" ,  $start ) ;
 
             $start++ ;
+            $this->view->assign("start" ,  $start ) ;
             foreach ($rankings as $key => $row) {
                 $rankings[$key]['pos'] = $start++ ;
                 $rankings[$key]['flag'] = strtolower(  $rankings[$key]['flag'] ) ;
@@ -413,6 +417,7 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 }
             }
         }
+        $this->view->assign("end" , ( $start - 1 ) ) ;
         $this->view->assign("rankings" , $rankings ) ;
 
     }

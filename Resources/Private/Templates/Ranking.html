@@ -15,9 +15,13 @@
             </h3>
         </f:if>
         <f:if condition="{filter}">
-            <div class="alert alert-info">
-                FILTER: {filter}
-            </div>
+            <f:then>
+                <div class="alert alert-info">
+                    FILTER: {filter}
+                </div>
+            </f:then>
+
+            <f:else></f:else>
         </f:if>
 
         <f:if condition="{rankings}">
@@ -89,6 +93,47 @@
                         </f:spaceless>
                     </div>
                 </f:for>
+
+                <f:security.ifHasRole role="44">
+                    <div class="row mt-3">
+                        <div class="col-xs-4">
+                            {start} - {end} / {playerTotal}
+                        </div>
+                        <div class="col-xs-8">
+                            <div class="right">
+                                <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {start: '0'}}">
+                                   <span class="visible-sm visible-md visible-lg hidden-xs">1-50</span><span class="visible-xs hidden-sm hidden-md hidden-lg ">1</span>
+                                </f:link.page>
+                                <f:if condition="{playerTotal} > 50">
+                                    <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {start: '50'}}">
+                                        <span class="visible-sm visible-md visible-lg hidden-xs">51-100</span><span class="visible-xs hidden-sm hidden-md hidden-lg ">2</span>
+                                    </f:link.page>
+                                </f:if>
+                                <f:if condition="{playerTotal} > 100">
+                                    <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {start: '100'}}">
+                                        <span class="visible-sm visible-md visible-lg hidden-xs">101-150</span><span class="visible-xs hidden-sm hidden-md hidden-lg ">3</span>
+                                    </f:link.page>
+                                </f:if>
+                                <f:if condition="{playerTotal} > 150">
+                                    <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {start: '150'}}">
+                                        <span class="visible-sm visible-md visible-lg hidden-xs">151-200</span><span class="visible-xs hidden-sm hidden-md hidden-lg ">4</span>
+                                    </f:link.page>
+                                </f:if>
+                                <f:if condition="{playerTotal} > 200">
+                                    <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {start: '200'}}">
+                                        <span class="visible-sm visible-md visible-lg hidden-xs">201-250</span><span class="visible-xs hidden-sm hidden-md hidden-lg ">5</span>
+                                    </f:link.page>
+                                </f:if>
+                                <f:if condition="{playerTotal} > 250">
+                                    <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {start: '250'}}">
+                                        <span class="visible-sm visible-md visible-lg hidden-xs">251-300</span><span class="visible-xs hidden-sm hidden-md hidden-lg ">6</span>
+                                    </f:link.page>
+                                </f:if>
+                            </div>
+                        </div>
+                    </div>
+                </f:security.ifHasRole>
+
             </f:then>
             <f:else>
             <div class="alert alert-info">

@@ -57,6 +57,10 @@ class BetRepository extends BaseRepository
         return $query->execute()->getFirst()  ;
     }
 
+    public function getPlayersCountSql( $pid ) {
+        return "SELECT count(uid) as players FROM (tx_worldcup2_domain_model_bet b ) WHERE pid = " . intval($pid) . " GROUP BY feuser " ;
+    }
+
     public function getRankingSelectSql( $pid ) {
 
         return "SELECT	u.username,
