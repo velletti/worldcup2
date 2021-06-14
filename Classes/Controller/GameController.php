@@ -387,7 +387,29 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
                 $domain = explode('@', $rankings[$key]['email'] ) ;
                 $domain = explode('.', $domain[1] ) ;
-                $rankings[$key]['domain'] =  $domain[0] ;
+                switch ($domain[0]) {
+                    case "allplan-dev":
+                    case "allplan-infra":
+                    case "precast-software":
+                        $rankings[$key]['domain'] =  "allplan" ;
+                        break ;
+                    case "dds-cad":
+                        $rankings[$key]['domain'] =  "dds" ;
+                        break ;
+                    case "redschift3d":
+                    case "redgiant":
+                        $rankings[$key]['domain'] =  "maxon" ;
+                        break ;
+                    case "dsndata":
+                        $rankings[$key]['domain'] =  "sds2" ;
+                        break ;
+                    case "dexma":
+                        $rankings[$key]['domain'] =  "spacewell" ;
+                        break ;
+                    default:
+                        $rankings[$key]['domain'] =  $domain[0] ;
+                }
+
 
                 if (  $lastGame ) {
                     /** @var Bet $bet */

@@ -139,7 +139,41 @@ class BetRepository extends BaseRepository
                     // is nemetschek ONE user Group 44 then By Company means by Email Domain !
                     if ( in_array( "44" , explode(  "," , $GLOBALS['TSFE']->fe_user->user['usergroup'] ))){
                         if( $subfilter ) {
-                            return " AND u.email like '%@" .  $subfilter .".%'" ;
+
+                            switch ($subfilter) {
+                                case "allplan":
+                                case "allplan-dev":
+                                case "allplan-infra":
+                                case "precast-software":
+                                    return " AND ( u.email like '%@allplan.%' OR u.email like '%@allplan-infra.%' OR  u.email like '%@nemetschek.de' OR " .
+                                        " u.email like '%@allplan-dev.%' OR u.email like '%@precast-software.%' ) ";
+                                    break ;
+
+                                case "dds":
+                                case "dds-cad":
+                                    return " AND ( u.email like '%@dds.%' OR u.email like '%@dds-cad.%' ) " ;
+                                    break ;
+                                case "nemetschek":
+                                    return " AND ( u.email like '%@nemetschek.com' ) " ;
+                                    break ;
+                                case "maxon":
+                                case "redschift3d":
+                                case "redgiant":
+                                    return " AND ( u.email like '%@maxon.%' OR u.email like '%@redschift3d.%' OR u.email like '%@redgiant.%'   ) " ;
+                                    break ;
+
+                                case "dsndata":
+                                    return " AND ( u.email like '%@dsndata.%' OR u.email like '%@sds2.%' ) " ;
+                                    break ;
+
+                                case "dexma":
+                                    return " AND ( u.email like '%@spacewell.%' OR u.email like '%@dexma.%' ) " ;
+                                    break ;
+
+                                default:
+                                    return " AND ( u.email like '%@" . $subfilter . ".%' ) " ;
+                            }
+
                         }
 
                         // OR ONLY Members of his Own Company ?
