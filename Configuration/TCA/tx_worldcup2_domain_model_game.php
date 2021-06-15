@@ -12,7 +12,7 @@ return [
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'delete' => 'deleted',
-        "default_sortby" => "playtime ASC",
+        "default_sortby" => "finished ASC, playtime ASC",
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
