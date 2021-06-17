@@ -116,7 +116,7 @@
                             </span>
                             <span class="col-xs-1 p-1" title="Got {ranking.points} with {ranking.BetsTotal} Bets">{ranking.points}</span>
                             <span class="col-xs-2 col-sm-1 p-1 ">
-                                <f:if condition="{ranking.nextBet}">{ranking.nextBet.goalsTeam1}:{ranking.nextBet.goalsTeam1} </f:if>
+                                <f:if condition="{ranking.nextBet}">{ranking.nextBet.goalsTeam1}:{ranking.nextBet.goalsTeam2} </f:if>
                             </span>
                             <f:render section="lastgame" arguments="{bet: ranking.lastBet, class: ' col-xs-2 col-sm-1 '}"/>
                             <f:render section="lastgame" arguments="{bet: ranking.secondBet, class: ' col-xs-2 col-sm-1'}"/>
