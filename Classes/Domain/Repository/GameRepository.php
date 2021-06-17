@@ -51,10 +51,8 @@ class GameRepository extends BaseRepository
 
         $constraints = [] ;
         $now = new \DateTime("now") ;
-        $constraints[] = $query->lessThanOrEqual('playtime' , $now->modify("-1 hour") ) ;
+        $constraints[] = $query->lessThanOrEqual('playtime' , $now->modify("-1 minute") ) ;
         $constraints[] = $query->equals('finished' , 1 ) ;
-
-   //     $constraints[] = $query->equals('finished' , 1 ) ;
 
         if( $notUid > 0 ) {
             $constraints[] = $query->logicalOr( [$query->lessThan('uid' , $notUid )
@@ -64,6 +62,29 @@ class GameRepository extends BaseRepository
 
         $query->setLimit(1) ;
          //    $this->debugQuery($query) ;
+        return $query->execute() ;
+    }
+
+    public function findNextGame( $notUid=0 ) {
+        $query = $this->createQuery() ;
+        $query->getQuerySettings()->setRespectStoragePage(FALSE);
+        $query->getQuerySettings()->setRespectSysLanguage(FALSE);
+        $query->setOrderings( [ 'playtime' => QueryInterface::ORDER_ASCENDING]) ;
+
+        $constraints = [] ;
+        $constraints[] = $query->equals('finished' , 0 ) ;
+        $now = new \DateTime("now") ;
+        $now2 = new \DateTime("now") ;
+        $constraints[] = $query->greaterThanOrEqual('playtime' , $now->modify("-60 minute") ) ;
+        $constraints[] = $query->lessThanOrEqual('playtime' , $now2->modify("+90 minute") ) ;
+
+        if( $notUid > 0 ) {
+            $constraints[] = $query->logicalOr( [$query->lessThan('uid' , $notUid )
+                ,  $query->greaterThan('uid' , $notUid ) ] ) ;
+        }
+        $query->matching($query->logicalAnd($constraints));
+
+        $query->setLimit(1) ;
         return $query->execute() ;
     }
 

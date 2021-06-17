@@ -6,7 +6,7 @@
                     <f:variable name="buttonClass">btn-primary</f:variable>
                     <f:if condition="{game.userbet}"><f:variable name="buttonClass">btn-default</f:variable></f:if>
                     <span class="ml-2 btn btn-xs {buttonClass}" data-target="#worldcup-modal-{game.uid}" data-toggle="modal">
-                        <span class="far fa-edit"> </span> <f:translate key="bet">Bet</f:translate>
+                        <span class="far fa-edit"> </span> <span class="hidden-xs"><f:translate key="bet">Bet</f:translate></span>
                     </span>
                     <!-- Modal -->
                     <div class="modal fade" id="worldcup-modal-{game.uid}" tabindex="-1" role="dialog"  aria-hidden="true">

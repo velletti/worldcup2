@@ -10,18 +10,21 @@
     <div data-template="extension">
         <f:render partial="Steps" arguments="{stepindicators: stepindicators}"></f:render>
         <div id="worldcup-msg" class="alert alert-info hidden"></div>
-
+        <f:variable name="now"><f:format.date date="now" format="H:i:s"/></f:variable>
         <f:if condition="{currentUser}">
             <f:if condition="{requestedUser}">
                 <f:then>
-                    <h3> <f:translate key="tx_worldcup2_domain_model_bet.feuser"/>: <f:if condition="{settings.showFullname}">
-                        <f:then>{requestedUser.nemFirstname} {requestedUser.nemLastname}</f:then>
-                        <f:else>{requestedUser.username} </f:else>
-                        </f:if>
+
+                    <h3><f:link.external uri="/user/{requestedUser.username}">[{now}]:  <f:translate key="tx_worldcup2_domain_model_bet.feuser"/>: <f:if condition="{settings.showFullname}">
+                            <f:then>{requestedUser.nemFirstname} {requestedUser.nemLastname}</f:then>
+                            <f:else>{requestedUser.username} </f:else>
+                            </f:if>
+                        </f:link.external>
                     </h3>
+
                 </f:then>
                 <f:else>
-                    <h3><f:translate key="tx_worldcup2_domain_model_bet.feuser"/>:  <f:if condition="{settings.showFullname}">
+                    <h3>[{now}]: <f:translate key="tx_worldcup2_domain_model_bet.feuser"/>:  <f:if condition="{settings.showFullname}">
                         <f:then>{currentUser.nemFirstname} {currentUser.nemLastname}</f:then>
                         <f:else>{currentUser.username}  {currentUser.nemFirstname} {currentUser.nemLastname} </f:else>
                     </f:if></h3>

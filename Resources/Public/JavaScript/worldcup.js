@@ -15,8 +15,10 @@
         data: '&tx_worldcup2_ajax[game]=' + gameId +  "&tx_worldcup2_ajax[pid]=" + ajaxCurrentPageUid + '&tx_worldcup2_ajax[goal1]=' +  goal1 +  '&tx_worldcup2_ajax[goal2]=' +  goal2 ,
 
         before: function() {
+          $("#worldcup-result-" + gameId + " .worldcup_team1").html( "..") ;
+          $("#worldcup-result-" + gameId + " .worldcup_team2").html( ".." ) ;
           // $("#worldcup-result-" + gameId ).html("#####") ;
-          $("#worldcup-result-" + gameId ).html("<span class='fa fa-spinner fa-spin'></span>") ;
+          // $("#worldcup-result-" + gameId ).html("<span class='fa fa-spinner fa-spin'></span>") ;
         } ,
         success: function(response) {
           let json = JSON.parse(response)
@@ -38,11 +40,13 @@
           let json = JSON.parse(response)
           $("#worldcup-result-" + gameId ).html( json.result ) ;
           alert("error" + json.msg);
+          location.reload() ;
         },
         error: function(response) {
           let json = JSON.parse(response)
           $("#worldcup-result-" + gameId ).html( json.result ) ;
           alert("Undefined error");
+          location.reload() ;
         }
       })
     }

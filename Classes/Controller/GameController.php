@@ -377,6 +377,16 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             }
             $this->view->assign("lastGameText" ,  $lastGameText ) ;
             $this->view->assign("secondGameText" ,  $secondGameText ) ;
+
+            /** @var Game $nextGame */
+            $nextGame = $this->gameRepository->findNextGame()->getFirst() ;
+            if ($nextGame && $nextGame->isGameStartingSoon() ) {
+                $this->view->assign("nextGame" ,  $nextGame ) ;
+            } else {
+                $nextGame = false ;
+                $this->view->assign("nextGame" ,  $nextGame ) ;
+            }
+
             $this->view->assign("start" ,  $start ) ;
 
             $start++ ;
@@ -436,6 +446,20 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
                 } else {
                     $rankings[$key]['secondBet'] = false ;
+                }
+
+                if (  $nextGame ) {
+                    /** @var Bet $bet */
+                    $bet = $this->betRepository->findByGameAndUser($nextGame->getUid() , $row['uid'] , $this->betPid ) ;
+                    if ( $bet ) {
+
+                        $rankings[$key]['nextBet']['game'] = $nextGame->getUid()  ;
+                        $rankings[$key]['nextBet']['goalsTeam1'] = $bet->getGoalsteam1() ;
+                        $rankings[$key]['nextBet']['goalsTeam2'] = $bet->getGoalsteam2() ;
+                    }
+
+                } else {
+                    $rankings[$key]['nextBet'] = false ;
                 }
             }
         }

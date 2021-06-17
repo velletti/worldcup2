@@ -113,7 +113,7 @@ class Ajax implements MiddlewareInterface
                             $output['bet'] = $bet->getUid() ;
                             $output['status'] = 200 ;
                             $output['msg'] = 'status.betUpdated' ;
-                            $output['result'] = $output['input']['goal1'] . ":" . $output['input']['goal2'];
+                            $output['result'] = $bet->getGoalsteam1() . ":" . $bet->getGoalsteam2();
                         }
                     } else {
                         $output['debug'][__LINE__] = "new bet " ;
@@ -130,26 +130,35 @@ class Ajax implements MiddlewareInterface
                             // This may not happen: A bet may giv only points when not running.
                             $output['status'] = 500 ;
                             $output['msg'] = 'error.betPointsGreaterNull' ;
-                            $output['result'] = "<i class='fa fa-stop-circle'></i>" ;
+                            $output['result'] = "<i class='fa fa-stop-circle'>!</i>" ;
                         } else {
                             $output['debug'][__LINE__] = "bet added" ;
                             $betRepository->add($bet) ;
                             $persistenceManager->persistAll() ;
 
-                            $output['bet'] = $bet->getUid() ;
-                            $output['status'] = 200 ;
-                            $output['msg'] = 'status.betInserted' ;
+                            if ( $bet->getUid()  ) {
+                                $output['bet'] = $bet->getUid() ;
+                                $output['status'] = 200 ;
+                                $output['msg'] = 'status.betInserted' ;
+                                $output['result'] = $bet->getGoalsteam1() . ":" . $bet->getGoalsteam2();
+                            } else {
+                                $output['bet'] = 0;
+                                $output['status'] = 500 ;
+                                $output['msg'] = 'status.unknownError' ;
+                                $output['result'] = "<i class='fa fa-stop-circle'>!</i>" ;
+                            }
+
                         }
                     }
                 } else {
                     $output['status'] = 401 ;
                     $output['msg'] = "error.toolate" ;
-                    $output['result'] = "<i class='fa fa-stop-circle'></i>" ;
+                    $output['result'] = "<i class='fa fa-stop-circle'>!</i>" ;
                 }
             } else {
                     $output['status'] = 401 ;
                     $output['msg'] = "error.nogame" ;
-                $output['result'] = "<i class='fa fa-stop-circle'></i>" ;
+                $output['result'] = "<i class='fa fa-stop-circle'>!</i>" ;
             }
 
 
@@ -157,11 +166,10 @@ class Ajax implements MiddlewareInterface
 
         } else {
             $output['status'] = 401 ;
-            $output['result'] = "<i class='fa fa-stop-circle'></i>" ;
+            $output['result'] = "<i class='fa fa-stop-circle'>!</i>" ;
             $output['msg'] = "error.nouser" ;
         }
-
-       // unset($output['debug']) ;
+        unset($output['debug']) ;
         return $output ;
     }
     private function cleanInput($var , $max = 99999 ) {
