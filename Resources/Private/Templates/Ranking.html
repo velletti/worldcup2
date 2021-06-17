@@ -59,6 +59,7 @@
                     <f:if condition="{filter}">
                         <f:if condition="{ranking.pos} < 11">
                             <f:then>
+                                <f:if condition="{ranking.BetsTotal} > 10">
                                 <f:variable name="best10">{best10 + ranking.points}</f:variable>
                                 <f:variable name="best10count">{best10count + 1}</f:variable>
                             </f:then>
