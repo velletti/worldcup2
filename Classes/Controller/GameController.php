@@ -380,8 +380,19 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
             /** @var Game $nextGame */
             $nextGame = $this->gameRepository->findNextGame()->getFirst() ;
+            $nextOtherGame = false ;
+
             if ($nextGame && $nextGame->isGameStartingSoon() ) {
                 $this->view->assign("nextGame" ,  $nextGame ) ;
+
+                /** @var Game $nextOtherGame */
+                $nextOtherGame = $this->gameRepository->findNextGame()->getFirst($nextGame->getUid() ) ;
+                if ($nextOtherGame && $nextOtherGame->isGameStartingSoon() ) {
+                    $this->view->assign("nextOtherGame" ,  $nextOtherGame ) ;
+                } else {
+                    $nextOtherGame = false ;
+                    $this->view->assign("nextOtherGame" ,  $nextOtherGame ) ;
+                }
             } else {
                 $nextGame = false ;
                 $this->view->assign("nextGame" ,  $nextGame ) ;
@@ -452,7 +463,6 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                     /** @var Bet $bet */
                     $bet = $this->betRepository->findByGameAndUser($nextGame->getUid() , $row['uid'] , $this->betPid ) ;
                     if ( $bet ) {
-
                         $rankings[$key]['nextBet']['game'] = $nextGame->getUid()  ;
                         $rankings[$key]['nextBet']['goalsTeam1'] = $bet->getGoalsteam1() ;
                         $rankings[$key]['nextBet']['goalsTeam2'] = $bet->getGoalsteam2() ;
@@ -460,6 +470,19 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
                 } else {
                     $rankings[$key]['nextBet'] = false ;
+                }
+
+                if (  $nextOtherGame ) {
+                    /** @var Bet $bet */
+                    $bet = $this->betRepository->findByGameAndUser($nextOtherGame->getUid() , $row['uid'] , $this->betPid ) ;
+                    if ( $bet ) {
+                        $rankings[$key]['nextOtherBet']['game'] = $nextOtherGame->getUid()  ;
+                        $rankings[$key]['nextOtherBet']['goalsTeam1'] = $bet->getGoalsteam1() ;
+                        $rankings[$key]['nextOtherBet']['goalsTeam2'] = $bet->getGoalsteam2() ;
+                    }
+
+                } else {
+                    $rankings[$key]['nextOtherBet'] = false ;
                 }
             }
         }

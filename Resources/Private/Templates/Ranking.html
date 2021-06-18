@@ -32,24 +32,34 @@
                         <span class="col-xs-2 p-1 bold">Pos</span>
                         <span class="col-xs-3 col-sm-3 p-1 worldcup-player bold">Player</span>
                         <span class="col-xs-1 p-1 bold">#</span>
-                        <span class="col-xs-2 col-sm-1" title="Next Game (starting soon or still running)">
-                            <f:if condition="{nextGame}">
-                                <f:render partial="Flag" arguments="{team: nextGame.team1}"/><span class="hidden-xs">:</span><f:render partial="Flag" arguments="{team: nextGame.team2}"/>
-                                <br>
-                                --:--
-                            </f:if>
+                        <span class="col-xs-6 col-sm-5">
 
+                            <span class="col-xs-3" title="Next Game (starting soon or still running)">
+                                <f:if condition="{nextGame}">
+                                    <f:render partial="Flag" arguments="{team: nextGame.team1}"/><span class="hidden-xs">:</span><f:render partial="Flag" arguments="{team: nextGame.team2}"/>
+                                    <br>
+                                    --:--
+                                </f:if>
+                            </span>
+                            <span class="col-xs-3" title="Next Game 2 (starting soon or still running)">
+                                <f:if condition="{nextOtherGame}">
+                                    <f:render partial="Flag" arguments="{team: nextOtherGame.team1}"/><span class="hidden-xs">:</span><f:render partial="Flag" arguments="{team: nextOtherGame.team2}"/>
+                                    <br>
+                                    --:--
+                                </f:if>
+                            </span>
+                            <span class="col-xs-3" title="{lastGameText}">
+                                <f:render partial="Flag" arguments="{team: lastGame.team1}"/><span class="hidden-xs">:</span><f:render partial="Flag" arguments="{team: lastGame.team2}"/>
+                                <br>
+                                {lastGame.goalsteam1}:{lastGame.goalsteam2}
+                            </span>
+                            <span class="col-xs-3" title="{secondGameText}">
+                                <f:render partial="Flag" arguments="{team: secondGame.team1}"/><span class="hidden-xs">:</span><f:render partial="Flag" arguments="{team: secondGame.team2}"/>
+                                <br>
+                                {secondGame.goalsteam1}:{secondGame.goalsteam2}
+                            </span>
                         </span>
-                        <span class="col-xs-2 col-sm-1" title="{lastGameText}">
-                            <f:render partial="Flag" arguments="{team: lastGame.team1}"/><span class="hidden-xs">:</span><f:render partial="Flag" arguments="{team: lastGame.team2}"/>
-                            <br>
-                            {lastGame.goalsteam1}:{lastGame.goalsteam2}
-                        </span>
-                        <span class="col-xs-2 col-sm-1" title="{secondGameText}">
-                            <f:render partial="Flag" arguments="{team: secondGame.team1}"/><span class="hidden-xs">:</span><f:render partial="Flag" arguments="{team: secondGame.team2}"/>
-                            <br>
-                            {secondGame.goalsteam1}:{secondGame.goalsteam2}
-                        </span>
+
                     </f:spaceless>
                 </div>
                 <f:variable name="best10">0</f:variable>
@@ -115,11 +125,17 @@
                              </f:link.page>
                             </span>
                             <span class="col-xs-1 p-1" title="Got {ranking.points} with {ranking.BetsTotal} Bets">{ranking.points}</span>
-                            <span class="col-xs-2 col-sm-1 p-1 ">
-                                <f:if condition="{ranking.nextBet}">{ranking.nextBet.goalsTeam1}:{ranking.nextBet.goalsTeam2} </f:if>
+
+                            <span class="col-xs-6 col-sm-5 ">
+                                <span class="col-xs-3  p-1 ">
+                                    <f:if condition="{ranking.nextBet}">{ranking.nextBet.goalsTeam1}:{ranking.nextBet.goalsTeam2} </f:if>
+                                </span>
+                                <span class="col-xs-3  p-1 ">
+                                    <f:if condition="{ranking.nextOtherBet}">{ranking.nextOtherBet.goalsTeam1}:{ranking.nextOtherBet.goalsTeam2} </f:if>
+                                </span>
+                                <f:render section="lastgame" arguments="{bet: ranking.lastBet, class: ' col-xs-3 '}"/>
+                                <f:render section="lastgame" arguments="{bet: ranking.secondBet, class: ' col-xs-3 '}"/>
                             </span>
-                            <f:render section="lastgame" arguments="{bet: ranking.lastBet, class: ' col-xs-2 col-sm-1 '}"/>
-                            <f:render section="lastgame" arguments="{bet: ranking.secondBet, class: ' col-xs-2 col-sm-1'}"/>
                         </f:spaceless>
                     </div>
                 </f:for>
