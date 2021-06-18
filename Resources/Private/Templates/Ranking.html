@@ -32,20 +32,20 @@
                         <span class="col-xs-2 p-1 bold">Pos</span>
                         <span class="col-xs-3 col-sm-3 p-1 worldcup-player bold">Player</span>
                         <span class="col-xs-1 p-1 bold">#</span>
-                        <span class="col-xs-6 col-sm-5">
+                        <span class="col-xs-6 col-sm-5  p-0 m-0">
 
                             <span class="col-xs-3" title="Next Game (starting soon or still running)">
                                 <f:if condition="{nextGame}">
                                     <f:render partial="Flag" arguments="{team: nextGame.team1}"/><span class="hidden-xs">:</span><f:render partial="Flag" arguments="{team: nextGame.team2}"/>
                                     <br>
-                                    --:--
+                                    -:-
                                 </f:if>
                             </span>
                             <span class="col-xs-3" title="Next Game 2 (starting soon or still running)">
                                 <f:if condition="{nextOtherGame}">
                                     <f:render partial="Flag" arguments="{team: nextOtherGame.team1}"/><span class="hidden-xs">:</span><f:render partial="Flag" arguments="{team: nextOtherGame.team2}"/>
                                     <br>
-                                    --:--
+                                    -:-
                                 </f:if>
                             </span>
                             <span class="col-xs-3" title="{lastGameText}">
@@ -126,7 +126,7 @@
                             </span>
                             <span class="col-xs-1 p-1" title="Got {ranking.points} with {ranking.BetsTotal} Bets">{ranking.points}</span>
 
-                            <span class="col-xs-6 col-sm-5 ">
+                            <span class="col-xs-6 col-sm-5 p-0 m-0">
                                 <span class="col-xs-3  p-1 ">
                                     <f:if condition="{ranking.nextBet}">{ranking.nextBet.goalsTeam1}:{ranking.nextBet.goalsTeam2} </f:if>
                                 </span>

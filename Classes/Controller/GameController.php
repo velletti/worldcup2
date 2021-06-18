@@ -386,7 +386,7 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 $this->view->assign("nextGame" ,  $nextGame ) ;
 
                 /** @var Game $nextOtherGame */
-                $nextOtherGame = $this->gameRepository->findNextGame()->getFirst($nextGame->getUid() ) ;
+                $nextOtherGame = $this->gameRepository->findNextGame($nextGame->getUid())->getFirst( ) ;
                 if ($nextOtherGame && $nextOtherGame->isGameStartingSoon() ) {
                     $this->view->assign("nextOtherGame" ,  $nextOtherGame ) ;
                 } else {
