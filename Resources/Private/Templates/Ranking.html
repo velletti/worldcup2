@@ -28,11 +28,13 @@
             <f:then>
                 <div class="row  worldcup-game worldcup-gametitle alert alert-default">
                     <f:spaceless>
-                        <span class="col-xs-1 p-1 hidden-xs"> </span>
-                        <span class="col-xs-2 p-1 bold">Pos</span>
-                        <span class="col-xs-3 col-sm-3 p-1 worldcup-player bold">Player</span>
-                        <span class="col-xs-1 p-1 bold">#</span>
-                        <span class="col-xs-6 col-sm-5  p-0 m-0">
+                        <span class="col-xs-5 col-sm-6 p-0 m-0">
+                            <span class="col-xs-1 p-1 hidden-xs"> </span>
+                            <span class="col-xs-3 p-1 bold">Pos</span>
+                            <span class="col-xs-5 col-sm-5 p-1 worldcup-player bold">Player</span>
+                            <span class="col-xs-2 p-1 bold">#</span>
+                        </span>
+                        <span class="col-xs-7 col-sm-6  p-0 m-0">
 
                             <span class="col-xs-3" title="Next Game (starting soon or still running)">
                                 <f:if condition="{nextGame}">
@@ -91,42 +93,43 @@
 
                     <div class="row worldcup-ranking {f:if(condition: '{ranking.uid} == {currentUser.id}' , then: ' alert alert-info mt-0 mb-0 p-0 ')}">
                         <f:spaceless>
-                            <span class="col-xs-1 p-1 hidden-xs">
-                                 <f:if condition="{settings.flexform.showDomain}">
-                                     <f:then>
-                                        <i class="userIcon userIcon-small {ranking.usericon}" alt="icon" title="{f:translate(key: 'LLL:EXT:nemconnections.{ranking.usericon}_public_view')}"></i>
-                                     </f:then>
-                                     <f:else>
-                                        <f:link.page additionalParams="{tx_worldcup2_play: {filter: 'USERTYP'}}">
+                            <span class="col-xs-5 col-sm-6 p-0 m-0">
+                                <span class="col-xs-1 p-1 hidden-xs">
+                                     <f:if condition="{settings.flexform.showDomain}">
+                                         <f:then>
                                             <i class="userIcon userIcon-small {ranking.usericon}" alt="icon" title="{f:translate(key: 'LLL:EXT:nemconnections.{ranking.usericon}_public_view')}"></i>
-                                        </f:link.page>
-                                     </f:else>
-                                 </f:if>
-                            </span>
+                                         </f:then>
+                                         <f:else>
+                                            <f:link.page additionalParams="{tx_worldcup2_play: {filter: 'USERTYP'}}">
+                                                <i class="userIcon userIcon-small {ranking.usericon}" alt="icon" title="{f:translate(key: 'LLL:EXT:nemconnections.{ranking.usericon}_public_view')}"></i>
+                                            </f:link.page>
+                                         </f:else>
+                                     </f:if>
+                                </span>
 
-                            <span class="col-xs-1 p-1 bold">{ranking.pos}</span>
-                            <span class="col-xs-1 p-1">
-                                <f:link.page additionalParams="{tx_worldcup2_play: {filter: 'COUNTRY-{ranking.flag}'}}">
-                                    <i class="flag flag-{ranking.flag}" title="{ranking.flag}"></i>
-                                </f:link.page>
-                            </span>
-                            <span class="col-xs-3 col-sm-3 p-1 worldcup-player">
-                                <f:if condition="{settings.flexform.showDomain}">
-                                    <f:link.page additionalParams="{tx_worldcup2_play: {filter: 'KD-NUM--{ranking.domain}'}}">
-                                        [<f:format.crop maxCharacters="3" append="">{ranking.domain}</f:format.crop>]
+                                <span class="col-xs-2 p-1 bold">{ranking.pos}</span>
+                                <span class="col-xs-2 p-1">
+                                    <f:link.page additionalParams="{tx_worldcup2_play: {filter: 'COUNTRY-{ranking.flag}'}}">
+                                        <i class="flag flag-{ranking.flag}" title="{ranking.flag}"></i>
                                     </f:link.page>
-                                </f:if>
-                                <f:link.page  pageUid="{settings.pids.listgames}"
-                                             additionalParams="{tx_worldcup2_play: {user: ranking.uid}}" title="{ranking.uid}: {ranking.username}">
-                                        <f:if condition="{settings.showFullname}">
-                                            <f:then> <f:format.crop maxCharacters="12">{ranking.tx_nem_firstname} {ranking.tx_nem_lastname}</f:format.crop></f:then>
-                                            <f:else> <span class="hidden-xs">{ranking.username}</span> <span class="hidden-sm hidden-md hidden-lg"><f:format.crop maxCharacters="10" append="">{ranking.username}</f:format.crop></f:else>
-                                        </f:if>
-                             </f:link.page>
+                                </span>
+                                <span class="col-xs-5 col-sm-4 p-1 worldcup-player">
+                                    <f:if condition="{settings.flexform.showDomain}">
+                                        <f:link.page additionalParams="{tx_worldcup2_play: {filter: 'KD-NUM--{ranking.domain}'}}">
+                                            [<f:format.crop maxCharacters="3" append="">{ranking.domain}</f:format.crop>]
+                                        </f:link.page>
+                                    </f:if>
+                                    <f:link.page  pageUid="{settings.pids.listgames}"
+                                                 additionalParams="{tx_worldcup2_play: {user: ranking.uid}}" title="{ranking.uid}: {ranking.username}">
+                                            <f:if condition="{settings.showFullname}">
+                                                <f:then> <f:format.crop maxCharacters="12">{ranking.tx_nem_firstname} {ranking.tx_nem_lastname}</f:format.crop></f:then>
+                                                <f:else><span class="hidden-sm hidden-md hidden-lg"><f:format.crop maxCharacters="8" append="">{ranking.username}</f:format.crop></span><span class="hidden-xs">{ranking.username}</span></f:else>
+                                            </f:if>
+                                    </f:link.page>
+                                </span>
+                                <span class="col-xs-2 p-1" title="Got {ranking.points} with {ranking.BetsTotal} Bets">{ranking.points}</span>
                             </span>
-                            <span class="col-xs-1 p-1" title="Got {ranking.points} with {ranking.BetsTotal} Bets">{ranking.points}</span>
-
-                            <span class="col-xs-6 col-sm-5 p-0 m-0">
+                            <span class="col-xs-7 col-sm-6 p-0 m-0">
                                 <span class="col-xs-3  p-1 ">
                                     <f:if condition="{ranking.nextBet}">{ranking.nextBet.goalsTeam1}:{ranking.nextBet.goalsTeam2} </f:if>
                                 </span>
