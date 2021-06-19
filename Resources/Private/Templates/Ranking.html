@@ -67,6 +67,7 @@
                 <f:variable name="best10">0</f:variable>
                 <f:variable name="best10count">0</f:variable>
                 <f:variable name="best10shown">false</f:variable>
+                <f:variable name="best10newpoints">0</f:variable>
                 <f:for as="ranking" each="{rankings}">
                     <f:if condition="{filter}">
                         <f:if condition="{ranking.pos} < 11">
@@ -74,6 +75,13 @@
                                 <f:if condition="{ranking.BetsTotal} > 10">
                                     <f:variable name="best10">{best10 + ranking.points}</f:variable>
                                     <f:variable name="best10count">{best10count + 1}</f:variable>
+                                    <f:if condition="{ranking.lastBet} &&  {ranking.lastBet.points} > 0">
+                                        <f:variable name="best10newpoints">{best10newpoints + ranking.lastBet.points}</f:variable>
+                                    </f:if>
+                                    <f:if condition="{ranking.secondBet} && {ranking.secondBet.points} > 0">
+                                        <f:variable name="best10newpoints">{best10newpoints + ranking.secondBet.points}</f:variable>
+                                    </f:if>
+
                                 </f:if>
                             </f:then>
                             <f:else>
@@ -82,7 +90,7 @@
                                         <f:variable name="best10shown">true</f:variable>
                                         <div class="row worldcup-ranking mt-1">
                                             <div class="alert alert-info">
-                                                "Best {best10count}" players reached <b>{best10}</b> Points. <f:if condition="{best10count}">(<f:format.number decimals="1">{best10/best10count}</f:format.number> Ø)</f:if>
+                                                "Best {best10count}" players reached <b>{best10}</b> Points. <f:if condition="{best10count}">(<f:format.number decimals="1">{best10/best10count}</f:format.number> Ø) | +{best10newpoints} </f:if>
                                             </div>
                                         </div>
                                     </f:else>
@@ -90,7 +98,6 @@
                             </f:else>
                         </f:if>
                     </f:if>
-
                     <div class="row worldcup-ranking {f:if(condition: '{ranking.uid} == {currentUser.id}' , then: ' alert alert-info mt-0 mb-0 p-0 ')}">
                         <f:spaceless>
                             <div class="col-xs-5 col-sm-6 p-0 m-0">
@@ -155,7 +162,7 @@
                         <f:if condition="{best10shown}">
                             <f:else>
                                 <div class="alert alert-info">
-                                    "Best {best10count}" players reached <b>{best10}</b> Points. <f:if condition="{best10count}">(<f:format.number decimals="1">{best10/best10count}</f:format.number> Ø)</f:if>
+                                    "Best {best10count}" players reached <b>{best10} (+{best10newpoints})</b> Points. <f:if condition="{best10count}">(<f:format.number decimals="1">{best10/best10count}</f:format.number> Ø) </f:if>
                                 </div>
                             </f:else>
                         </f:if>
