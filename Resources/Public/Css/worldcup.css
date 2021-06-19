@@ -8,6 +8,7 @@
     padding-left: 7px;
     padding-right: 7px;
 }
+
 .worldcup-gametitle {
     border-bottom: 1px solid #d1d1d1;
 }
@@ -31,12 +32,15 @@
     text-align: left ;
 }
 
-.worldcup2 .worldcup-player{
+.worldcup2 .worldcup-player ,
+.worldcup2 .worldcup-player span {
     text-align: left ;
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: 0;
+    padding-right: 0;
 }
-
+.worldcup-ranking {
+    margin-bottom: 8px;
+}
 .worldcup-flags {
     width: 7%;
     text-align: center;
