@@ -5,6 +5,8 @@
 .worldcup2 span {
     display: inline-table;
     text-align: center;
+    padding-left: 7px;
+    padding-right: 7px;
 }
 .worldcup-gametitle {
     border-bottom: 1px solid #d1d1d1;
@@ -31,6 +33,8 @@
 
 .worldcup2 .worldcup-player{
     text-align: left ;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 .worldcup-flags {
