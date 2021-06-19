@@ -25,10 +25,14 @@
 .worldcup-team {
     width: 18%;
 }
+.worldcup2 span.worldcup_team1 ,
 .worldcup2 span.worldcup-team1 {
+    padding: 0;
     text-align: right ;
 }
+.worldcup2 span.worldcup_team2 ,
 .worldcup2 span.worldcup-team2 {
+    padding: 0;
     text-align: left ;
 }
 
@@ -55,8 +59,8 @@
 .xs .worldcup-result {
     width: 20%;
 }
-.worldcup-points {
+span.worldcup-points {
     width: 15%;
-
+    padding:0;
 }
 .xs
