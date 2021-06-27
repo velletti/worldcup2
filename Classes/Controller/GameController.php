@@ -446,28 +446,28 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 $rankings[$key]['userType'] = "Other" ;
                 $rankings[$key]['userFilter'] = false ;
                 if ($rankings[$key]['usericon'] == "Group_32_student" ) {
-                    $rankings[$key]['userType'] = "Student" ;
+                    $rankings[$key]['userType'] = "Stud" ;
                     $rankings[$key]['userFilter'] = "USERTYP-32" ;
                 }
                 if ($rankings[$key]['usericon'] == "Group_17_nemdirect" ) {
-                    $rankings[$key]['userType'] = "PartnerMA" ;
+                    $rankings[$key]['userType'] = "Partner" ;
                     $rankings[$key]['userFilter'] = "USERTYP-7" ;
                 }
                 if ($rankings[$key]['usericon'] == "Group_3_SP"  ) {
-                    $rankings[$key]['userType'] = "S+Customer" ;
+                    $rankings[$key]['userType'] = "S+Cust" ;
                     $rankings[$key]['userFilter'] = "USERTYP-3" ;
                 }
                 if ($rankings[$key]['usericon'] == "Group_11_Lic" ) {
-                    $rankings[$key]['userType'] = "Customer" ;
+                    $rankings[$key]['userType'] = "Cust" ;
                     $rankings[$key]['userFilter'] = "USERTYP-11" ;
                 }
                 if ($rankings[$key]['tx_mmforum_post_count'] > 49 ) {
-                    $rankings[$key]['userType'] = "ForumUser" ;
+                    $rankings[$key]['userType'] = "Forum" ;
                     $rankings[$key]['userFilter'] = "FORUM-U" ;
                 }
 
                 if ($rankings[$key]['tx_mmforum_helpful_count_season'] > 9 ) {
-                    $rankings[$key]['userType'] = "ForumHelper" ;
+                    $rankings[$key]['userType'] = "Special" ;
                     $rankings[$key]['userFilter'] = "FORUM-H" ;
                 }
 
