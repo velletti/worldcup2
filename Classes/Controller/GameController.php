@@ -165,6 +165,9 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     {
         $pid = intval($this->settings['pids']['storagePID']) > 0 ? intval($this->settings['pids']['storagePID']) : $GLOBALS['TSFE']->id;
         $this->betPid = intval($this->settings['pids']['userbetPID']) ;
+        $this->view->assign("userbetPID" , $this->betPid  ) ;
+        $this->view->assign("gamesPID" , $pid  ) ;
+
         if( $this->betPid < 1 ) {
             $this->betPid = $pid ;
         }
@@ -181,7 +184,16 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         }
         $playersCountSql = $this->betRepository->getPlayersCountSql($this->betPid ) ;
 
-        $rankingSelectSql = $this->betRepository->getRankingSelectSql($this->betPid ) ;
+        $goals = $this->gameRepository->getGoalsCount($pid) ;
+        $goalsTotal = 0 ;
+        if( $goals) {
+            $this->view->assign("goalsteam1" , $goals[0]['goalsteam1'] ) ;
+            $this->view->assign("goalsteam2" , $goals[0]['goalsteam2'] ) ;
+            $this->view->assign("goalsTotal" , $goals[0]['goalsteam1'] + $goals[0]['goalsteam2'] ) ;
+            $goalsTotal = $goals[0]['goalsteam1'] + $goals[0]['goalsteam2'] ;
+        }
+
+        $rankingSelectSql = $this->betRepository->getRankingSelectSql($this->betPid , $goalsTotal ) ;
         $rankingFilterSql = $this->betRepository->getRankingFilterSql($betTeam) ;
         $rankingEndSql =   $this->betRepository->getRankingEndSql($pid) ;
 
@@ -199,7 +211,7 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
          var_dump($connection->executeQuery( $rankingSql )->fetchAllAssociative());
         die;
         */
-        $this->enhanceResult(  $connection->executeQuery( $rankingSql )->fetchAllAssociative() , $start ) ;
+        $this->enhanceResult(  $connection->executeQuery( $rankingSql )->fetchAllAssociative() , $start , $goalsTotal) ;
 
         if( $this->currentUser['id'] ) {
             $rankingSqlUser = $rankingSelectSql . " AND u.uid= " . $this->currentUser['id'] . " " . $rankingEndSql ;
@@ -345,7 +357,7 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @param array|null $rankings
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    private function enhanceResult( $rankings=null , $start=0 ) {
+    private function enhanceResult( $rankings=null , $start=0 , $goalsTotal=0) {
         if($this->request->hasArgument("user")) {
             $user = (int)$this->request->getArgument("user") ;
             $this->view->assign("requestedUser" , $user ) ;
@@ -353,6 +365,9 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $user = $this->currentUser['id'] ;
             $this->view->assign("requestedUser" , false ) ;
         }
+
+
+
         $secondGame = false ;
         /** @var Game $lastGame */
         $lastGame = $this->gameRepository->findLastGame()->getFirst() ;
@@ -382,21 +397,19 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $nextGame = $this->gameRepository->findNextGame()->getFirst() ;
             $nextOtherGame = false ;
 
-            if ($nextGame && $nextGame->isGameStartingSoon() ) {
+            if ($nextGame  ) {
                 $this->view->assign("nextGame" ,  $nextGame ) ;
 
                 /** @var Game $nextOtherGame */
                 $nextOtherGame = $this->gameRepository->findNextGame($nextGame->getUid())->getFirst( ) ;
-                if ($nextOtherGame && $nextOtherGame->isGameStartingSoon() ) {
-                    $this->view->assign("nextOtherGame" ,  $nextOtherGame ) ;
-                } else {
-                    $nextOtherGame = false ;
+                if ($nextOtherGame  ) {
                     $this->view->assign("nextOtherGame" ,  $nextOtherGame ) ;
                 }
             } else {
-                $nextGame = false ;
-                $this->view->assign("nextGame" ,  $nextGame ) ;
+                $this->view->assign("nextGame" ,  false ) ;
+                $this->view->assign("nextOtherGame" ,  false ) ;
             }
+
 
             $this->view->assign("start" ,  $start ) ;
 
@@ -429,6 +442,33 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                         break ;
                     default:
                         $rankings[$key]['domain'] =  $domain[0] ;
+                }
+                $rankings[$key]['userType'] = "Other" ;
+                $rankings[$key]['userFilter'] = false ;
+                if ($rankings[$key]['usericon'] == "Group_32_student" ) {
+                    $rankings[$key]['userType'] = "Student" ;
+                    $rankings[$key]['userFilter'] = "USERTYP-32" ;
+                }
+                if ($rankings[$key]['usericon'] == "Group_17_nemdirect" ) {
+                    $rankings[$key]['userType'] = "PartnerMA" ;
+                    $rankings[$key]['userFilter'] = "USERTYP-7" ;
+                }
+                if ($rankings[$key]['usericon'] == "Group_3_SP"  ) {
+                    $rankings[$key]['userType'] = "S+Customer" ;
+                    $rankings[$key]['userFilter'] = "USERTYP-3" ;
+                }
+                if ($rankings[$key]['usericon'] == "Group_11_Lic" ) {
+                    $rankings[$key]['userType'] = "Customer" ;
+                    $rankings[$key]['userFilter'] = "USERTYP-11" ;
+                }
+                if ($rankings[$key]['tx_mmforum_post_count'] > 49 ) {
+                    $rankings[$key]['userType'] = "ForumUser" ;
+                    $rankings[$key]['userFilter'] = "FORUM-U" ;
+                }
+
+                if ($rankings[$key]['tx_mmforum_helpful_count_season'] > 9 ) {
+                    $rankings[$key]['userType'] = "ForumHelper" ;
+                    $rankings[$key]['userFilter'] = "FORUM-H" ;
                 }
 
 
@@ -463,9 +503,17 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                     /** @var Bet $bet */
                     $bet = $this->betRepository->findByGameAndUser($nextGame->getUid() , $row['uid'] , $this->betPid ) ;
                     if ( $bet ) {
-                        $rankings[$key]['nextBet']['game'] = $nextGame->getUid()  ;
-                        $rankings[$key]['nextBet']['goalsTeam1'] = $bet->getGoalsteam1() ;
-                        $rankings[$key]['nextBet']['goalsTeam2'] = $bet->getGoalsteam2() ;
+                        if( $nextGame->isGameStartingSoon() ) {
+                            $rankings[$key]['nextBet']['game'] = $nextGame->getUid()  ;
+                            $rankings[$key]['nextBet']['goalsTeam1'] = $bet->getGoalsteam1() ;
+                            $rankings[$key]['nextBet']['goalsTeam2'] = $bet->getGoalsteam2() ;
+                        } else {
+                            $rankings[$key]['nextBet']['goalsTeam1'] = "??" ;
+                            $rankings[$key]['nextBet']['goalsTeam2'] = "??" ;
+                        }
+                    } else {
+                        $rankings[$key]['nextBet']['goalsTeam1'] = "" ;
+                        $rankings[$key]['nextBet']['goalsTeam2'] = "" ;
                     }
 
                 } else {
@@ -476,13 +524,31 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                     /** @var Bet $bet */
                     $bet = $this->betRepository->findByGameAndUser($nextOtherGame->getUid() , $row['uid'] , $this->betPid ) ;
                     if ( $bet ) {
-                        $rankings[$key]['nextOtherBet']['game'] = $nextOtherGame->getUid()  ;
-                        $rankings[$key]['nextOtherBet']['goalsTeam1'] = $bet->getGoalsteam1() ;
-                        $rankings[$key]['nextOtherBet']['goalsTeam2'] = $bet->getGoalsteam2() ;
+                        if( $nextOtherGame->isGameStartingSoon() ) {
+                            $rankings[$key]['nextOtherBet']['game'] = $nextOtherGame->getUid();
+                            $rankings[$key]['nextOtherBet']['goalsTeam1'] = $bet->getGoalsteam1();
+                            $rankings[$key]['nextOtherBet']['goalsTeam2'] = $bet->getGoalsteam2();
+                        } else {
+                            $rankings[$key]['nextOtherBet']['goalsTeam1'] = "??" ;
+                            $rankings[$key]['nextOtherBet']['goalsTeam2'] = "??" ;
+                        }
+                    } else {
+                        $rankings[$key]['nextOtherBet']['goalsTeam1'] = "" ;
+                        $rankings[$key]['nextOtherBet']['goalsTeam2'] = "" ;
                     }
 
                 } else {
                     $rankings[$key]['nextOtherBet'] = false ;
+                }
+                $goalsCount = $this->betRepository->getGoalsCount($row['uid'] , $this->betPid) ;
+                if($goalsCount ) {
+                    $rankings[$key]['betcount'] = $goalsCount[0]['betcount'] ;
+                    $rankings[$key]['betsteam1'] = $goalsCount[0]['betsteam1'] ;
+                    $rankings[$key]['betsteam2'] = $goalsCount[0]['betsteam2'] ;
+                    $rankings[$key]['betstotal'] = ( intval( $goalsCount[0]['betsteam1'])  +  intval($goalsCount[0]['betsteam2']) ) ;
+                    $rankings[$key]['diff'] = abs( $goalsTotal
+                                                      - ( intval( $goalsCount[0]['betsteam1'])  +  intval($goalsCount[0]['betsteam2']) ) );
+
                 }
             }
         }

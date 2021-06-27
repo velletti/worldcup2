@@ -9,10 +9,22 @@
     <div data-template="extension" >
         <f:render partial="Steps" arguments="{stepindicators: stepindicators}"></f:render>
         <f:if condition="{currentUser}">
-            <h3 data-userid="{currentUser.id}">
-                Result {currentUser.username}: <f:if condition="{currentUserResult}"><span class="bold p-1">{currentUserResult.points} Points</span></f:if>
-                <span class="small"> ({lastUpdated})</span>
-            </h3>
+            <div class="well" id="worldcupCurrentUser" data-userid="{currentUser.id}" data-start="{start}" data-pid="{gamesPID}" data-userbetpid="{userbetPID}">
+                <h3 class="mt-0">
+                    Result <span data-value="username"><i class="fa fa-spinner fa-small fa-spin"></i></span>: <f:if condition="{currentUserResult}"><span class="bold p-1"><span data-value="userpoint"><i class="fa fa-spinner fa-small fa-spin"></i></span> Points</span></f:if>
+                    <span class="small"> ({lastUpdated})</span>
+                </h3>
+                <p>
+                    In case of equality: The  result of this formular is used: <br class="hidden-md hidden-lg">
+                    <i>ABS( (Goals total) - ( Goals User has bet)) = Difference</i><br>
+                    Each Users difference is shown in brackets after the point result, <b>lower values</b> are ranked better.
+                    <br><i class="far fa-futbol"></i> Goals total {goalsteam1} : {goalsteam2} = <span data-value="goalstotal">{goalsTotal}</span>
+                    <br class="hidden-md hidden-lg"><i class="far fa-futbol ml-2"></i> User: <span data-value="userbet1"><i class="fa fa-spinner fa-small fa-spin"></i></span>:<span data-value="userbet2"><i class="fa fa-spinner fa-small fa-spin"></i></span> = <span data-value="userbettotal"><i class="fa fa-spinner fa-small fa-spin"></i></span>
+                    <br class="hidden-md hidden-lg"><i class="far fa-futbol ml-2"></i> Difference: <span data-value="diff">??</span>
+                </p>
+            </div>
+
+
         </f:if>
         <f:if condition="{filter}">
             <f:then>
@@ -69,36 +81,38 @@
                 <f:variable name="best10shown">false</f:variable>
                 <f:variable name="best10newpoints">0</f:variable>
                 <f:for as="ranking" each="{rankings}">
-                    <f:if condition="{filter}">
-                        <f:if condition="{ranking.pos} < 11">
-                            <f:then>
-                                <f:if condition="{ranking.BetsTotal} > 10">
-                                    <f:variable name="best10">{best10 + ranking.points}</f:variable>
-                                    <f:variable name="best10count">{best10count + 1}</f:variable>
-                                    <f:if condition="{ranking.lastBet} &&  {ranking.lastBet.points} > 0">
-                                        <f:variable name="best10newpoints">{best10newpoints + ranking.lastBet.points}</f:variable>
-                                    </f:if>
-                                    <f:if condition="{ranking.secondBet} && {ranking.secondBet.points} > 0">
-                                        <f:variable name="best10newpoints">{best10newpoints + ranking.secondBet.points}</f:variable>
-                                    </f:if>
+                    <f:if condition="{start} < 50">
+                        <f:if condition="{filter}">
+                            <f:if condition="{ranking.pos} < 11">
+                                <f:then>
+                                    <f:if condition="{ranking.BetsTotal} > 10">
+                                        <f:variable name="best10">{best10 + ranking.points}</f:variable>
+                                        <f:variable name="best10count">{best10count + 1}</f:variable>
+                                        <f:if condition="{ranking.lastBet} &&  {ranking.lastBet.points} > 0">
+                                            <f:variable name="best10newpoints">{best10newpoints + ranking.lastBet.points}</f:variable>
+                                        </f:if>
+                                        <f:if condition="{ranking.secondBet} && {ranking.secondBet.points} > 0">
+                                            <f:variable name="best10newpoints">{best10newpoints + ranking.secondBet.points}</f:variable>
+                                        </f:if>
 
-                                </f:if>
-                            </f:then>
-                            <f:else>
-                                <f:if condition="{best10shown}">
-                                    <f:else>
-                                        <f:variable name="best10shown">true</f:variable>
-                                        <div class="row worldcup-ranking mt-1">
-                                            <div class="alert alert-info">
-                                                "Best {best10count}" players reached <b>{best10} ( +{best10newpoints})</b> Points. <f:if condition="{best10count}">(<f:format.number decimals="1">{best10/best10count}</f:format.number> Ø) </f:if>
+                                    </f:if>
+                                </f:then>
+                                <f:else>
+                                    <f:if condition="{best10shown}">
+                                        <f:else>
+                                            <f:variable name="best10shown">true</f:variable>
+                                            <div class="row worldcup-ranking mt-1">
+                                                <div class="alert alert-info">
+                                                    "Best {best10count}" players reached <b>{best10} ( +{best10newpoints})</b> Points. <f:if condition="{best10count}">(<f:format.number decimals="1">{best10/best10count}</f:format.number> Ø) </f:if>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </f:else>
-                                </f:if>
-                            </f:else>
+                                        </f:else>
+                                    </f:if>
+                                </f:else>
+                            </f:if>
                         </f:if>
                     </f:if>
-                    <div class="row worldcup-ranking {f:if(condition: '{ranking.uid} == {currentUser.id}' , then: ' alert alert-info mt-0 mb-0 p-0 ')}">
+                    <div class="row worldcup-ranking" data-userUid="{ranking.uid}">
                         <f:spaceless>
                             <div class="col-xs-5 col-sm-6 p-0 m-0">
                                 <div class="col-xs-12 p-0 m-0">
@@ -124,13 +138,28 @@
                                     </span>
                                     <span class="col-xs-5 col-sm-5  worldcup-player">
                                         <f:if condition="{settings.flexform.showDomain}">
-                                            <f:link.page additionalParams="{tx_worldcup2_play: {filter: 'KD-NUM--{ranking.domain}'}}">
-                                                [<f:format.crop maxCharacters="7" append="">{ranking.domain}</f:format.crop>]
-                                            </f:link.page>
+                                            <f:then>
+                                                <f:link.page additionalParams="{tx_worldcup2_play: {filter: 'KD-NUM--{ranking.domain}'}}">
+                                                    [<f:format.crop maxCharacters="7" append="">{ranking.domain}</f:format.crop>]
+                                                </f:link.page>
+                                            </f:then>
+                                            <f:else>
+                                                <f:if condition="{ranking.userFilter}">
+                                                    <f:then>
+                                                        <f:link.page additionalParams="{tx_worldcup2_play: {filter: '{ranking.userFilter}'}}">
+                                                            [<f:format.crop maxCharacters="12" append="">{ranking.userType}</f:format.crop>]
+                                                        </f:link.page>
+                                                    </f:then>
+                                                    <f:else>
+                                                       ----
+                                                    </f:else>
+                                                </f:if>
+
+                                            </f:else>
                                         </f:if>
 
                                     </span>
-                                    <span class="col-xs-2" title="Got {ranking.points} with {ranking.BetsTotal} Bets">{ranking.points}</span>
+                                    <span class="col-xs-2" data-toogle="tooltip" title="Got {ranking.points} points with {ranking.betcount} Bets. User results {ranking.betsteam1}:{ranking.betsteam2}">{ranking.points} <small>({ranking.diff})</small></span>
                                 </div>
                                 <span class="col-xs-4 col-sm-5"></span>
                                 <span class="col-xs-8 col-sm-7 worldcup-player">
@@ -156,19 +185,20 @@
                         </f:spaceless>
                     </div>
                 </f:for>
+                <f:if condition="{start} < 50">
+                    <f:if condition="{filter}">
+                        <f:then>
+                            <f:if condition="{best10shown}">
+                                <f:else>
+                                    <div class="alert alert-info">
+                                        "Best {best10count}" players reached <b>{best10} (+{best10newpoints})</b> Points. <f:if condition="{best10count}">(<f:format.number decimals="1">{best10/best10count}</f:format.number> Ø) </f:if>
+                                    </div>
+                                </f:else>
+                            </f:if>
+                        </f:then>
 
-                <f:if condition="{filter}">
-                    <f:then>
-                        <f:if condition="{best10shown}">
-                            <f:else>
-                                <div class="alert alert-info">
-                                    "Best {best10count}" players reached <b>{best10} (+{best10newpoints})</b> Points. <f:if condition="{best10count}">(<f:format.number decimals="1">{best10/best10count}</f:format.number> Ø) </f:if>
-                                </div>
-                            </f:else>
-                        </f:if>
-                    </f:then>
-
-                    <f:else></f:else>
+                        <f:else></f:else>
+                    </f:if>
                 </f:if>
 
                 <f:security.ifHasRole role="44">

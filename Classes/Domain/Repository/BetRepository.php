@@ -4,6 +4,11 @@ declare(strict_types=1);
 namespace JVE\Worldcup2\Domain\Repository;
 
 
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * This file is part of the "Place WM and EM Bets" Extension for TYPO3 CMS.
  * For the full copyright and license information, please read the
@@ -61,7 +66,7 @@ class BetRepository extends BaseRepository
         return "SELECT count(uid) as players FROM (tx_worldcup2_domain_model_bet b ) WHERE pid = " . intval($pid) . " GROUP BY feuser " ;
     }
 
-    public function getRankingSelectSql( $pid ) {
+    public function getRankingSelectSql( $pid  , $goalsTotal=0 ) {
 
         return "SELECT	u.username,
 						u.email,
@@ -105,9 +110,13 @@ class BetRepository extends BaseRepository
 						u.tx_nem_country as flag,
 
 						u.tx_nem_comments,
+						u.tx_mmforum_post_count,
+						u.tx_mmforum_helpful_count_season,
                         count( b.uid ) as BetsTotal ,
                         SUM( b.goalsteam1 ) as BetGoalsTotal1 ,
                         SUM( b.goalsteam2 ) as BetGoalsTotal2 ,
+                        " . $goalsTotal . " as GoalsTotal ,
+                        ABS( " . $goalsTotal . " - (  SUM( b.goalsteam1 ) +  SUM( b.goalsteam2 ) )) as diff,
 
           				SUM(CASE
 									WHEN	g.goalsteam2 IS NULL OR  g.goalsteam1 IS NULL THEN 0
@@ -240,7 +249,10 @@ class BetRepository extends BaseRepository
                     }
                     break;
                 case 'FORUM-U':
-                   return " AND ( u.tx_mmforum_post_count  + tx_mmforum_topic_count > 49 ) " ;
+                   return " AND ( u.tx_mmforum_post_count  > 49 ) " ;
+                    break;
+                case 'FORUM-H':
+                    return " AND ( u.tx_mmforum_helpful_count_season   > 9 ) " ;
                     break;
                 case 'WINNER-':
                    return " " ;
@@ -265,7 +277,28 @@ class BetRepository extends BaseRepository
 				AND     g.finished = 1
 				GROUP BY	u.username,
 							u.uid
-				ORDER BY	points DESC";
+				ORDER BY	points DESC, diff ASC";
+    }
+
+    public function getGoalsCount($userUid , $betPid ) {
+
+        /** @var Connection $connection */
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('tx_worldcup2_domain_model_bet' );
+
+        $queryBuilder = $connection->createQueryBuilder();
+        $expr = $queryBuilder->expr() ;
+
+        $query = $queryBuilder
+            ->selectLiteral('SUM(b.goalsteam1) AS betsteam1' )
+            ->addSelectLiteral('SUM(b.goalsteam2) AS betsteam2' )
+            ->addSelectLiteral('count(b.uid) AS betcount' )
+            ->from('tx_worldcup2_domain_model_bet' , 'b')
+            ->leftJoin( 'b' , 'tx_worldcup2_domain_model_game' , "g" , $expr->eq('b' . '.game', 'g.uid') )
+            ->where( "g.finished = 1 ")
+            ->andWhere( "b.pid= " . $betPid )
+            ->andWhere( "b.feuser = " . $userUid) ;
+        return $query->execute()->fetchAllAssociative();
     }
 
 }

@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace JVE\Worldcup2\Domain\Repository;
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This file is part of the "Place WM and EM Bets" Extension for TYPO3 CMS.
@@ -75,8 +78,8 @@ class GameRepository extends BaseRepository
         $constraints[] = $query->equals('finished' , 0 ) ;
         $now = new \DateTime("now") ;
         $now2 = new \DateTime("now") ;
-        $constraints[] = $query->greaterThanOrEqual('playtime' , $now->modify("-60 minute") ) ;
-        $constraints[] = $query->lessThanOrEqual('playtime' , $now2->modify("+90 minute") ) ;
+      //  $constraints[] = $query->greaterThanOrEqual('playtime' , $now->modify("-60 minute") ) ;
+      //  $constraints[] = $query->lessThanOrEqual('playtime' , $now2->modify("+120 minute") ) ;
 
         if( $notUid > 0 ) {
             $constraints[] = $query->logicalOr( [$query->lessThan('uid' , $notUid )
@@ -101,6 +104,22 @@ class GameRepository extends BaseRepository
             $query->setLimit($limit) ;
         }
         return $query->execute() ;
+    }
+
+    public function getGoalsCount( $pid ) {
+
+        /** @var Connection $connection */
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('tx_worldcup2_domain_model_game');
+
+        $queryBuilder = $connection->createQueryBuilder();
+        $query = $queryBuilder
+            ->selectLiteral('SUM(goalsteam1) AS goalsteam1' , 'SUM(goalsteam2) as goalsteam2')
+            ->from('tx_worldcup2_domain_model_game')
+            ->where( "finished = 1 ")
+            ->andWhere( "pid= " . $pid ) ;
+
+        return $query->execute()->fetchAllAssociative();
     }
 
 
