@@ -23,6 +23,14 @@
 
                                     <div class="modal-body">
 
+                                            <f:if condition="{game.round} > 0">
+                                                <f:then>
+                                                    <div class="alert alert-info text-left">
+                                                        The result after 120 minutes (plus all extra time) is counting, but not the goals of a possible final penalty shootout. For details, see rules.
+                                                    </div>
+                                                </f:then>
+                                            </f:if>
+
                                             <div class="row">
                                                 <div class="col-xs-8">
                                                     <f:render partial="Flag" arguments="{team: game.team1}"/> {game.team1.name}

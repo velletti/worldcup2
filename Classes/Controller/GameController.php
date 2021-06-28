@@ -171,18 +171,28 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         if( $this->betPid < 1 ) {
             $this->betPid = $pid ;
         }
-        // ToDo :  REINTEGRATE BETTEAM selector
         $betTeam = "WINNER-" ;
         if($this->request->hasArgument("filter")) {
             $betTeam = $this->request->getArgument("filter") ;
             $this->view->assign("filter" , $betTeam ) ;
         }
 
+        $groupranking = false ;
+        if($this->request->hasArgument("groupranking")) {
+            $groupranking = $this->request->getArgument("groupranking") ;
+            $this->view->assign("groupranking" , 1 ) ;
+        }
         $start = 0 ;
         if($this->request->hasArgument("start") ) {
             $start = intval ($this->request->getArgument("start") ) ;
         }
         $playersCountSql = $this->betRepository->getPlayersCountSql($this->betPid ) ;
+        /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        /** @var \TYPO3\CMS\Core\Database\Connection $connection */
+        $connection = $connectionPool->getConnectionForTable('tx_worldcup2_domain_model_bet');
+
+        $this->view->assign("playerTotal" , $connection->executeQuery( $playersCountSql )->rowCount() ) ;
 
         $goals = $this->gameRepository->getGoalsCount($pid) ;
         $goalsTotal = 0 ;
@@ -192,32 +202,23 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $this->view->assign("goalsTotal" , $goals[0]['goalsteam1'] + $goals[0]['goalsteam2'] ) ;
             $goalsTotal = $goals[0]['goalsteam1'] + $goals[0]['goalsteam2'] ;
         }
-
         $rankingSelectSql = $this->betRepository->getRankingSelectSql($this->betPid , $goalsTotal ) ;
-        $rankingFilterSql = $this->betRepository->getRankingFilterSql($betTeam) ;
+
         $rankingEndSql =   $this->betRepository->getRankingEndSql($pid) ;
 
-        $rankingSql = $rankingSelectSql . $rankingFilterSql . $rankingEndSql . " LIMIT " . $start . ", 50 " ;
+        if ( $groupranking ) {
+            $rankingSql = $rankingSelectSql .  $rankingEndSql   ;
+            $this->getGroupResult(  $connection->executeQuery( $rankingSql )->fetchAllAssociative() , $start , $goalsTotal) ;
+        } else {
+            $this->view->assign("currentUser" , $this->currentUser ) ;
+
+            $rankingFilterSql = $this->betRepository->getRankingFilterSql($betTeam) ;
+            $rankingSql = $rankingSelectSql . $rankingFilterSql . $rankingEndSql  . " LIMIT " . $start . ", 50 " ;
+            $this->enhanceResult(  $connection->executeQuery( $rankingSql )->fetchAllAssociative() , $start , $goalsTotal) ;
+        }
+
         $this->view->assign("debugSQL" , $rankingSql ) ;
 
-        /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
-        /** @var \TYPO3\CMS\Core\Database\Connection $connection */
-        $connection = $connectionPool->getConnectionForTable('tx_worldcup2_domain_model_bet');
-
-        $this->view->assign("playerTotal" , $connection->executeQuery( $playersCountSql )->rowCount() ) ;
-        /*
-         echo $rankingSql . "<hr>" ;
-         var_dump($connection->executeQuery( $rankingSql )->fetchAllAssociative());
-        die;
-        */
-        $this->enhanceResult(  $connection->executeQuery( $rankingSql )->fetchAllAssociative() , $start , $goalsTotal) ;
-
-        if( $this->currentUser['id'] ) {
-            $rankingSqlUser = $rankingSelectSql . " AND u.uid= " . $this->currentUser['id'] . " " . $rankingEndSql ;
-            $this->view->assign("currentUserResult" , $connection->executeQuery($rankingSqlUser . "")->fetchAssociative() ) ;
-        }
-        $this->view->assign("currentUser" , $this->currentUser ) ;
 
 
         if( $this->currentUser ) {
@@ -355,6 +356,43 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
     /**
      * @param array|null $rankings
+     * @param int $start
+     * @param int $goalsTotal
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     */
+    private function getGroupResult( $rankings=null , $start=0 , $goalsTotal=0) {
+        if($this->request->hasArgument("amount")) {
+            $amount = (int)$this->request->getArgument("amount") ;
+        } else {
+            $amount = 10 ;
+        }
+        $groups = [] ;
+        if( $rankings && count ($rankings) > 0  ) {
+            foreach ($rankings as $key => $row) {
+                $domain = $this->getDomain(  $rankings[$key]['email'] ) ;
+                if(array_key_exists($domain , $groups) ) {
+                    if( $groups[$domain]['count'] < $amount && $rankings[$key]['BetsTotal'] > 12 ) {
+                        $groups[$domain]['count'] = $groups[$domain]['count'] + 1 ;
+                        $groups[$domain]['points'] = $groups[$domain]['points'] + $rankings[$key]['points'] ;
+                        $groups[$domain]['perPlayer'] = round ($groups[$domain]['points'] / $groups[$domain]['count'] , 1 ) ;
+                    }
+                    if( $rankings[$key]['BetsTotal'] > 12 ) {
+                        $groups[$domain]['player'] = $groups[$domain]['player'] + 1;
+                    }
+                } else {
+                    $groups[$domain] = ["count" => 1 , 'player' => 1 , "points" => $rankings[$key]['points'] , 'domain' => $domain , 'perPlayer' => $rankings[$key]['points'] ] ;
+                }
+            }
+            $groups = $this->array_sort_by_column($groups, "perPlayer" , SORT_DESC);
+        }
+        $this->view->assign("grouprankings" , $groups ) ;
+    }
+
+
+    /**
+     * @param array|null $rankings
+     * @param int $start
+     * @param int $goalsTotal
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
     private function enhanceResult( $rankings=null , $start=0 , $goalsTotal=0) {
@@ -419,30 +457,8 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 $rankings[$key]['pos'] = $start++ ;
                 $rankings[$key]['flag'] = strtolower(  $rankings[$key]['flag'] ) ;
 
-                $domain = explode('@', $rankings[$key]['email'] ) ;
-                $domain = explode('.', $domain[1] ) ;
-                switch ($domain[0]) {
-                    case "allplan-dev":
-                    case "allplan-infra":
-                    case "precast-software":
-                        $rankings[$key]['domain'] =  "allplan" ;
-                        break ;
-                    case "dds-cad":
-                        $rankings[$key]['domain'] =  "dds" ;
-                        break ;
-                    case "redschift3d":
-                    case "redgiant":
-                        $rankings[$key]['domain'] =  "maxon" ;
-                        break ;
-                    case "dsndata":
-                        $rankings[$key]['domain'] =  "sds2" ;
-                        break ;
-                    case "dexma":
-                        $rankings[$key]['domain'] =  "spacewell" ;
-                        break ;
-                    default:
-                        $rankings[$key]['domain'] =  $domain[0] ;
-                }
+                $rankings[$key]['domain'] = $this->getDomain(  $rankings[$key]['email'] ) ;
+
                 $rankings[$key]['userType'] = "Other" ;
                 $rankings[$key]['userFilter'] = false ;
                 if ($rankings[$key]['usericon'] == "Group_32_student" ) {
@@ -556,4 +572,44 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $this->view->assign("rankings" , $rankings ) ;
 
     }
+
+    private function getDomain($email) {
+        $domain = explode('@', $email ) ;
+        if( !is_array( $domain)) {
+            return "-" ;
+        }
+        $domain = explode('.', $domain[1] ) ;
+        if( !is_array( $domain)) {
+            return "--" ;
+        }
+        switch ($domain[0]) {
+            case "allplan-dev":
+            case "allplan-infra":
+            case "precast-software":
+                return  "allplan" ;
+            case "dds-cad":
+                return "dds" ;
+            case "redschift3d":
+            case "redgiant":
+                return  "maxon" ;
+            case "dsndata":
+                return  "sds2" ;
+            case "dexma":
+                return   "spacewell" ;
+            default:
+                return $domain[0] ;
+        }
+    }
+
+    function array_sort_by_column( $arr, $col, $dir = SORT_ASC)
+    {
+        $sort_col = array();
+        foreach ($arr as $key => $row) {
+            $sort_col[$key] = $row[$col];
+        }
+        array_multisort($sort_col, $dir, $arr);
+        return $arr ;
+    }
+
+
 }
