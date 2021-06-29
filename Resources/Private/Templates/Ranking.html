@@ -349,7 +349,7 @@
 
     <f:if condition="{bet}">
         <f:then>
-            <span class=" {class}" data-toggle="tooltip" data-html="true" title="Game result: {bet.goalsTeam1}:{bet.goalsTeam2} <br>User got: {bet.points} Points">
+            <span class=" {class}" data-toggle="tooltip" data-html="true" title="User bet: {bet.goalsTeam1}:{bet.goalsTeam2} <br>User got: {bet.points} Points">
                 <f:switch expression="{bet.points}">
                     <f:case value="0"><i class="fa fa-long-arrow-alt-right"></i></f:case>
                     <f:case value="1"><i class="fa fa-long-arrow-alt-up"></i></f:case>
