@@ -1,6 +1,7 @@
 
 {namespace jve=JVE\Worldcup2\ViewHelpers}
 {namespace vhs=FluidTYPO3\Vhs\ViewHelpers}
+{namespace mmf=Allplan\MmForum\ViewHelpers}
 
 <f:layout name="default" />
 
@@ -300,14 +301,22 @@
                                  <i class="fa fa-chart-line mr-1"></i> <span class="hidden-xs">User Ranking </span>
                             </f:link.page>
                         </span>
-                            <h3 class="mt-2">Group Ranking</h3>
+
+                            <h3 class="mt-2">
+
+                                Group Ranking <span class="ml-1">
+                                    <a href="#"  class="btn btn-xs btn-default" data-toggle="collapse" data-target=".worldcup-player-collapse">
+                                        <i class="fa fa-user "></i>
+                                    </a>
+                                </span>
+                            </h3>
                             <f:for as="ranking" each="{grouprankings}" iteration="index">
                                 <f:variable name="pos">{index.index +1}</f:variable>
-                                <div class="row worldcup-ranking {f:if(condition: index.isFirst , then:' alert alert-info p-0 pt-1 pb-1')}">
+                                <div data-toggle="collapse" data-target=".worldcup-player-collapse" class="pointer row worldcup-ranking  alert {f:if(condition: index.isFirst , then:' alert-info ', else: ' alert-notice ')}  p-0 pt-1 pb-1">
                                     <div class="col-xs-2 col-sm-1 ">
                                         <b>{pos}.</b>
                                     </div>
-                                    <div class="col-xs-6 col-sm-4 col-lg-3">
+                                    <div class="col-xs-4 col-sm-3 col-lg-3">
                                         <f:link.page additionalParams="{tx_worldcup2_play: {filter: 'KD-NUM--{ranking.domain}'}}">
                                             {ranking.domain}
                                         </f:link.page>
@@ -316,14 +325,37 @@
                                     <div class="col-xs-2 col-sm-1 ">
                                         {ranking.points}
                                     </div>
-                                    <div class="col-xs-2 col-sm-2 " title="Result of best  {ranking.count} players">
+                                    <div class="col-xs-3 col-sm-2 " title="Result of best  {ranking.count} players">
                                         ({ranking.perPlayer} Ø)
                                     </div>
-                                    <div class="hidden-xs visible-sm visible-md visible-lg  col-sm-4 " title="Result of best   players">
+                                    <div class="hidden-xs visible-sm visible-md visible-lg  col-sm-3 " title="Result of best  players of this brand">
                                         best {ranking.count} of {ranking.player} players
                                     </div>
 
                                 </div>
+                                <f:security.ifAuthenticated>
+                                    <f:if condition="{ranking.players}">
+                                        <div class="row collapse  mb-2 worldcup-player-collapse">
+
+                                            <f:for as="player" each="{ranking.players}" iteration="userIndex">
+                                                <div class="col-xs-2 col-md-1">
+                                                        <f:if condition="{player.ImagePath}">
+                                                            <f:then>
+                                                                <div><mmf:user.avatarAsArray user="{player}" width="50c"  height="75" alt="{player.username}" style="width:100%; height:auto;" title="user reached {player.points} points"/></div>
+                                                            </f:then>
+                                                            <f:else>
+                                                                <div><f:image data="{toggle: 'tooltip', html: 'true'}" title="You are one of the best players? <br><br>To upload your profile image, follow the linked username below YOUR placeholder." src="{mmf:user.avatarUrl()}"  width="50c"  height="75" style="width:100%; height:auto;"/></div>
+                                                            </f:else>
+                                                        </f:if>
+                                                    <div class="small">
+                                                        <f:format.html><mmf:user.linkAsUID pid="{settings.pids.userProfilePID}" user="{player.uid}" username="{player.username -> f:format.crop(maxCharacters: '10' , append: '..')}"/></f:format.html>
+                                                    </div>
+                                                </div>
+                                            </f:for>
+                                        </div>
+                                    </f:if>
+
+                                </f:security.ifAuthenticated>
                             </f:for>
                         </div>
                     </f:then>

@@ -5,6 +5,7 @@ namespace JVE\Worldcup2\Controller;
 
 
 use Allplan\NemConnections\Utility\MigrationUtility;
+use Allplan\NemFeuser\Domain\Model\User;
 use Allplan\NemFeuser\Domain\Repository\UserRepository;
 use JVE\Worldcup2\Domain\Model\Bet;
 use JVE\Worldcup2\Domain\Model\Game;
@@ -370,17 +371,35 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         if( $rankings && count ($rankings) > 0  ) {
             foreach ($rankings as $key => $row) {
                 $domain = $this->getDomain(  $rankings[$key]['email'] ) ;
+                $image = false ;
                 if(array_key_exists($domain , $groups) ) {
                     if( $groups[$domain]['count'] < $amount && $rankings[$key]['BetsTotal'] > 12 ) {
+                        if ( $rankings[$key]['tx_nem_image']) {
+                            /** @var User $user */
+                            $user = $this->userRepository->findByUid($rankings[$key]['uid']) ;
+                            if( $user) {
+                                $image = $user->getImagePath() ;
+                            }
+                        }
+
                         $groups[$domain]['count'] = $groups[$domain]['count'] + 1 ;
                         $groups[$domain]['points'] = $groups[$domain]['points'] + $rankings[$key]['points'] ;
                         $groups[$domain]['perPlayer'] = round ($groups[$domain]['points'] / $groups[$domain]['count'] , 1 ) ;
+                        $groups[$domain]['players'][] = ["username" => $rankings[$key]['username'], "uid" => $rankings[$key]['uid'], "points" => $rankings[$key]['points'] , "ImagePath" => $image ];
                     }
                     if( $rankings[$key]['BetsTotal'] > 12 ) {
                         $groups[$domain]['player'] = $groups[$domain]['player'] + 1;
                     }
                 } else {
-                    $groups[$domain] = ["count" => 1 , 'player' => 1 , "points" => $rankings[$key]['points'] , 'domain' => $domain , 'perPlayer' => $rankings[$key]['points'] ] ;
+                    if ( $rankings[$key]['tx_nem_image']) {
+                        /** @var User $user */
+                        $user = $this->userRepository->findByUid($rankings[$key]['uid']) ;
+                        if( $user) {
+                            $image = $user->getImagePath() ;
+                        }
+                    }
+                    $groups[$domain] = ["count" => 1, 'player' => 1, "points" => $rankings[$key]['points'], 'domain' => $domain, 'perPlayer' => $rankings[$key]['points']];
+                    $groups[$domain]['players'][] = ["username" => $rankings[$key]['username'], "uid" => $rankings[$key]['uid'], "points" => $rankings[$key]['points'] , "ImagePath" => $image];
                 }
             }
             $groups = $this->array_sort_by_column($groups, "perPlayer" , SORT_DESC);

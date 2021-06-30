@@ -49,6 +49,7 @@ plugin.tx_worldcup2_play {
          rules = 5359
          login = 5364
 
+          userProfilePID = {$userProfilePID}
       }
     }
     mvc {

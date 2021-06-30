@@ -109,6 +109,7 @@ class BetRepository extends BaseRepository
 						u.uid,
 						u.tx_nem_country as flag,
 
+						u.tx_nem_image,
 						u.tx_nem_comments,
 						u.tx_mmforum_post_count,
 						u.tx_mmforum_helpful_count_season,
