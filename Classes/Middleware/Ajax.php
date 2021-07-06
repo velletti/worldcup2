@@ -132,13 +132,24 @@ class Ajax implements MiddlewareInterface
         $rankingSelectSql = $betRepository->getRankingSelectSql($betpid , $goalsTotal ) ;
         $rankingEndSql    =   $betRepository->getRankingEndSql($pid) ;
 
-        $rankingSqlUser = $rankingSelectSql . " AND u.uid= " . $user['uid'] . " " . $rankingEndSql ;
-        $currentUserResult = $connection->executeQuery($rankingSqlUser . "")->fetchAssociative()  ;
-        if ( $currentUserResult) {
-            $output['result']['points'] = $currentUserResult['points'] ;
-            $output['debug']['pointsSql'] = $rankingSqlUser ;
-            $output['msg'] = "found" ;
-            $output['status'] = 200 ;
+        // $rankingSqlUser = $rankingSelectSql . " AND u.uid= " . $user['uid'] . " " . $rankingEndSql ;
+        // $currentUserResult = $connection->executeQuery($rankingSqlUser . "")->fetchAssociative()  ;
+        $rankingSqlUser = $rankingSelectSql . $rankingEndSql ;
+        $currentUserResults = $connection->executeQuery($rankingSqlUser )   ;
+
+        $output['debug']['pointsSql'] = $rankingSqlUser ;
+        $output['result']['position'] = 0 ;
+        $output['msg'] = "searching" ;
+        $output['status'] = 200 ;
+
+        foreach ( $currentUserResults as $key => $currentUserResult ) {
+            if ( $currentUserResult["uid"] == $user['uid'] ) {
+                $output['result']['points'] = $currentUserResult['points'] ;
+                $output['result']['position'] = $key + 1 ;
+                $output['debug']['pointsSql'] = $rankingSqlUser ;
+                $output['msg'] = "found" ;
+                $output['status'] = 200 ;
+            }
         }
         $goalsCount = $betRepository->getGoalsCount($user['uid'] , $betpid) ;
         if($goalsCount ) {

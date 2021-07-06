@@ -33,18 +33,24 @@
           if(json && json.points) {
             $("#worldcupCurrentUser span[data-value='userpoint']").html(json.points);
           } else {
-            $("#worldcupCurrentUser span[data-value='userpoint']").html(0);
+            $("#worldcupCurrentUser span[data-value='userpoint']").html("0");
+            $("#worldcupCurrentUser").addClass("hide") ;
+          }
+          if(json && json.position) {
+            $("#worldcupCurrentUser span[data-value='userpos']").html(json.position);
+          } else {
+            $("#worldcupCurrentUser span[data-value='userpos']").html( "-");
             $("#worldcupCurrentUser").addClass("hide") ;
           }
           if(json && json.betsteam1) {
             $("#worldcupCurrentUser span[data-value='userbet1']").html(json.betsteam1);
           } else {
-            $("#worldcupCurrentUser span[data-value='userbet1']").html(0);
+            $("#worldcupCurrentUser span[data-value='userbet1']").html("0");
           }
           if(json && json.betsteam2) {
             $("#worldcupCurrentUser span[data-value='userbet2']").html(json.betsteam2);
           } else {
-            $("#worldcupCurrentUser span[data-value='userbet2']").html(0);
+            $("#worldcupCurrentUser span[data-value='userbet2']").html("0");
           }
           if(json && json.betstotal) {
             $("#worldcupCurrentUser span[data-value='userbettotal']").html(json.betstotal);
@@ -52,7 +58,7 @@
                                  - parseInt(json.betstotal)) ;
             $("#worldcupCurrentUser span[data-value='diff']").html(diff) ;
           } else {
-            $("#worldcupCurrentUser span[data-value='diff']").html(0)
+            $("#worldcupCurrentUser span[data-value='diff']").html("0")
           }
 
         },
