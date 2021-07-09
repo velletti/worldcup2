@@ -374,6 +374,12 @@
                                         <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {groupranking: '1' , amount: amountPlus1}}">
                                             +1 <i class="fa fa-user mr-1"></i> <span class="hidden-xs"> Player</span>
                                         </f:link.page>
+                                        <f:security.ifHasRole role="6">
+                                             or
+                                            <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {groupranking: '1' , amount: 3}}">
+                                                3 <i class="fa fa-user mr-1"></i> <span class="hidden-xs"> Player</span>
+                                            </f:link.page>
+                                        </f:security.ifHasRole>
                                     </div>
                                 </f:if>
                             </f:else>
