@@ -369,6 +369,7 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $amount = 10 ;
         }
         $this->view->assign("amount", $amount) ;
+        $this->view->assign("amountPlus1", ( $amount + 1 ) ) ;
         $groups = [] ;
         if( $rankings && count ($rankings) > 0  ) {
             foreach ($rankings as $key => $row) {
