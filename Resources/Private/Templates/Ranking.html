@@ -45,14 +45,7 @@
             </f:then>
 
             <f:else>
-                <f:if condition="{groupranking}">
-                    <div class="alert alert-notice">
-                        <i class="fa fa-futbol mr-1"> </i> Penalty Shootout needed ? Add one Player to the Team count:  {amount}
-                        <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {groupranking: '1' , amount: amountPlus1}}">
-                            +1 <i class="fa fa-user mr-1"></i> <span class="hidden-xs"> Player</span>
-                        </f:link.page>
-                    </div>
-                </f:if>
+
             </f:else>
         </f:if>
 
@@ -232,19 +225,19 @@
                                 <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {start: '0', filter: filter}}">
                                    <span class="visible-sm visible-md visible-lg hidden-xs">1-50</span><span class="visible-xs hidden-sm hidden-md hidden-lg ">1</span>
                                 </f:link.page>
-                                <f:if condition="{playerTotal} > 50">
+                                <f:if condition="{playerTotal > 50}">
                                     <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {start: '50', filter: filter}}">
                                         <span class="visible-sm visible-md visible-lg hidden-xs">51-100</span><span class="visible-xs hidden-sm hidden-md hidden-lg ">2</span>
                                     </f:link.page>
                                 </f:if>
-                                <f:if condition="{playerTotal} > 100">
+                                <f:if condition="{playerTotal > 100}">
                                     <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {start: '100', filter: filter}}">
                                         <span class="visible-sm visible-md visible-lg hidden-xs">101-150</span><span class="visible-xs hidden-sm hidden-md hidden-lg ">3</span>
                                     </f:link.page>
                                 </f:if>
-                                <f:if condition="{start} < 200">
+                                <f:if condition="{start < 200}">
                                     <f:then>
-                                        <f:if condition="{playerTotal} > 150">
+                                        <f:if condition="{playerTotal > 150}">
                                             <f:then>
                                             <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {start: '150', filter: filter}}">
                                                 <span class="visible-sm visible-md visible-lg hidden-xs">151-200</span><span class="visible-xs hidden-sm hidden-md hidden-lg ">4</span>
@@ -256,8 +249,8 @@
                                         </f:if>
                                     </f:then>
                                 </f:if>
-                                <f:if condition="{start} < 250">
-                                    <f:if condition="{playerTotal} > 200">
+                                <f:if condition="{start < 250}">
+                                    <f:if condition="{playerTotal > 200}">
                                         <f:then>
                                             <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {start: '200', filter: filter}}">
                                                 <span class="visible-sm visible-md visible-lg hidden-xs">201-250</span><span class="visible-xs hidden-sm hidden-md hidden-lg ">5</span>
@@ -268,15 +261,16 @@
                                         </f:else>
                                     </f:if>
                                 </f:if>
-
-                                <f:if condition="{playerTotal} > 250">
-                                    <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {start: '250', filter: filter}}">
-                                        <span class="visible-sm visible-md visible-lg hidden-xs">251-300</span><span class="visible-xs hidden-sm hidden-md hidden-lg ">6</span>
-                                    </f:link.page>
-                                </f:if>
-                                <f:if condition="{start} > 150">
+                                <f:if condition="{start > 150 }">
                                     <f:then>
-                                        <f:if condition="{playerTotal} > 300">
+                                        <f:if condition="{playerTotal > 250}">
+                                            <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {start: '250', filter: filter}}">
+                                                <span class="visible-sm visible-md visible-lg hidden-xs">251-300</span><span class="visible-xs hidden-sm hidden-md hidden-lg ">6</span>
+                                            </f:link.page>
+                                        </f:if>
+
+
+                                        <f:if condition="{playerTotal > 300}">
                                             <f:then>
                                                 <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {start: '300', filter: filter}}">
                                                     <span class="visible-sm visible-md visible-lg hidden-xs">301-350</span><span class="visible-xs hidden-sm hidden-md hidden-lg ">6</span>
@@ -286,10 +280,12 @@
                                                 ..
                                             </f:else>
                                         </f:if>
-                                        <f:if condition="{playerTotal} > 350">
-                                            <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {start: '350', filter: filter}}">
-                                                <span class="visible-sm visible-md visible-lg hidden-xs">351-400</span><span class="visible-xs hidden-sm hidden-md hidden-lg ">7</span>
-                                            </f:link.page>
+                                        <f:if condition="{start > 250}">
+                                            <f:if condition="{playerTotal > 350}">
+                                                <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {start: '350', filter: filter}}">
+                                                    <span class="visible-sm visible-md visible-lg hidden-xs">351-400</span><span class="visible-xs hidden-sm hidden-md hidden-lg ">7</span>
+                                                </f:link.page>
+                                            </f:if>
                                         </f:if>
                                     </f:then>
 
@@ -367,6 +363,19 @@
                                 </f:security.ifAuthenticated>
                             </f:for>
                         </div>
+
+                        <f:if condition="{filter}">
+                            <f:else>
+                                <f:if condition="{groupranking}">
+                                    <div class="alert alert-notice">
+                                        <i class="fa fa-futbol mr-1"> </i> Penalty Shootout needed?  {amount}
+                                        <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {groupranking: '1' , amount: amountPlus1}}">
+                                            +1 <i class="fa fa-user mr-1"></i> <span class="hidden-xs"> Player</span>
+                                        </f:link.page>
+                                    </div>
+                                </f:if>
+                            </f:else>
+                        </f:if>
                     </f:then>
                     <f:else>
                         <div class="alert alert-info">
