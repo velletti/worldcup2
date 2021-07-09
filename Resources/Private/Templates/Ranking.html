@@ -44,7 +44,14 @@
                 </div>
             </f:then>
 
-            <f:else></f:else>
+            <f:else>
+                <div class="alert alert-notice">
+                    <i class="fa fa-futball mr-1"> </i> Penalty Shootout needed ? Add one Player to the Team count:  {amount}
+                    <f:link.page class="btn btn-default" additionalParams="{tx_worldcup2_play: {groupranking: '1' , amount: amount}}">
+                        +1 <i class="fa fa-user mr-1"></i> <span class="hidden-xs"> Player</span>
+                    </f:link.page>
+                </div>
+            </f:else>
         </f:if>
 
         <f:if condition="{rankings}">

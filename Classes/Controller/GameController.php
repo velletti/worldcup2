@@ -361,12 +361,14 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @param int $goalsTotal
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    private function getGroupResult( $rankings=null , $start=0 , $goalsTotal=0) {
+    private function getGroupResult( $rankings=null , $start=0 , $goalsTotal=0 ) {
         if($this->request->hasArgument("amount")) {
             $amount = (int)$this->request->getArgument("amount") ;
+            $amount = min( max( $amount , 2 )  , 99) ;
         } else {
             $amount = 10 ;
         }
+        $this->view->assign("amount", $amount) ;
         $groups = [] ;
         if( $rankings && count ($rankings) > 0  ) {
             foreach ($rankings as $key => $row) {
