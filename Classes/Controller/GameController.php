@@ -368,6 +368,11 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         } else {
             $amount = 10 ;
         }
+        if ( $amount > 3 ) {
+            $amountMin = $amount / 2 ;
+        } else {
+            $amountMin = $amount-1 ;
+        }
         $this->view->assign("amount", $amount) ;
         $this->view->assign("amountPlus1", ( $amount + 1 ) ) ;
         $groups = [] ;
@@ -406,6 +411,11 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 }
             }
             $groups = $this->array_sort_by_column($groups, "perPlayer" , SORT_DESC);
+            foreach ( $groups as $key => $value) {
+                if ( $value['player'] < $amountMin )  {
+                    unset( $groups[$key]) ;
+                }
+            }
         }
         $this->view->assign("grouprankings" , $groups ) ;
     }
