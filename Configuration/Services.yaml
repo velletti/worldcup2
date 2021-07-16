@@ -7,7 +7,7 @@ services:
   JVE\Worldcup2\:
     resource: '../Classes/*'
 
-  JVE\Worldcup2\Command\UpdateRanking:
+  JVE\Worldcup2\Command\UpdateRankingCommand:
     tags:
       - name: 'console.command'
         command: 'worldcup2:updateranking'
