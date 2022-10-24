@@ -19,9 +19,6 @@ return [
         'searchFields' => '',
         'iconfile' => 'EXT:worldcup2/Resources/Public/Icons/tx_worldcup2_domain_model_bet.gif'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, goalsteam1, goalsteam2, game, feuser',
-    ],
     'types' => [
         '1' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, goalsteam1, goalsteam2, game, feuser'],
     ],

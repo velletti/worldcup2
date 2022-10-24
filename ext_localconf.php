@@ -6,14 +6,14 @@ call_user_func(
     {
 
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-            'JVE.Worldcup2',
+            'Worldcup2',
             'Play',
             [
-                'Game' => 'next,listgroups,showgroup,showagb,ranking'
+                \JVE\Worldcup2\Controller\GameController::class => 'next,listgroups,showgroup,showagb,ranking'
             ],
             // non-cacheable actions
             [
-                'Game' => 'next,listgroups,showgroup,showagb'
+                \JVE\Worldcup2\Controller\GameController::class => 'next,listgroups,showgroup,showagb'
             ]
         );
 

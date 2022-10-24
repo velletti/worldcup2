@@ -19,9 +19,6 @@ return [
         'searchFields' => '',
         'iconfile' => 'EXT:worldcup2/Resources/Public/Icons/tx_worldcup2_domain_model_game.gif'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, playtime, goalsteam1, goalsteam2, round, team1, team2',
-    ],
     'types' => [
         '1' => ['showitem' => ' l10n_diffsource,  --palette--;;advanced, --palette--;;infos, --palette--;;teams'],
     ],

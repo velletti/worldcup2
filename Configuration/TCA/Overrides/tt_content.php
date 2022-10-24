@@ -3,7 +3,7 @@ defined('TYPO3_MODE') or die();
 
 // Register plugin
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'JVE.worldcup2',
+    'Worldcup2',
     'Play',
     'Play Tipp Game',
     'worldcup2-plugin-play'

@@ -189,7 +189,7 @@ class GameController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         }
         $playersCountSql = $this->betRepository->getPlayersCountSql($this->betPid ) ;
         /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
         /** @var \TYPO3\CMS\Core\Database\Connection $connection */
         $connection = $connectionPool->getConnectionForTable('tx_worldcup2_domain_model_bet');
 

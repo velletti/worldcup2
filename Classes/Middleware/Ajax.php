@@ -99,9 +99,9 @@ class Ajax implements MiddlewareInterface
     }
 
     public function userRanking( $user, $output , $_gp) {
-        $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         /** @var FrontendUserRepository $feuserRepository */
-        $feuserRepository = $objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
+        $feuserRepository = $objectManager->get(\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository::class);
 
         /** @var FrontendUser $feuser */
         $feuser = $feuserRepository->findByUid($user['uid'] ) ;
@@ -116,12 +116,12 @@ class Ajax implements MiddlewareInterface
         $output['input']['userbetpid'] = $betpid ;
 
         /** @var GameRepository $gameRepository */
-        $gameRepository = $objectManager->get('JVE\\Worldcup2\\Domain\\Repository\\GameRepository');
+        $gameRepository = $objectManager->get(\JVE\Worldcup2\Domain\Repository\GameRepository::class);
         /** @var BetRepository $betRepository */
-        $betRepository = $objectManager->get('JVE\\Worldcup2\\Domain\\Repository\\BetRepository');
+        $betRepository = $objectManager->get(\JVE\Worldcup2\Domain\Repository\BetRepository::class);
 
         /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        $connectionPool = GeneralUtility::makeInstance( \TYPO3\CMS\Core\Database\ConnectionPool::class);
         $connection = $connectionPool->getConnectionForTable('tx_worldcup2_domain_model_bet');
 
         $goals = $gameRepository->getGoalsCount($pid) ;
@@ -162,9 +162,9 @@ class Ajax implements MiddlewareInterface
     }
 
     public function storeBet( $user, $output , $_gp) {
-        $objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+        $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         /** @var FrontendUserRepository $feuserRepository */
-        $feuserRepository = $objectManager->get('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
+        $feuserRepository = $objectManager->get(\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository::class);
 
         /** @var FrontendUser $feuser */
         $feuser = $feuserRepository->findByUid($user['uid'] ) ;
@@ -173,12 +173,12 @@ class Ajax implements MiddlewareInterface
         // store / update bet .
 
         /** @var GameRepository $gameRepository */
-        $gameRepository = $objectManager->get('JVE\\Worldcup2\\Domain\\Repository\\GameRepository');
+        $gameRepository = $objectManager->get(\JVE\Worldcup2\Domain\Repository\GameRepository::class);
         /** @var BetRepository $betRepository */
-        $betRepository = $objectManager->get('JVE\\Worldcup2\\Domain\\Repository\\BetRepository');
+        $betRepository = $objectManager->get(\JVE\Worldcup2\Domain\Repository\BetRepository::class);
 
         /** @var PersistenceManager $persistenceManager */
-        $persistenceManager = $objectManager->get("TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface");
+        $persistenceManager = $objectManager->get(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
         /** @var Game $game */
         $game = $gameRepository->findByUid( $output['input']['game'] ) ;
         $output['debug'][__LINE__] = "init" ;
@@ -213,7 +213,7 @@ class Ajax implements MiddlewareInterface
                     $output['debug'][__LINE__] = "new bet " ;
 
                     /** @var Bet $bet */
-                    $bet = $objectManager->get('JVE\\Worldcup2\\Domain\\Model\\Bet');
+                    $bet = $objectManager->get(\JVE\Worldcup2\Domain\Model\Bet::class);
                     $bet->setFeuser( $feuser );
                     $bet->setGame( $game );
                     $bet->setPid( $pid );

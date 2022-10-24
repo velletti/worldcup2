@@ -16,9 +16,6 @@ return [
         'searchFields' => 'name,flag,shortcutfifa',
         'iconfile' => 'EXT:worldcup2/Resources/Public/Icons/tx_worldcup2_domain_model_team.gif'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, flag, shortcutfifa',
-    ],
     'types' => [
         '1' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, name, flag, shortcutfifa'],
     ],

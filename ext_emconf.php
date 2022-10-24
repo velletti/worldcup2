@@ -17,7 +17,6 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Jörg Velletti',
     'author_email' => 'typo3@velletti.de',
     'state' => 'alpha',
-    'clearCacheOnLoad' => 0,
     'version' => '0.0.2',
     'constraints' => [
         'depends' => [
